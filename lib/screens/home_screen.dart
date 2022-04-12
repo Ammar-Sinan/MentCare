@@ -1,16 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../widgets/dr_card_home.dart';
 import '../providers/dr_card_provider.dart';
+import '../widgets/dr_card_home.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(width, height),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
+
     final drData = Provider.of<DoctorsDataProvider>(context);
     final drCard = drData.cardInfo;
 
@@ -19,18 +30,22 @@ class HomeScreen extends StatelessWidget {
         padding: const EdgeInsets.only(top: 8, bottom: 16, left: 16, right: 16),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Need someone to talk to?',
-                  style: Theme.of(context).textTheme.bodyText2,
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.notifications_active_outlined),
-                )
-              ],
+            FittedBox(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Need someone to talk to?',
+                    style: Theme.of(context).textTheme.bodyText2,
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.notifications_active_outlined,
+                    ),
+                  )
+                ],
+              ),
             ),
             Text(
               'We have more than 300 registered therapist to help',
