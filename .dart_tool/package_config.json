@@ -32,6 +32,24 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "cloud_firestore",
+      "rootUri": "file:///D:/Flutter-10/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-3.1.12",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "cloud_firestore_platform_interface",
+      "rootUri": "file:///D:/Flutter-10/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore_platform_interface-5.5.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "cloud_firestore_web",
+      "rootUri": "file:///D:/Flutter-10/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore_web-2.6.12",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
       "name": "collection",
       "rootUri": "file:///D:/Flutter-10/flutter/.pub-cache/hosted/pub.dartlang.org/collection-1.15.0",
       "packageUri": "lib/",
@@ -48,6 +66,42 @@
       "rootUri": "file:///D:/Flutter-10/flutter/.pub-cache/hosted/pub.dartlang.org/fake_async-1.2.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "firebase_auth",
+      "rootUri": "file:///D:/Flutter-10/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-3.3.14",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "firebase_auth_platform_interface",
+      "rootUri": "file:///D:/Flutter-10/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth_platform_interface-6.2.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "firebase_auth_web",
+      "rootUri": "file:///D:/Flutter-10/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth_web-3.3.12",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "firebase_core",
+      "rootUri": "file:///D:/Flutter-10/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-1.14.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "firebase_core_platform_interface",
+      "rootUri": "file:///D:/Flutter-10/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_platform_interface-4.2.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "firebase_core_web",
+      "rootUri": "file:///D:/Flutter-10/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-1.6.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
     },
     {
       "name": "flutter",
@@ -70,6 +124,30 @@
     {
       "name": "flutter_test",
       "rootUri": "file:///D:/Flutter-10/flutter/packages/flutter_test",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_web_plugins",
+      "rootUri": "file:///D:/Flutter-10/flutter/packages/flutter_web_plugins",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "http_parser",
+      "rootUri": "file:///D:/Flutter-10/flutter/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "intl",
+      "rootUri": "file:///D:/Flutter-10/flutter/.pub-cache/hosted/pub.dartlang.org/intl-0.17.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "js",
+      "rootUri": "file:///D:/Flutter-10/flutter/.pub-cache/hosted/pub.dartlang.org/js-0.6.3",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -106,6 +184,12 @@
     {
       "name": "path",
       "rootUri": "file:///D:/Flutter-10/flutter/.pub-cache/hosted/pub.dartlang.org/path-1.8.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "plugin_platform_interface",
+      "rootUri": "file:///D:/Flutter-10/flutter/.pub-cache/hosted/pub.dartlang.org/plugin_platform_interface-2.1.2",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -176,7 +260,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2022-04-12T10:52:34.248970Z",
+  "generated": "2022-04-15T20:25:49.304182Z",
   "generator": "pub",
   "generatorVersion": "2.16.1"
 }

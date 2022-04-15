@@ -1,4 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:mentcare/screens/add_card_screen.dart';
+import 'package:mentcare/screens/auth_screen.dart';
+import 'package:mentcare/screens/card_auth.dart';
+import 'package:mentcare/screens/pre_auth_screen.dart';
 import 'package:provider/provider.dart';
 
 import './providers/dr_card_provider.dart';
@@ -6,11 +12,18 @@ import './providers/dr_card_provider.dart';
 import './screens/tabs_screen.dart';
 import './screens/user_account_screen.dart';
 import './screens/doctors_detail_screen.dart';
+import 'providers/login_prov.dart';
 import 'screens/personal_information_screen.dart';
 import './screens/previous_sessions_screen.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(
+      ChangeNotifierProvider(
+        create: (_) => LoginProv(),
+        child: MyApp(),
+  ) );
 }
 
 class MyApp extends StatelessWidget {
@@ -56,14 +69,27 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSwatch()
               .copyWith(secondary: const Color.fromRGBO(0, 31, 54, 1.0)),
         ),
-        //home: TabsScreen(),
-        initialRoute: '/',
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (con, snapshot) {
+            if (snapshot.hasData) {
+              return AuthScreen();
+            } else {
+              return PreAuthScreen();
+            }
+          },
+        ),
+        //initialRoute: '/',
         routes: {
-          '/': (ctx) => const TabsScreen(),
+          TabsScreen.routeName: (ctx) => const TabsScreen(),
           UserAccountScreen.routeName: (ctx) => const UserAccountScreen(),
           PersonalInformation.routeName: (ctx) => const PersonalInformation(),
           DoctorDetails.routeName: (ctx) => DoctorDetails(),
           PreviousSessions.routeName: (ctx) => PreviousSessions(),
+          AuthScreen.routeName: (cnt) => AuthScreen(),
+          PreAuthScreen.routeName: (cnt) => PreAuthScreen(),
+          AddCard.routeName: (c) => AddCard(),
+          CardAuth.routeName: (c) => CardAuth()
         },
       ),
     );

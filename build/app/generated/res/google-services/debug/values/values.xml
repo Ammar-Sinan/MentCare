@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">933489565025-dr7o0i75i3f43ro716doatmi31epa33o.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">933489565025</string>
+    <string name="google_api_key" translatable="false">AIzaSyBeFR4Hz7HYleLs-96nnbbUYxCiKRuLNW4</string>
+    <string name="google_app_id" translatable="false">1:933489565025:android:f18f5a475a13ad6fe37920</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBeFR4Hz7HYleLs-96nnbbUYxCiKRuLNW4</string>
+    <string name="google_storage_bucket" translatable="false">mentcare-a5f9d.appspot.com</string>
+    <string name="project_id" translatable="false">mentcare-a5f9d</string>
+</resources>

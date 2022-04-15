@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "933489565025",
+    "project_id": "mentcare-a5f9d",
+    "storage_bucket": "mentcare-a5f9d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:933489565025:android:f18f5a475a13ad6fe37920",
+        "android_client_info": {
+          "package_name": "com.example.mentcare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "933489565025-dr7o0i75i3f43ro716doatmi31epa33o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeFR4Hz7HYleLs-96nnbbUYxCiKRuLNW4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "933489565025-dr7o0i75i3f43ro716doatmi31epa33o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "933489565025-qvjerk1nubmhmj8nja41ldkm8h4khltq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.project.mentcare"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:933489565025:android:355b26973f8e71e0e37920",
+        "android_client_info": {
+          "package_name": "com.project.mentcare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "933489565025-dr7o0i75i3f43ro716doatmi31epa33o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeFR4Hz7HYleLs-96nnbbUYxCiKRuLNW4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "933489565025-dr7o0i75i3f43ro716doatmi31epa33o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "933489565025-qvjerk1nubmhmj8nja41ldkm8h4khltq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.project.mentcare"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
