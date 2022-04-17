@@ -5,6 +5,7 @@ class DoctorData with ChangeNotifier {
   final String name;
   final String price;
   final String category;
+  final String specialtyShort;
   bool isSaved = false;
 
   DoctorData(
@@ -12,5 +13,6 @@ class DoctorData with ChangeNotifier {
       required this.name,
       required this.price,
       required this.category,
+      required this.specialtyShort,
       required this.isSaved});
 }
