@@ -7,7 +7,7 @@ import 'package:mentcare/screens/card_auth.dart';
 import 'package:mentcare/screens/pre_auth_screen.dart';
 import 'package:provider/provider.dart';
 
-import './providers/dr_card_provider.dart';
+import './providers/doctors_provider.dart';
 
 import './screens/tabs_screen.dart';
 import './screens/user_account_screen.dart';

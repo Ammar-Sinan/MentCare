@@ -47,16 +47,15 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // print('width');
-    // print(MediaQuery.of(context).size.width,);
-    // print('height');
-    // print(MediaQuery.of(context).size.height,);
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+
     ScreenUtil.init(
         BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width,
           maxHeight: MediaQuery.of(context).size.height,
         ),
-        designSize: const Size(392.7, 759.2),
+        designSize: Size(width, height),
         context: context,
         minTextAdapt: true,
         orientation: Orientation.portrait);

@@ -169,7 +169,7 @@ class _AuthFormState extends State<AuthForm> {
                   height: 50.h,
                   margin: EdgeInsets.only(top: isLogin ? 50.h : 40.h),
                   child: widget.isLoading
-                      ? Align(
+                      ? const Align(
                           child: CircularProgressIndicator(),
                           alignment: Alignment.center,
                         )

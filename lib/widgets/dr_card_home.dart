@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mentcare/providers/dr_card_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../dummy_data/doctor_card_data.dart';
+import '../providers/doctor_card_data.dart';
 import '../screens/doctors_detail_screen.dart';
 
 class DoctorCard extends StatelessWidget {

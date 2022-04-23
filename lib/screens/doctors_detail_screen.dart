@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/reviews_card_dr_detail.dart';
-import '../providers/dr_card_provider.dart';
+import '../providers/doctors_provider.dart';
 
 class DoctorDetails extends StatelessWidget {
   const DoctorDetails({Key? key}) : super(key: key);
