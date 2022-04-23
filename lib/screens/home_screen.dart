@@ -3,10 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/doctors_provider.dart';
+import '../widgets/category_chips.dart';
 import '../widgets/dr_card_home.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State createState() {
@@ -15,9 +16,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  bool isLoading = false;
-  bool isFiltered = false;
-  String filter = '';
+  bool _isLoading = false;
+  bool _isFiltered = false;
+  String _filter = '';
 
   @override
   void initState() {
@@ -40,7 +41,7 @@ class HomeScreenState extends State<HomeScreen> {
         orientation: Orientation.portrait);
 
     final drData = Provider.of<DoctorsDataProvider>(context);
-    final drCard = isFiltered ? drData.showCategory(filter) : drData.cardInfo;
+    final drCard = _isFiltered ? drData.showCategory(_filter) : drData.cardInfo;
     final TextEditingController _nameController = TextEditingController();
 
     return SafeArea(
@@ -105,9 +106,9 @@ class HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            CategoryChips(setFilter, setIsFilter),
+            CategoryChips(_setFilter, _setIsFilter),
             Expanded(
-              child: isLoading
+              child: _isLoading
                   ? const Center(
                       child: CircularProgressIndicator(),
                     )
@@ -136,79 +137,28 @@ class HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void setFilter(cat) {
+  void _setFilter(cat) {
     setState(() {
-      filter = cat;
+      _filter = cat;
     });
   }
 
-  void setIsFilter(isF) {
+  void _setIsFilter(isF) {
     setState(() {
-      isFiltered = isF;
+      _isFiltered = isF;
     });
   }
 
   void _fetchData() {
     setState(() {
-      isLoading = true;
+      _isLoading = true;
       Provider.of<DoctorsDataProvider>(context, listen: false)
           .fetchDoctorsList()
           .then((value) {
-        isLoading = false;
+        _isLoading = false;
       });
     });
   }
 }
 
-class CategoryChips extends StatelessWidget {
-  CategoryChips(this.setFilter, this.setIsFilter, {Key? key}) : super(key: key);
-  Function setFilter;
-  Function setIsFilter;
 
-  final List<String> categories = [
-    'Show all',
-    'Behavioral',
-    'Addiction',
-    'Cognitive',
-    'Couples',
-    'Family counselor'
-  ]; // maybe use map in the list <MAP<STRING STRING>> with id to show the chosen chip
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: categories.map((category) {
-          return Container(
-            margin: const EdgeInsets.only(top: 8, left: 8, bottom: 8),
-            child: OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.all(8),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  side: BorderSide(
-                      color: Theme.of(context).primaryColor, width: 1.5.w)),
-              child: Text(
-                category,
-                style: const TextStyle(
-                  fontSize: 13.3,
-                  color: Color.fromRGBO(22, 99, 144, 1),
-                ),
-              ),
-              onPressed: () {
-                if (category == "Show all") {
-                  setIsFilter(false);
-                } else {
-                  setFilter(category.toLowerCase());
-                  setIsFilter(true);
-                }
-              },
-            ),
-          );
-        }).toList(),
-      ),
-    );
-  }
-}
