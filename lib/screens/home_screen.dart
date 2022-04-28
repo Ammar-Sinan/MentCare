@@ -49,14 +49,18 @@ class HomeScreenState extends State<HomeScreen> {
         padding:
             EdgeInsets.only(top: 8.h, bottom: 16.h, left: 16.w, right: 16.w),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             FittedBox(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
                     'Need someone to talk to?',
-                    style: Theme.of(context).textTheme.bodyText2,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2!
+                        .copyWith(fontSize: 16),
                   ),
                   IconButton(
                     onPressed: () {},
@@ -68,7 +72,7 @@ class HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Text(
-              'We have more than 300 registered therapist to help',
+              'We have more than 300 registered\ntherapist to help',
               style: Theme.of(context).textTheme.bodyText1,
             ),
             Container(
@@ -88,7 +92,7 @@ class HomeScreenState extends State<HomeScreen> {
                         ),
                         fillColor: const Color.fromRGBO(242, 242, 242, 1.0),
                         filled: true,
-                        hintText: 'search therapist name',
+                        hintText: 'search therapist name or speciality',
                         prefixIcon: Icon(
                           Icons.search,
                           color: Theme.of(context).colorScheme.secondary,
@@ -160,5 +164,3 @@ class HomeScreenState extends State<HomeScreen> {
     });
   }
 }
-
-

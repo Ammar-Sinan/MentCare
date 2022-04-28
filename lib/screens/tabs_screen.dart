@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import './user_account_screen.dart';
 import './home_screen.dart';
 import './saved_doctors_screen.dart';
-import './messages.dart';
+import './messages_screen.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class _TabsScreenState extends State<TabsScreen> {
   void initState() {
     _pages = [
       {
-        'page': HomeScreen(),
+        'page': const HomeScreen(),
       },
       {
         'page': const SavedDoctorsScreen(),

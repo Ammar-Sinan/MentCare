@@ -7,15 +7,16 @@ import '../widgets/reviews_card_dr_detail.dart';
 import '../providers/doctors_provider.dart';
 
 class DoctorDetails extends StatelessWidget {
-  const DoctorDetails({Key? key}) : super(key: key);
+  Color iconColor = Colors.white;
 
   static const routeName = '/doctor-detail';
 
-  //final drInfo = Provider.of<DoctorsDataProvider>(context);
-  /// use provider to fetch dr info
-
   @override
   Widget build(BuildContext context) {
+    final doctorId = ModalRoute.of(context)!.settings.arguments as String;
+    final doctorData =
+        Provider.of<DoctorsDataProvider>(context).findById(doctorId);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(212, 229, 241, 1.0),
@@ -41,7 +42,7 @@ class DoctorDetails extends StatelessWidget {
                           width: 48.w,
                         ),
                         const CircleAvatar(
-                          // profile picture of Dr
+                          // profile picture
                           radius: 48,
                           backgroundColor: Color.fromRGBO(22, 92, 144, 1.0),
                         ),
@@ -63,43 +64,35 @@ class DoctorDetails extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 16.h,
+                    SizedBox(height: 16.h),
+                    Text(doctorData.name,
+                        style: const TextStyle(
+                            fontSize: 26, fontWeight: FontWeight.w300)),
+                    SizedBox(height: 16.h),
+                    Text(
+                      doctorData.category,
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.w600),
                     ),
-                    const Text(
-                      'Dr mcregor',
-                      style:
-                          TextStyle(fontSize: 26, fontWeight: FontWeight.w300),
-                    ),
-                    SizedBox(
-                      height: 16.h,
-                    ),
-                    const Text(
-                      'Cognitive Behavioral Therapy',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                    ),
-                    SizedBox(
-                      height: 40.h,
-                    ),
+                    SizedBox(height: 40.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: const [
+                      children: [
                         Buttons(
                             title: 'Booking',
                             icon: Icon(Icons.calendar_today_outlined,
-                                color: Colors.white),
-                            id: 1),
+                                color: iconColor),
+                            route: '1'),
                         Buttons(
                             title: 'location',
                             icon: Icon(Icons.location_on_outlined,
-                                color: Colors.white),
-                            id: 2),
+                                color: iconColor),
+                            route: '2'),
                         Buttons(
                             title: 'save',
-                            icon: Icon(Icons.archive_outlined,
-                                color: Colors.white),
-                            id: 3),
+                            icon:
+                                Icon(Icons.archive_outlined, color: iconColor),
+                            route: '3'),
                       ],
                     ),
                   ],
@@ -132,15 +125,23 @@ class DoctorDetails extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(right: 16.w, left: 16.w, bottom: 12.h),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
                   height: 480.h,
                 ),
                 const Text(
-                  'Nearest available dates for sessions',
+                  'Nearest available dates',
                   style: TextStyle(fontSize: 19.2, fontWeight: FontWeight.w400),
                 ),
                 // Call THe nearest available dates buttons here
+                Row(
+                  // mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SessionsDateButton(dateAndTime: '29 Mar - 4:00 Pm'),
+                    SessionsDateButton(dateAndTime: '2 April - 2:30 PM'),
+                  ],
+                ),
               ],
             ),
           )
@@ -150,11 +151,17 @@ class DoctorDetails extends StatelessWidget {
   }
 }
 
+/// Build / Booking - Location - Save Buttons
 class Buttons extends StatelessWidget {
-  const Buttons({Key? key, this.title, this.icon, this.id}) : super(key: key);
+  Buttons({
+    required this.title,
+    required this.icon,
+    required this.route,
+  });
+
   final String? title;
   final Icon? icon;
-  final int? id;
+  final String? route;
 
   @override
   Widget build(BuildContext context) {
@@ -162,13 +169,7 @@ class Buttons extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () {
-            if (id == 1) {
-              Navigator.of(context).pushNamed('/');
-            } else if (id == 2) {
-              // Navigate to the desired screen
-            } else if (id == 3) {
-              // Navigate to the desired screen
-            }
+            /// On Tap Routes.
           },
           child: CircleAvatar(
             backgroundColor: const Color.fromRGBO(22, 92, 144, 1.0),
@@ -184,6 +185,41 @@ class Buttons extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// Build Nearest Avaliable Dates Buttons
+class SessionsDateButton extends StatelessWidget {
+  SessionsDateButton({
+    required this.dateAndTime,
+    this.onPressed,
+  });
+  final String? dateAndTime;
+  final Function? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 145.w,
+      height: 40.h,
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          primary: const Color.fromRGBO(255, 224, 178, 0.75),
+          shadowColor: const Color.fromRGBO(171, 130, 8, 0.20),
+        ),
+        onPressed: () {},
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: Text(
+            dateAndTime!,
+            style: const TextStyle(
+              color: Color.fromRGBO(105, 65, 3, 1),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
