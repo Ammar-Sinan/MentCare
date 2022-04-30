@@ -20,13 +20,16 @@ class DoctorsDataProvider with ChangeNotifier {
     final List<DoctorData> doctorsData = [];
 
     data.forEach((element) {
-      doctorsData.add(DoctorData(
+      doctorsData.add(
+        DoctorData(
           id: element["id"],
           category: element["category"],
           isSaved: true,
           name: element["name"],
           price: element["price"],
-          specialtyShort: "_"));
+          specialtyShort: ['Addiction', 'Couples therapy'],
+        ),
+      );
     });
     _cardInfo = doctorsData;
     notifyListeners();
@@ -51,14 +54,18 @@ class DoctorsDataProvider with ChangeNotifier {
     }).toList();
     final List<DoctorData> doctorsData = [];
 
+    // ignore: avoid_function_literals_in_foreach_calls
     data.forEach((element) {
-      doctorsData.add(DoctorData(
+      doctorsData.add(
+        DoctorData(
           id: element["id"],
           category: element["category"],
           isSaved: true,
           name: element["name"],
           price: element["price"],
-          specialtyShort: "_"));
+          specialtyShort: ['Addiction', 'Couples therapy'],
+        ),
+      );
     });
     _cardInfo = doctorsData;
     notifyListeners();

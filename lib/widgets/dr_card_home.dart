@@ -77,8 +77,8 @@ class DoctorCard extends StatelessWidget {
           Positioned(
             left: 55.w,
             top: 0,
-            child: const CircleAvatar(
-              radius: 32,
+            child: CircleAvatar(
+              radius: 32.r,
               backgroundColor: Colors.blue,
             ),
           ),
