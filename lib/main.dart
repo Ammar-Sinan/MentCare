@@ -19,11 +19,10 @@ import './screens/previous_sessions_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(
-      ChangeNotifierProvider(
-        create: (_) => LoginProv(),
-        child: MyApp(),
-  ) );
+  runApp(ChangeNotifierProvider(
+    create: (_) => LoginProv(),
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -73,9 +72,9 @@ class MyApp extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (con, snapshot) {
             if (snapshot.hasData) {
-              return AuthScreen();
+              return const AuthScreen();
             } else {
-              return PreAuthScreen();
+              return const PreAuthScreen();
             }
           },
         ),
@@ -86,10 +85,10 @@ class MyApp extends StatelessWidget {
           PersonalInformation.routeName: (ctx) => const PersonalInformation(),
           DoctorDetails.routeName: (ctx) => DoctorDetails(),
           PreviousSessions.routeName: (ctx) => PreviousSessions(),
-          AuthScreen.routeName: (cnt) => AuthScreen(),
-          PreAuthScreen.routeName: (cnt) => PreAuthScreen(),
+          AuthScreen.routeName: (cnt) => const AuthScreen(),
+          PreAuthScreen.routeName: (cnt) => const PreAuthScreen(),
           AddCard.routeName: (c) => AddCard(),
-          CardAuth.routeName: (c) => CardAuth()
+          CardAuth.routeName: (c) => const CardAuth()
         },
       ),
     );

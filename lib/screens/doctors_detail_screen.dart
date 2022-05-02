@@ -6,10 +6,16 @@ import 'package:provider/provider.dart';
 import '../widgets/reviews_card_dr_detail.dart';
 import '../providers/doctors_provider.dart';
 
-class DoctorDetails extends StatelessWidget {
-  Color iconColor = Colors.white;
-
+class DoctorDetails extends StatefulWidget {
   static const routeName = '/doctor-detail';
+
+  @override
+  State<DoctorDetails> createState() => _DoctorDetailsState();
+}
+
+class _DoctorDetailsState extends State<DoctorDetails> {
+  Color iconColor = Colors.white;
+  bool isSaved = false;
 
   TextStyle textStyle =
       const TextStyle(fontSize: 19.2, fontWeight: FontWeight.w400);
@@ -29,13 +35,22 @@ class DoctorDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final doctorId = ModalRoute.of(context)!.settings.arguments as String;
-    final doctorData =
-        Provider.of<DoctorsDataProvider>(context).findById(doctorId);
+    final doctorData = Provider.of<DoctorsDataProvider>(context, listen: false)
+        .findById(doctorId);
+    //final isDrSaved = Provider.of<DoctorData>(context).toggleSaveStatus();
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(212, 229, 241, 1.0),
         elevation: 5,
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: isSaved
+                ? const Icon(Icons.favorite)
+                : const Icon(Icons.favorite_border),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Stack(
@@ -81,12 +96,14 @@ class DoctorDetails extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: 16.h),
-                      Text(doctorData.name,
-                          style: const TextStyle(
-                              fontSize: 26, fontWeight: FontWeight.w300)),
+                      Text(
+                        doctorData.name,
+                        style: const TextStyle(
+                            fontSize: 26, fontWeight: FontWeight.w300),
+                      ),
                       SizedBox(height: 16.h),
                       Text(
-                        doctorData.category[0],
+                        doctorData.category,
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600),
                       ),
@@ -95,7 +112,7 @@ class DoctorDetails extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Buttons(
-                              title: 'Booking',
+                              title: 'Book',
                               icon: Icon(Icons.calendar_today_outlined,
                                   color: iconColor),
                               route: '1'),
@@ -104,11 +121,11 @@ class DoctorDetails extends StatelessWidget {
                               icon: Icon(Icons.location_on_outlined,
                                   color: iconColor),
                               route: '2'),
-                          Buttons(
-                              title: 'save',
-                              icon: Icon(Icons.archive_outlined,
-                                  color: iconColor),
-                              route: '3'),
+                          // Buttons(
+                          //     title: 'save',
+                          //     icon: Icon(Icons.archive_outlined,
+                          //         color: iconColor),
+                          //     route: '3'),
                         ],
                       ),
                     ],
@@ -151,7 +168,7 @@ class DoctorDetails extends StatelessWidget {
                     style: textStyle,
                   ),
                   Row(
-                    children: [
+                    children: const [
                       SessionsDateButton(dateAndTime: '29 Mar - 4:00 Pm'),
                       SessionsDateButton(dateAndTime: '2 April - 2:30 PM'),
                     ],
@@ -185,12 +202,12 @@ class DoctorDetails extends StatelessWidget {
                         height: 90.h,
                         width: 90.w,
                         color: Colors.amber,
-                        child: Text('/Uni Logo'),
+                        child: const Text('/Uni Logo'),
                       ),
                       const SizedBox(width: 24),
                       Column(
                         children: const [
-                          Text('University of Jordan'),
+                          Text('doctorData.university'),
                           SizedBox(width: 16),
                         ],
                       ),
@@ -217,6 +234,7 @@ class Buttons extends StatelessWidget {
   final String? title;
   final Icon? icon;
   final String? route;
+  bool isSaved = false;
 
   @override
   Widget build(BuildContext context) {
@@ -247,7 +265,7 @@ class Buttons extends StatelessWidget {
 
 /// Build Nearest Avaliable Dates Buttons
 class SessionsDateButton extends StatelessWidget {
-  SessionsDateButton({
+  const SessionsDateButton({
     required this.dateAndTime,
     this.onPressed,
   });

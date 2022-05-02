@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mentcare/providers/login_prov.dart';
@@ -10,10 +9,8 @@ class PreAuthScreen extends StatelessWidget {
 
   static const routeName = "pre";
 
-
   @override
   Widget build(BuildContext context) {
-
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     ScreenUtil.init(

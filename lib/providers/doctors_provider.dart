@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../models/doctor_model.dart';
+import '../providers/doctor_model.dart';
 
 class DoctorsDataProvider with ChangeNotifier {
   List<DoctorData> _cardInfo = [];
@@ -13,13 +13,14 @@ class DoctorsDataProvider with ChangeNotifier {
   Future<void> fetchDoctorsList() async {
     QuerySnapshot doctors;
     doctors = await FirebaseFirestore.instance.collection("doctors").get();
+
     List? data;
     data = doctors.docs.map((e) {
       return e.data();
     }).toList();
     final List<DoctorData> doctorsData = [];
 
-    data.forEach((element) {
+    for (var element in data) {
       doctorsData.add(
         DoctorData(
           id: element["id"],
@@ -30,7 +31,7 @@ class DoctorsDataProvider with ChangeNotifier {
           specialtyShort: ['Addiction', 'Couples therapy'],
         ),
       );
-    });
+    }
     _cardInfo = doctorsData;
     notifyListeners();
   }
@@ -63,7 +64,7 @@ class DoctorsDataProvider with ChangeNotifier {
           isSaved: true,
           name: element["name"],
           price: element["price"],
-          specialtyShort: ['Addiction', 'Couples therapy'],
+          specialtyShort: ['Addiction'], // Add the field name in Firebase
         ),
       );
     });

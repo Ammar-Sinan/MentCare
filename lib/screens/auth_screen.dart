@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mentcare/screens/add_payment_screen.dart';
-import 'package:mentcare/screens/home_screen.dart';
 import 'package:mentcare/screens/tabs_screen.dart';
 import 'package:mentcare/widgets/auth_form.dart';
 
@@ -21,7 +19,6 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
@@ -35,12 +32,11 @@ class _AuthScreenState extends State<AuthScreen> {
         orientation: Orientation.portrait);
 
     return Scaffold(
-      body:
-      StreamBuilder(
+      body: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (con, snapshot) {
           if (snapshot.hasData) {
-            return TabsScreen();
+            return const TabsScreen();
           } else {
             return GestureDetector(
               onTap: () => FocusScope.of(context).unfocus(),

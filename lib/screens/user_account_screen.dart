@@ -59,8 +59,8 @@ class UserAccountScreen extends StatelessWidget {
             id: '05',
           ),
           ListTile(
-            title: Text("Log out"),
-            leading: Icon(Icons.logout),
+            title: const Text("Log out"),
+            leading: const Icon(Icons.logout),
             onTap: () => FirebaseAuth.instance.signOut(),
           )
         ],

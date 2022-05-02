@@ -18,11 +18,10 @@ class AddPaymentScreen extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Add payment method'),
+          title: const Text('Add payment method'),
           foregroundColor: Colors.black,
           backgroundColor: Colors.white,
           centerTitle: true,
-
         ),
         body: Container(
           margin: EdgeInsets.symmetric(vertical: 25.h, horizontal: 10.w),
@@ -30,16 +29,17 @@ class AddPaymentScreen extends StatelessWidget {
             //crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextButton.icon(
-                  onPressed: () => Navigator.of(context).pushNamed(AddCard.routeName),
-                  icon: Icon(Icons.credit_card),
-                  label: Text('Add payment method'),
+                  onPressed: () =>
+                      Navigator.of(context).pushNamed(AddCard.routeName),
+                  icon: const Icon(Icons.credit_card),
+                  label: const Text('Add payment method'),
                   style: ButtonStyle(
                       foregroundColor:
                           MaterialStateProperty.all(Colors.black))),
               TextButton.icon(
                 onPressed: () {},
-                icon: Icon(Icons.edit),
-                label: Text('Edit payment method'),
+                icon: const Icon(Icons.edit),
+                label: const Text('Edit payment method'),
                 style: ButtonStyle(
                     foregroundColor: MaterialStateProperty.all(Colors.black)),
               ),

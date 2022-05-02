@@ -22,6 +22,23 @@ class MessagesScreen extends StatelessWidget {
           ),
         ],
       ),
+      body: ListView.builder(
+        itemCount: 2,
+        itemBuilder: (context, index) => const ListTile(
+          leading: CircleAvatar(
+            maxRadius: 24,
+          ),
+          contentPadding: EdgeInsets.all(8),
+          title: Text(
+            'Sender name',
+            style: TextStyle(fontSize: 16),
+          ),
+          trailing: Text(
+            '2:54 pm',
+            style: TextStyle(fontSize: 14, color: Colors.grey),
+          ),
+        ),
+      ),
     );
   }
 }
