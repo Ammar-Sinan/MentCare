@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/reviews_card_dr_detail.dart';
+
 import '../providers/doctors_provider.dart';
 
 class DoctorDetails extends StatefulWidget {
@@ -37,27 +38,35 @@ class _DoctorDetailsState extends State<DoctorDetails> {
     final doctorId = ModalRoute.of(context)!.settings.arguments as String;
     final doctorData = Provider.of<DoctorsDataProvider>(context, listen: false)
         .findById(doctorId);
-    //final isDrSaved = Provider.of<DoctorData>(context).toggleSaveStatus();
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(212, 229, 241, 1.0),
         elevation: 5,
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: isSaved
-                ? const Icon(Icons.favorite)
-                : const Icon(Icons.favorite_border),
-          ),
+          Builder(builder: (ctx) {
+            return IconButton(
+              onPressed: () {
+                Provider.of<DoctorsDataProvider>(context, listen: false)
+                    .toggleSaveStatus(doctorId);
+              },
+              icon: isSaved
+                  ? const Icon(Icons.turned_in)
+                  : const Icon(Icons.turned_in_not),
+            );
+          }),
+          // IconButton(
+          //   onPressed: () {},
+          //   icon: isSaved
+          //       ? const Icon(Icons.favorite)
+          //       : const Icon(Icons.favorite_border),
+          // ),
         ],
       ),
       body: SingleChildScrollView(
         child: Stack(
-          // alignment: Alignment.center,
           children: <Widget>[
             Column(
-              // crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
@@ -147,7 +156,6 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: const [
-                      ReviewCard(title: 'Patients', number: '54', id: 420),
                       ReviewCard(title: 'Reviews', number: '34', id: 420),
                       ReviewCard(title: 'Rating', number: '4.8', id: 420),
                     ],

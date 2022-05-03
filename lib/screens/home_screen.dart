@@ -53,7 +53,6 @@ class HomeScreenState extends State<HomeScreen> {
           children: [
             FittedBox(
               child: Row(
-                //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
                     'Need someone to talk to?',
@@ -83,7 +82,6 @@ class HomeScreenState extends State<HomeScreen> {
                   Expanded(
                     child: TextField(
                       decoration: InputDecoration(
-                        //enabledBorder: InputBorder.none,
                         contentPadding: const EdgeInsets.all(6),
                         border: OutlineInputBorder(
                           borderSide: const BorderSide(
@@ -92,14 +90,14 @@ class HomeScreenState extends State<HomeScreen> {
                         ),
                         fillColor: const Color.fromRGBO(242, 242, 242, 1.0),
                         filled: true,
-                        hintText: 'search therapist name or speciality',
+                        hintText: 'search therapist name',
                         prefixIcon: Icon(
                           Icons.search,
                           color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                       controller: _nameController,
-                      onSubmitted: (_) async {
+                      onSubmitted: (_) {
                         drData.searchByDoctorName(_nameController.text);
                       },
                     ),

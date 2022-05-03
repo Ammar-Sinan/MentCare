@@ -8,12 +8,12 @@ import 'package:mentcare/screens/pre_auth_screen.dart';
 import 'package:provider/provider.dart';
 
 import './providers/doctors_provider.dart';
+import './providers/login_prov.dart';
 
 import './screens/tabs_screen.dart';
 import './screens/user_account_screen.dart';
 import './screens/doctors_detail_screen.dart';
-import 'providers/login_prov.dart';
-import 'screens/personal_information_screen.dart';
+import './screens/personal_information_screen.dart';
 import './screens/previous_sessions_screen.dart';
 
 void main() async {
@@ -28,11 +28,14 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (ctx) => DoctorsDataProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (ctx) => DoctorsDataProvider(),
+        ),
+      ],
       child: MaterialApp(
         title: 'MentCare',
         debugShowCheckedModeBanner: false,
@@ -48,8 +51,6 @@ class MyApp extends StatelessWidget {
               color: Color.fromRGBO(0, 31, 54, 100),
               fontFamily: 'Poppins',
               fontSize: 24.2,
-              //fontFamily: 'Poppins-Medium',
-              // fontFamily: 'assets/fonts/Poppins-Medium.ttf',
             ),
           ),
           fontFamily: 'Poppins',
@@ -94,9 +95,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-// ThemeData.light().textTheme.copyWith(
-// bodyText1: const TextStyle(
-// color: Color.fromRGBO(0, 31, 54, 100), fontSize: 13.33),
-// bodyText2: const TextStyle(
-// color: Color.fromRGBO(0, 31, 54, 100), fontSize: 16)),

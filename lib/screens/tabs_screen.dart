@@ -75,7 +75,7 @@ class _TabsScreenState extends State<TabsScreen> {
             backgroundColor: Theme.of(context).primaryColor,
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.favorite_border),
+            icon: const Icon(Icons.turned_in_not),
             label: 'Saved',
             backgroundColor: Theme.of(context).primaryColor,
           ),

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../providers/doctor_model.dart';
 
@@ -18,17 +19,18 @@ class DoctorsDataProvider with ChangeNotifier {
     data = doctors.docs.map((e) {
       return e.data();
     }).toList();
+
     final List<DoctorData> doctorsData = [];
 
     for (var element in data) {
       doctorsData.add(
         DoctorData(
-          id: element["id"],
+          id: element['id'],
           category: element["category"],
-          isSaved: true,
+          isSaved: false,
           name: element["name"],
           price: element["price"],
-          specialtyShort: ['Addiction', 'Couples therapy'],
+          specialtyShort: ['Addiction'], // Add the field name in Firebase
         ),
       );
     }
@@ -61,7 +63,7 @@ class DoctorsDataProvider with ChangeNotifier {
         DoctorData(
           id: element["id"],
           category: element["category"],
-          isSaved: true,
+          isSaved: false,
           name: element["name"],
           price: element["price"],
           specialtyShort: ['Addiction'], // Add the field name in Firebase
@@ -74,5 +76,20 @@ class DoctorsDataProvider with ChangeNotifier {
 
   DoctorData findById(String id) {
     return _cardInfo.firstWhere((element) => element.id == id);
+  }
+
+  void toggleSaveStatus(String doctorId) {
+    final currUserId = FirebaseAuth.instance.currentUser!.uid;
+    final userDoc =
+        FirebaseFirestore.instance.collection('users').doc(currUserId);
+
+    /// Creating a list here only because .arrayUnion() takes a List not a string
+    /// and the doctorId by itself is a String
+    List test = [doctorId];
+    userDoc.update({
+      'savedDoctors': FieldValue.arrayUnion(test),
+    });
+
+    print(currUserId);
   }
 }
