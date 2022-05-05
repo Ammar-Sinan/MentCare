@@ -49,18 +49,15 @@ class _DoctorDetailsState extends State<DoctorDetails> {
               onPressed: () {
                 Provider.of<DoctorsDataProvider>(context, listen: false)
                     .toggleSaveStatus(doctorId);
+                setState(() {
+                  isSaved = !isSaved;
+                });
               },
               icon: isSaved
                   ? const Icon(Icons.turned_in)
                   : const Icon(Icons.turned_in_not),
             );
           }),
-          // IconButton(
-          //   onPressed: () {},
-          //   icon: isSaved
-          //       ? const Icon(Icons.favorite)
-          //       : const Icon(Icons.favorite_border),
-          // ),
         ],
       ),
       body: SingleChildScrollView(
@@ -193,7 +190,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                       /// Thinking Out Loud ==>
                       /// TextFields for DR in these Whenever he Adjust that
                       /// It triggers a method in the provider to fetch them
-                      buildSpecialityChips(context, 'Addiction'),
+                      buildSpecialityChips(context, 'doctorData.[0]'),
                       buildSpecialityChips(context, 'Anxiety disorders'),
                     ],
                   ),
@@ -203,21 +200,21 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     style: textStyle,
                   ),
                   const SizedBox(height: 16),
-                  Row(
+                  const SizedBox(width: 24),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(4),
-                        height: 90.h,
-                        width: 90.w,
-                        color: Colors.amber,
-                        child: const Text('/Uni Logo'),
+                      Text(
+                        doctorData.university,
+                        style: const TextStyle(fontSize: 16),
                       ),
-                      const SizedBox(width: 24),
-                      Column(
-                        children: const [
-                          Text('doctorData.university'),
-                          SizedBox(width: 16),
-                        ],
+                      SizedBox(height: 12.h),
+                      Text(
+                        doctorData.major,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey,
+                        ),
                       ),
                     ],
                   ),
