@@ -40,7 +40,7 @@ class DoctorsDataProvider with ChangeNotifier {
           isSaved: false,
           name: element["name"],
           price: element["price"],
-          specialityShort: ['Addiction'],
+          specialisedIn: element['specialisedIn'],
           university: element['university'],
           major: element['major'],
         ),
@@ -76,7 +76,7 @@ class DoctorsDataProvider with ChangeNotifier {
           isSaved: false,
           name: element["name"],
           price: element["price"],
-          specialityShort: ['Addiction'],
+          specialisedIn: element['specialisedIn'],
           university: element['university'],
           major: element['major'],
         ),
@@ -115,7 +115,7 @@ class DoctorsDataProvider with ChangeNotifier {
     QuerySnapshot doctors;
     doctors = await FirebaseFirestore.instance
         .collection("doctors")
-        .where('id', whereIn: savedDoctors)
+        .where('id', arrayContains: savedDoctors)
         .get();
 
     List data = doctors.docs.map((element) {
@@ -125,19 +125,19 @@ class DoctorsDataProvider with ChangeNotifier {
 
     List<DoctorData> savedDoctor = [];
 
-    for (var element in data) {
-      savedDoctor.add(
-        DoctorData(
-          id: element['id'],
-          name: element['name'],
-          price: element['price'],
-          category: element['category'],
-          university: element['university'],
-          major: element['major'],
-          specialityShort: element['specialityShort'],
-        ),
-      );
-    }
+    // for (var element in data) {
+    //   savedDoctor.add(
+    //     DoctorData(
+    //       id: element['id'],
+    //       name: element['name'],
+    //       price: element['price'],
+    //       category: element['category'],
+    //       university: element['university'],
+    //       major: element['major'],
+    //       specialisedIn: element['specialisedIn'],
+    //     ),
+    //   );
+    // }
 
     _savedList = savedDoctor;
     notifyListeners();

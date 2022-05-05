@@ -21,18 +21,6 @@ class _DoctorDetailsState extends State<DoctorDetails> {
   TextStyle textStyle =
       const TextStyle(fontSize: 19.2, fontWeight: FontWeight.w400);
 
-  Container buildSpecialityChips(BuildContext context, String label) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
-      padding: const EdgeInsets.all(6),
-      color: const Color.fromRGBO(212, 229, 241, 0.3),
-      child: FittedBox(
-        fit: BoxFit.contain,
-        child: Text(label, style: Theme.of(context).textTheme.bodyText1),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final doctorId = ModalRoute.of(context)!.settings.arguments as String;
@@ -185,22 +173,41 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     'specialised in',
                     style: textStyle,
                   ),
-                  Row(
-                    children: [
-                      /// Thinking Out Loud ==>
-                      /// TextFields for DR in these Whenever he Adjust that
-                      /// It triggers a method in the provider to fetch them
-                      buildSpecialityChips(context, 'doctorData.[0]'),
-                      buildSpecialityChips(context, 'Anxiety disorders'),
-                    ],
+                  const SizedBox(
+                    height: 12,
                   ),
-                  const SizedBox(height: 16),
+                  GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: doctorData.specialisedIn.length,
+                    itemBuilder: (ctx, index) {
+                      return Container(
+                        padding: const EdgeInsets.all(4),
+                        height: 48,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: const Color.fromRGBO(212, 229, 241, 0.2),
+                        ),
+                        child: Text(
+                          doctorData.specialisedIn[index],
+                          textAlign: TextAlign.center,
+                        ),
+                      );
+                    },
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            mainAxisExtent: 40,
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 8,
+                            mainAxisSpacing: 12),
+                  ),
+                  const SizedBox(height: 24),
                   Text(
                     'Education',
                     style: textStyle,
                   ),
                   const SizedBox(height: 16),
-                  const SizedBox(width: 24),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

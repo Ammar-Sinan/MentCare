@@ -7,7 +7,7 @@ class DoctorData with ChangeNotifier {
   final String category;
   final String university;
   final String major;
-  final List<String> specialityShort;
+  final List<dynamic> specialisedIn;
 
   bool isSaved;
 
@@ -16,7 +16,7 @@ class DoctorData with ChangeNotifier {
     required this.name,
     required this.price,
     required this.category,
-    required this.specialityShort,
+    required this.specialisedIn,
     required this.university,
     required this.major,
     this.isSaved = false,
