@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DoctorData with ChangeNotifier {
   final String id;
@@ -21,4 +22,18 @@ class DoctorData with ChangeNotifier {
     required this.major,
     this.isSaved = false,
   });
+
+  Future<void> saveDoctor(String doctorId) async {
+    final oldStatus = isSaved;
+    isSaved = !isSaved;
+    notifyListeners();
+
+    DocumentReference docRefrence =
+        FirebaseFirestore.instance.collection('doctors').doc(doctorId);
+
+    DocumentSnapshot docSnap = await docRefrence.get();
+    var docId = docSnap.reference.id;
+    print(docRefrence);
+    print(docSnap);
+  }
 }

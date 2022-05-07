@@ -50,7 +50,12 @@ class DoctorCard extends StatelessWidget {
                     SizedBox(
                       height: 8.h,
                     ),
-                    Text(doctorInfo.price),
+                    Text(
+                      '${doctorInfo.price} JOD',
+                      style: const TextStyle(
+                        color: Color.fromARGB(255, 110, 110, 110),
+                      ),
+                    ),
                     SizedBox(
                       height: 8.h,
                     ),

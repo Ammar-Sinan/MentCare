@@ -1,15 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class SessionData {
   String id;
-  String duration;
-  DateTime time;
-  String patientName;
+  Timestamp dateAndTime;
   String location; // might use boolean for this
 
   SessionData({
     required this.id,
-    required this.duration,
-    required this.time,
-    required this.patientName,
+    required this.dateAndTime,
     required this.location,
   });
 }

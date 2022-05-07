@@ -17,6 +17,7 @@ class DoctorDetails extends StatefulWidget {
 class _DoctorDetailsState extends State<DoctorDetails> {
   Color iconColor = Colors.white;
   bool isSaved = false;
+  final bool _customTileExpanded = false;
 
   TextStyle textStyle =
       const TextStyle(fontSize: 19.2, fontWeight: FontWeight.w400);
@@ -26,6 +27,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
     final doctorId = ModalRoute.of(context)!.settings.arguments as String;
     final doctorData = Provider.of<DoctorsDataProvider>(context, listen: false)
         .findById(doctorId);
+    //final doctor = Provider.of<DoctorData>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -37,13 +39,8 @@ class _DoctorDetailsState extends State<DoctorDetails> {
               onPressed: () {
                 Provider.of<DoctorsDataProvider>(context, listen: false)
                     .toggleSaveStatus(doctorId);
-                setState(() {
-                  isSaved = !isSaved;
-                });
               },
-              icon: isSaved
-                  ? const Icon(Icons.turned_in)
-                  : const Icon(Icons.turned_in_not),
+              icon: Icon(isSaved ? Icons.turned_in : Icons.turned_in_not),
             );
           }),
         ],
@@ -66,10 +63,11 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                           SizedBox(
                             width: 48.w,
                           ),
-                          const CircleAvatar(
+                          CircleAvatar(
                             // profile picture
-                            radius: 48,
-                            backgroundColor: Color.fromRGBO(22, 92, 144, 1.0),
+                            radius: 48.r,
+                            backgroundColor:
+                                const Color.fromRGBO(22, 92, 144, 1.0),
                           ),
                           Container(
                             decoration: BoxDecoration(
@@ -115,11 +113,6 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                               icon: Icon(Icons.location_on_outlined,
                                   color: iconColor),
                               route: '2'),
-                          // Buttons(
-                          //     title: 'save',
-                          //     icon: Icon(Icons.archive_outlined,
-                          //         color: iconColor),
-                          //     route: '3'),
                         ],
                       ),
                     ],
@@ -157,25 +150,16 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     height: 480.h,
                   ),
                   Text(
-                    'Nearest available dates',
+                    'available sessions',
                     style: textStyle,
                   ),
-                  Row(
-                    children: const [
-                      SessionsDateButton(dateAndTime: '29 Mar - 4:00 Pm'),
-                      SessionsDateButton(dateAndTime: '2 April - 2:30 PM'),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
+                  const BuildSessionDates(),
+                  SizedBox(height: 16.h),
                   Text(
                     'specialised in',
                     style: textStyle,
                   ),
-                  const SizedBox(
-                    height: 12,
-                  ),
+                  SizedBox(height: 12.h),
                   GridView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     scrollDirection: Axis.vertical,
@@ -189,25 +173,23 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                           borderRadius: BorderRadius.circular(5),
                           color: const Color.fromRGBO(212, 229, 241, 0.2),
                         ),
-                        child: Text(
-                          doctorData.specialisedIn[index],
-                          textAlign: TextAlign.center,
-                        ),
+                        child: Text(doctorData.specialisedIn[index],
+                            textAlign: TextAlign.center),
                       );
                     },
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            mainAxisExtent: 40,
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 8,
-                            mainAxisSpacing: 12),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      mainAxisExtent: 40.h,
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 8.w,
+                      mainAxisSpacing: 12.h,
+                    ),
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24.h),
                   Text(
                     'Education',
                     style: textStyle,
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16.h),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -275,36 +257,85 @@ class Buttons extends StatelessWidget {
   }
 }
 
-/// Build Nearest Avaliable Dates Buttons
-class SessionsDateButton extends StatelessWidget {
-  const SessionsDateButton({
-    required this.dateAndTime,
-    this.onPressed,
-  });
-  final String? dateAndTime;
-  final Function? onPressed;
+class BuildSessionDates extends StatefulWidget {
+  const BuildSessionDates({Key? key}) : super(key: key);
+
+  @override
+  State<BuildSessionDates> createState() => _BuildSessionDatesState();
+}
+
+class _BuildSessionDatesState extends State<BuildSessionDates> {
+  bool _customTileExpanded = false;
+
+  // @override
+  // void didChangeDependencies() {
+  //   Provider.of<DoctorsDataProvider>(context).fetchSessions();
+  //   super.didChangeDependencies();
+  // }
+
+  @override
+  void initState() {
+    Provider.of<DoctorsDataProvider>(context, listen: false).fetchSessions();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 145.w,
-      height: 40.h,
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            primary: const Color.fromRGBO(255, 224, 178, 0.75),
-            shadowColor: const Color.fromRGBO(171, 130, 8, 0.20)),
-        onPressed: () {},
-        child: FittedBox(
-          fit: BoxFit.contain,
-          child: Text(
-            dateAndTime!,
-            style: const TextStyle(
-              color: Color.fromRGBO(105, 65, 3, 1),
-            ),
-          ),
-        ),
+    final sessionsDates = Provider.of<DoctorsDataProvider>(context).sessions;
+
+    // final sessionModel = Provider.of<SessionData>(context, listen: false);
+
+    return ExpansionTile(
+      backgroundColor: const Color.fromARGB(255, 244, 244, 244),
+      textColor: const Color.fromRGBO(22, 92, 144, 1),
+      collapsedBackgroundColor: const Color.fromARGB(24, 38, 150, 235),
+      iconColor: const Color.fromRGBO(22, 92, 144, 1),
+      title: const Text(
+        'Sessions',
+        style: TextStyle(fontSize: 16),
       ),
+      trailing: Icon(_customTileExpanded
+          ? Icons.arrow_drop_down_circle
+          : Icons.arrow_drop_down),
+      onExpansionChanged: (expanded) {
+        setState(() {
+          _customTileExpanded = expanded;
+        });
+      },
+      children: [
+        GridView.builder(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: sessionsDates.length,
+          itemBuilder: (ctx, index) {
+            return SizedBox(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: const Color.fromRGBO(255, 224, 178, 0.75),
+                  shadowColor: const Color.fromRGBO(171, 130, 8, 0.20),
+                ),
+                onPressed: () {},
+                child: const FittedBox(
+                  fit: BoxFit.contain,
+                  child: Text(
+                    'sessionsDates',
+                    style: TextStyle(
+                      color: Color.fromRGBO(105, 65, 3, 1),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 24.w,
+            mainAxisSpacing: 24.h,
+            mainAxisExtent: 56.h,
+          ),
+        )
+      ],
     );
   }
 }

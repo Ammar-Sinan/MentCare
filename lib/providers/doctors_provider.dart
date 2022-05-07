@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mentcare/models/session_model.dart';
 
 import '../providers/doctor_model.dart';
 
@@ -9,12 +10,18 @@ class DoctorsDataProvider with ChangeNotifier {
 
   List<DoctorData> _savedList = [];
 
+  List<SessionData> _sessions = [];
+
   List<DoctorData> get cardInfo {
     return [..._cardInfo];
   }
 
   List<DoctorData> get savedList {
     return [..._savedList];
+  }
+
+  List<SessionData> get sessions {
+    return [..._sessions];
   }
 
   get length => _cardInfo.length;
@@ -95,10 +102,12 @@ class DoctorsDataProvider with ChangeNotifier {
     final userDoc =
         FirebaseFirestore.instance.collection('users').doc(currUserId);
 
+    final doctorDoc = FirebaseFirestore.instance.collection('doctors').doc();
+
     /// Creating a list here only because .arrayUnion() takes a List not a
     /// string and the doctorId by itself is a String
     List test = [doctorId];
-    userDoc.update({
+    await userDoc.update({
       'savedDoctors': FieldValue.arrayUnion(test),
     });
   }
@@ -114,34 +123,70 @@ class DoctorsDataProvider with ChangeNotifier {
 
     QuerySnapshot doctors;
     doctors = await FirebaseFirestore.instance
-        .collection("doctors")
-        .where('id', arrayContains: savedDoctors)
+        .collection('doctors')
+        .where('id', whereIn: savedDoctors)
         .get();
 
-    List data = doctors.docs.map((element) {
+    List getSavedDoctors = doctors.docs.map((element) {
       return element.data();
     }).toList();
-    print(data);
 
     List<DoctorData> savedDoctor = [];
 
-    // for (var element in data) {
-    //   savedDoctor.add(
-    //     DoctorData(
-    //       id: element['id'],
-    //       name: element['name'],
-    //       price: element['price'],
-    //       category: element['category'],
-    //       university: element['university'],
-    //       major: element['major'],
-    //       specialisedIn: element['specialisedIn'],
-    //     ),
-    //   );
-    // }
+    for (var element in getSavedDoctors) {
+      savedDoctor.add(
+        DoctorData(
+          id: element['id'],
+          name: element['name'],
+          price: element['price'],
+          category: element['category'],
+          university: element['university'],
+          major: element['major'],
+          specialisedIn: element['specialisedIn'],
+        ),
+      );
+    }
 
     _savedList = savedDoctor;
     notifyListeners();
-    print(_savedList);
-    print('LENGTH: ${_savedList.length}');
+  }
+
+  Future<void> fetchSessions() async {
+    final sessions = await FirebaseFirestore.instance
+        .collection('doctors')
+        .doc('XeTEDjSuQBEj6T0cT65s')
+        .collection('sessions')
+        .get();
+
+    List avaliableSession = sessions.docs.map((e) => e.data()).toList();
+    print('Avalaiable session  :    $avaliableSession');
+
+    List<SessionData> unBookedSessions = [];
+
+    for (var element in avaliableSession) {
+      unBookedSessions.add(
+        SessionData(
+          id: element['id'],
+          dateAndTime: element['time'],
+          location: element['location'],
+        ),
+      );
+    }
+
+    _sessions = unBookedSessions;
+    notifyListeners();
+
+    print(_sessions);
   }
 }
+
+
+
+
+    // DocumentReference docRefrence =
+    //     FirebaseFirestore.instance.collection('doctors').doc(doctorId);
+
+    // DocumentSnapshot docSnap = await docRefrence.get();
+    // var docId = docSnap.reference.id;
+    // print(docRefrence);
+    // print(docId);

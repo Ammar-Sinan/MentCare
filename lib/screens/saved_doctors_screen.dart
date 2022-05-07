@@ -2,10 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/doctors_provider.dart';
+
 import '../widgets/dr_card_home.dart';
 
-class SavedDoctorsScreen extends StatelessWidget {
+class SavedDoctorsScreen extends StatefulWidget {
   const SavedDoctorsScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SavedDoctorsScreen> createState() => _SavedDoctorsScreenState();
+}
+
+class _SavedDoctorsScreenState extends State<SavedDoctorsScreen> {
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    _isLoading = true;
+    Provider.of<DoctorsDataProvider>(context, listen: false).fetchUserSaved();
+    setState(() {
+      _isLoading = false;
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,23 +34,25 @@ class SavedDoctorsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Saved specialists'),
       ),
-      body: const Padding(
-        padding: EdgeInsets.all(16),
-        // child: GridView.builder(
-        //   itemCount: savedList.length,
-        //   itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
-        //     value: savedList[index],
-        //     child: const DoctorCard(),
-        //   ),
-        //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        //     crossAxisCount: 2,
-        //     mainAxisSpacing: 16,
-        //     crossAxisSpacing: 16,
-        //     childAspectRatio: 3 / 2,
-        //     mainAxisExtent: 240,
-        //   ),
-        // ),
-      ),
+      body: _isLoading
+          ? const CircularProgressIndicator()
+          : Padding(
+              padding: const EdgeInsets.all(16),
+              child: GridView.builder(
+                itemCount: savedList.length,
+                itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
+                  value: savedList[index],
+                  child: const DoctorCard(),
+                ),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                  childAspectRatio: 3 / 2,
+                  mainAxisExtent: 240,
+                ),
+              ),
+            ),
     );
   }
 }
