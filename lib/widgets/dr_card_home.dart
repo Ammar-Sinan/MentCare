@@ -38,27 +38,22 @@ class DoctorCard extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: 48.h,
-                    ),
+                    SizedBox(height: 40.h),
                     Text(
                       doctorInfo.name,
                       style: Theme.of(context).textTheme.bodyText2,
                     ),
                     Text(doctorInfo.category,
                         style: Theme.of(context).textTheme.bodyText1),
-                    SizedBox(
-                      height: 8.h,
-                    ),
+                    SizedBox(height: 8.h),
                     Text(
                       '${doctorInfo.price} JOD',
                       style: const TextStyle(
-                        color: Color.fromARGB(255, 110, 110, 110),
-                      ),
+                          color: Color.fromARGB(255, 55, 86, 113),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600),
                     ),
-                    SizedBox(
-                      height: 8.h,
-                    ),
+                    SizedBox(height: 8.h),
                     SizedBox(
                       height: 40.h,
                       child: ElevatedButton(
@@ -73,7 +68,7 @@ class DoctorCard extends StatelessWidget {
                             ),
                             primary: Theme.of(context).primaryColor),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),

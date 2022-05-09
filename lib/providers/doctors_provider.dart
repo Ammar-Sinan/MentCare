@@ -159,7 +159,6 @@ class DoctorsDataProvider with ChangeNotifier {
         .get();
 
     List avaliableSession = sessions.docs.map((e) => e.data()).toList();
-    print('Avalaiable session  :    $avaliableSession');
 
     List<SessionData> unBookedSessions = [];
 
@@ -167,7 +166,7 @@ class DoctorsDataProvider with ChangeNotifier {
       unBookedSessions.add(
         SessionData(
           id: element['id'],
-          dateAndTime: element['time'],
+          dateAndTime: element['time'].toDate(),
           location: element['location'],
         ),
       );
@@ -175,8 +174,6 @@ class DoctorsDataProvider with ChangeNotifier {
 
     _sessions = unBookedSessions;
     notifyListeners();
-
-    print(_sessions);
   }
 }
 

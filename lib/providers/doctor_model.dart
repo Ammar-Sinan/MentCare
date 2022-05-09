@@ -33,7 +33,5 @@ class DoctorData with ChangeNotifier {
 
     DocumentSnapshot docSnap = await docRefrence.get();
     var docId = docSnap.reference.id;
-    print(docRefrence);
-    print(docSnap);
   }
 }

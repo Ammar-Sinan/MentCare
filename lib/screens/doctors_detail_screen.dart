@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mentcare/widgets/sessions_buttons_grid.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/reviews_card_dr_detail.dart';
+import '../widgets/booking_loacation_buttons.dart';
 
 import '../providers/doctors_provider.dart';
 
@@ -31,8 +33,8 @@ class _DoctorDetailsState extends State<DoctorDetails> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(212, 229, 241, 1.0),
-        elevation: 5,
+        backgroundColor: const Color.fromARGB(255, 248, 248, 248),
+        elevation: 7,
         actions: [
           Builder(builder: (ctx) {
             return IconButton(
@@ -217,45 +219,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
   }
 }
 
-/// Build / Booking - Location - Save Buttons
-class Buttons extends StatelessWidget {
-  Buttons({
-    required this.title,
-    required this.icon,
-    required this.route,
-  });
-
-  final String? title;
-  final Icon? icon;
-  final String? route;
-  bool isSaved = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: () {
-            /// On Tap Routes.
-          },
-          child: CircleAvatar(
-            backgroundColor: const Color.fromRGBO(22, 92, 144, 1.0),
-            maxRadius: 24,
-            child: icon,
-          ),
-        ),
-        const SizedBox(height: 8),
-        FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Text(
-            title!,
-            style: const TextStyle(fontWeight: FontWeight.w400),
-          ),
-        ),
-      ],
-    );
-  }
-}
+/// Build / Booking - Location Buttons
 
 class BuildSessionDates extends StatefulWidget {
   const BuildSessionDates({Key? key}) : super(key: key);
@@ -267,23 +231,9 @@ class BuildSessionDates extends StatefulWidget {
 class _BuildSessionDatesState extends State<BuildSessionDates> {
   bool _customTileExpanded = false;
 
-  // @override
-  // void didChangeDependencies() {
-  //   Provider.of<DoctorsDataProvider>(context).fetchSessions();
-  //   super.didChangeDependencies();
-  // }
-
-  @override
-  void initState() {
-    Provider.of<DoctorsDataProvider>(context, listen: false).fetchSessions();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     final sessionsDates = Provider.of<DoctorsDataProvider>(context).sessions;
-
-    // final sessionModel = Provider.of<SessionData>(context, listen: false);
 
     return ExpansionTile(
       backgroundColor: const Color.fromARGB(255, 244, 244, 244),
@@ -302,39 +252,8 @@ class _BuildSessionDatesState extends State<BuildSessionDates> {
           _customTileExpanded = expanded;
         });
       },
-      children: [
-        GridView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: sessionsDates.length,
-          itemBuilder: (ctx, index) {
-            return SizedBox(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: const Color.fromRGBO(255, 224, 178, 0.75),
-                  shadowColor: const Color.fromRGBO(171, 130, 8, 0.20),
-                ),
-                onPressed: () {},
-                child: const FittedBox(
-                  fit: BoxFit.contain,
-                  child: Text(
-                    'sessionsDates',
-                    style: TextStyle(
-                      color: Color.fromRGBO(105, 65, 3, 1),
-                    ),
-                  ),
-                ),
-              ),
-            );
-          },
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 24.w,
-            mainAxisSpacing: 24.h,
-            mainAxisExtent: 56.h,
-          ),
-        )
+      children: const [
+        SessionsButtonsGrid(),
       ],
     );
   }

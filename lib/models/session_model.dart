@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class SessionData {
   String id;
-  Timestamp dateAndTime;
+  DateTime dateAndTime;
   String location; // might use boolean for this
 
   SessionData({

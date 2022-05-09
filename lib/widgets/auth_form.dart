@@ -5,7 +5,8 @@ import 'package:provider/provider.dart';
 import '../providers/login_prov.dart';
 
 class AuthForm extends StatefulWidget {
-  AuthForm(this._authenticate, this.isLoading, {Key? key}) : super(key: key);
+  const AuthForm(this._authenticate, this.isLoading, {Key? key})
+      : super(key: key);
   final Function _authenticate;
   final bool isLoading;
 
@@ -29,7 +30,6 @@ class _AuthFormState extends State<AuthForm> {
 
   @override
   Widget build(BuildContext context) {
-
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     ScreenUtil.init(

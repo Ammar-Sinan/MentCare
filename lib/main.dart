@@ -15,6 +15,7 @@ import './screens/user_account_screen.dart';
 import './screens/doctors_detail_screen.dart';
 import './screens/personal_information_screen.dart';
 import './screens/previous_sessions_screen.dart';
+import './screens/booking_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -89,7 +90,8 @@ class MyApp extends StatelessWidget {
           AuthScreen.routeName: (cnt) => const AuthScreen(),
           PreAuthScreen.routeName: (cnt) => const PreAuthScreen(),
           AddCard.routeName: (c) => AddCard(),
-          CardAuth.routeName: (c) => const CardAuth()
+          CardAuth.routeName: (c) => const CardAuth(),
+          BookingScreen.routeName: (ctx) => BookingScreen(),
         },
       ),
     );

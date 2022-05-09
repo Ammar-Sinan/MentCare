@@ -60,6 +60,7 @@ class _TabsScreenState extends State<TabsScreen> {
         minTextAdapt: true,
         orientation: Orientation.portrait);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       body: _pages[_selectedPageIndex]['page'] as Widget,
       bottomNavigationBar: BottomNavigationBar(
