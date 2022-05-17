@@ -8,8 +8,8 @@ import '../providers/doctors_provider.dart';
 import '../screens/booking_screen.dart';
 
 class SessionsButtonsGrid extends StatefulWidget {
-  // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  const SessionsButtonsGrid({Key? key}) : super(key: key);
+  String? drId;
+  SessionsButtonsGrid({this.drId});
 
   @override
   State<SessionsButtonsGrid> createState() => _SessionsButtonsGridState();

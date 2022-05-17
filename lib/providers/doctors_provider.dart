@@ -158,6 +158,15 @@ class DoctorsDataProvider with ChangeNotifier {
         .collection('sessions')
         .get();
 
+    // DocumentReference docRefrence = FirebaseFirestore.instance
+    //     .collection('doctors')
+    //     .doc('XeTEDjSuQBEj6T0cT65s');
+
+    // DocumentSnapshot docSnap = await docRefrence.get();
+    // var docId = docSnap.reference.id;
+    // print(docRefrence);
+    // print(docId);
+
     List avaliableSession = sessions.docs.map((e) => e.data()).toList();
 
     List<SessionData> unBookedSessions = [];
@@ -175,6 +184,8 @@ class DoctorsDataProvider with ChangeNotifier {
     _sessions = unBookedSessions;
     notifyListeners();
   }
+
+  Future<void> bookSession() async {}
 }
 
 

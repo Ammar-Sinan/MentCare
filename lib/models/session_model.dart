@@ -1,7 +1,7 @@
 class SessionData {
   String id;
   DateTime dateAndTime;
-  String location; // might use boolean for this
+  String location;
 
   SessionData({
     required this.id,

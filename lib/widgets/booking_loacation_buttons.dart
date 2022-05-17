@@ -48,7 +48,7 @@ class Buttons extends StatelessWidget {
                             return SizedBox(
                               height: 450,
                               child: ListView(
-                                children: const [
+                                children: [
                                   SessionsButtonsGrid(),
                                 ],
                               ),

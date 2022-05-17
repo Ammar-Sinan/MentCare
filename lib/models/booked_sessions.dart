@@ -4,7 +4,7 @@ class BookedSessions {
   final String userId;
   final String drName;
   final DateTime time;
-  final String location;
+  final bool location;
 
   BookedSessions({
     required this.id,

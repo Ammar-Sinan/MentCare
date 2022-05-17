@@ -19,7 +19,6 @@ class DoctorDetails extends StatefulWidget {
 class _DoctorDetailsState extends State<DoctorDetails> {
   Color iconColor = Colors.white;
   bool isSaved = false;
-  final bool _customTileExpanded = false;
 
   TextStyle textStyle =
       const TextStyle(fontSize: 19.2, fontWeight: FontWeight.w400);
@@ -29,8 +28,6 @@ class _DoctorDetailsState extends State<DoctorDetails> {
     final doctorId = ModalRoute.of(context)!.settings.arguments as String;
     final doctorData = Provider.of<DoctorsDataProvider>(context, listen: false)
         .findById(doctorId);
-    //final doctor = Provider.of<DoctorData>(context);
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 248, 248, 248),
@@ -233,7 +230,8 @@ class _BuildSessionDatesState extends State<BuildSessionDates> {
 
   @override
   Widget build(BuildContext context) {
-    final sessionsDates = Provider.of<DoctorsDataProvider>(context).sessions;
+    final doctorId = ModalRoute.of(context)!.settings.arguments as String;
+    //final sessionsDates = Provider.of<DoctorsDataProvider>(context).sessions;
 
     return ExpansionTile(
       backgroundColor: const Color.fromARGB(255, 244, 244, 244),
@@ -252,8 +250,8 @@ class _BuildSessionDatesState extends State<BuildSessionDates> {
           _customTileExpanded = expanded;
         });
       },
-      children: const [
-        SessionsButtonsGrid(),
+      children: [
+        SessionsButtonsGrid(drId: doctorId),
       ],
     );
   }

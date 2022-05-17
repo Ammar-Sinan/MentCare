@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mentcare/models/booked_sessions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class BookingScreen extends StatefulWidget {
   //const BookingScreen({Key? key}) : super(key: key);
@@ -68,6 +70,25 @@ class _BookingScreenState extends State<BookingScreen> {
         )
       ],
     );
+  }
+
+  Future<void> bookSession(BuildContext context) async {
+    String location;
+    var sessionDate = ModalRoute.of(context)!.settings.arguments as List;
+
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+    if (name.text.isEmpty) {
+      print('Please provide your name');
+    } else {
+      bool sessionLocation = checkOnline ? checkOnline : checkClinic;
+      var sessionData = BookedSessions(
+          id: sessionDate[1],
+          userName: name.text,
+          userId: userId,
+          drName: 'drName',
+          location: sessionLocation,
+          time: sessionDate[0]);
+    }
   }
 
   @override
@@ -187,7 +208,11 @@ class _BookingScreenState extends State<BookingScreen> {
                 alignment: Alignment.bottomRight,
                 child: ElevatedButton(
                   child: const Text('Finish Booking'),
-                  onPressed: () {},
+                  onPressed: () {
+                    /// a method that will store the session in the
+                    /// sessions collection in Firestore
+                    bookSession(context);
+                  },
                 ),
               ),
             ],
