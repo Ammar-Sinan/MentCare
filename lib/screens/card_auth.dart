@@ -9,26 +9,25 @@ class CardAuth extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Card Verification'),
+        title: const Text('Card Verification'),
         centerTitle: true,
         foregroundColor: Colors.black,
         backgroundColor: Colors.white,
       ),
       body: Container(
-        margin: EdgeInsets.symmetric(horizontal: 25, vertical: 70),
+        margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 70),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
               height: 150,
               decoration: BoxDecoration(
-                color: Colors.grey.shade200,
-                borderRadius: BorderRadius.circular(15)
-              ),
+                  color: Colors.grey.shade200,
+                  borderRadius: BorderRadius.circular(15)),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                children: const [
                   Icon(
                     Icons.check_circle,
                     color: Colors.green,
@@ -41,7 +40,7 @@ class CardAuth extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 40,
             ),
             SizedBox(

@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import './user_account_screen.dart';
 import './home_screen.dart';
 import './saved_doctors_screen.dart';
-import './messages.dart';
+import './messages_screen.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class _TabsScreenState extends State<TabsScreen> {
   void initState() {
     _pages = [
       {
-        'page': HomeScreen(),
+        'page': const HomeScreen(),
       },
       {
         'page': const SavedDoctorsScreen(),
@@ -60,6 +60,7 @@ class _TabsScreenState extends State<TabsScreen> {
         minTextAdapt: true,
         orientation: Orientation.portrait);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       body: _pages[_selectedPageIndex]['page'] as Widget,
       bottomNavigationBar: BottomNavigationBar(
@@ -75,7 +76,7 @@ class _TabsScreenState extends State<TabsScreen> {
             backgroundColor: Theme.of(context).primaryColor,
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.favorite_border),
+            icon: const Icon(Icons.turned_in_not),
             label: 'Saved',
             backgroundColor: Theme.of(context).primaryColor,
           ),

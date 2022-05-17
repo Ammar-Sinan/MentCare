@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mentcare/providers/login_prov.dart';
@@ -10,10 +9,8 @@ class PreAuthScreen extends StatelessWidget {
 
   static const routeName = "pre";
 
-
   @override
   Widget build(BuildContext context) {
-
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     ScreenUtil.init(
@@ -34,8 +31,6 @@ class PreAuthScreen extends StatelessWidget {
           child: const Text('logo'),
           margin: EdgeInsets.only(top: 200.h),
         ),
-
-        // SizedBox(height: 50.h,),
         Container(
             margin: EdgeInsets.only(bottom: 60.h, right: 15.w, left: 15.w),
             child: Column(
@@ -80,8 +75,8 @@ class PreAuthScreen extends StatelessWidget {
     )));
   }
 
-  void navigate(BuildContext b, bool bo) async {
-    await b.read<LoginProv>().initIsLogIn(bo);
-    Navigator.of(b).pushNamed(AuthScreen.routeName);
+  void navigate(BuildContext ctx, bool bo) async {
+    await ctx.read<LoginProv>().initIsLogIn(bo);
+    Navigator.of(ctx).pushNamed(AuthScreen.routeName);
   }
 }

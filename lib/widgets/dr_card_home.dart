@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../providers/doctor_card_data.dart';
+import '../providers/doctor_model.dart';
 import '../screens/doctors_detail_screen.dart';
 
 class DoctorCard extends StatelessWidget {
@@ -9,12 +9,11 @@ class DoctorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    final labels = Provider.of<DoctorData>(context);
+    final doctorInfo = Provider.of<DoctorData>(context);
     return GestureDetector(
       onTap: () {
         Navigator.of(context)
-            .pushNamed(DoctorDetails.routeName, arguments: labels.id);
+            .pushNamed(DoctorDetails.routeName, arguments: doctorInfo.id);
       },
       child: Stack(
         children: [
@@ -39,22 +38,22 @@ class DoctorCard extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: 48.h,
-                    ),
+                    SizedBox(height: 40.h),
                     Text(
-                      labels.name,
+                      doctorInfo.name,
                       style: Theme.of(context).textTheme.bodyText2,
                     ),
-                    Text(labels.category,
+                    Text(doctorInfo.category,
                         style: Theme.of(context).textTheme.bodyText1),
-                    SizedBox(
-                      height: 8.h,
+                    SizedBox(height: 8.h),
+                    Text(
+                      '${doctorInfo.price} JOD',
+                      style: const TextStyle(
+                          color: Color.fromARGB(255, 55, 86, 113),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600),
                     ),
-                    Text(labels.price),
-                    SizedBox(
-                      height: 8.h,
-                    ),
+                    SizedBox(height: 8.h),
                     SizedBox(
                       height: 40.h,
                       child: ElevatedButton(
@@ -69,7 +68,7 @@ class DoctorCard extends StatelessWidget {
                             ),
                             primary: Theme.of(context).primaryColor),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -78,8 +77,8 @@ class DoctorCard extends StatelessWidget {
           Positioned(
             left: 55.w,
             top: 0,
-            child: const CircleAvatar(
-              radius: 32,
+            child: CircleAvatar(
+              radius: 32.r,
               backgroundColor: Colors.blue,
             ),
           ),

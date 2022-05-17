@@ -8,32 +8,35 @@ import 'package:mentcare/screens/pre_auth_screen.dart';
 import 'package:provider/provider.dart';
 
 import './providers/doctors_provider.dart';
+import './providers/login_prov.dart';
 
 import './screens/tabs_screen.dart';
 import './screens/user_account_screen.dart';
 import './screens/doctors_detail_screen.dart';
-import 'providers/login_prov.dart';
-import 'screens/personal_information_screen.dart';
+import './screens/personal_information_screen.dart';
 import './screens/previous_sessions_screen.dart';
+import './screens/booking_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(
-      ChangeNotifierProvider(
-        create: (_) => LoginProv(),
-        child: MyApp(),
-  ) );
+  runApp(ChangeNotifierProvider(
+    create: (_) => LoginProv(),
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (ctx) => DoctorsDataProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (ctx) => DoctorsDataProvider(),
+        ),
+      ],
       child: MaterialApp(
         title: 'MentCare',
         debugShowCheckedModeBanner: false,
@@ -49,8 +52,6 @@ class MyApp extends StatelessWidget {
               color: Color.fromRGBO(0, 31, 54, 100),
               fontFamily: 'Poppins',
               fontSize: 24.2,
-              //fontFamily: 'Poppins-Medium',
-              // fontFamily: 'assets/fonts/Poppins-Medium.ttf',
             ),
           ),
           fontFamily: 'Poppins',
@@ -73,9 +74,9 @@ class MyApp extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (con, snapshot) {
             if (snapshot.hasData) {
-              return AuthScreen();
+              return const AuthScreen();
             } else {
-              return PreAuthScreen();
+              return const PreAuthScreen();
             }
           },
         ),
@@ -86,18 +87,13 @@ class MyApp extends StatelessWidget {
           PersonalInformation.routeName: (ctx) => const PersonalInformation(),
           DoctorDetails.routeName: (ctx) => DoctorDetails(),
           PreviousSessions.routeName: (ctx) => PreviousSessions(),
-          AuthScreen.routeName: (cnt) => AuthScreen(),
-          PreAuthScreen.routeName: (cnt) => PreAuthScreen(),
+          AuthScreen.routeName: (cnt) => const AuthScreen(),
+          PreAuthScreen.routeName: (cnt) => const PreAuthScreen(),
           AddCard.routeName: (c) => AddCard(),
-          CardAuth.routeName: (c) => CardAuth()
+          CardAuth.routeName: (c) => const CardAuth(),
+          BookingScreen.routeName: (ctx) => BookingScreen(),
         },
       ),
     );
   }
 }
-
-// ThemeData.light().textTheme.copyWith(
-// bodyText1: const TextStyle(
-// color: Color.fromRGBO(0, 31, 54, 100), fontSize: 13.33),
-// bodyText2: const TextStyle(
-// color: Color.fromRGBO(0, 31, 54, 100), fontSize: 16)),

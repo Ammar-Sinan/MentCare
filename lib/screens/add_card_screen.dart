@@ -12,12 +12,12 @@ class AddCard extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         foregroundColor: Colors.black,
-        title: Text('Add Card'),
+        title: const Text('Add Card'),
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
       body: Container(
-        margin: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+        margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -27,13 +27,13 @@ class AddCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Align(
+                    const Align(
                       child: Text(
                         'Card Number',
                       ),
                       alignment: Alignment.centerLeft,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 4,
                     ),
                     TextFormField(
@@ -53,8 +53,9 @@ class AddCard extends StatelessWidget {
                           child: Column(
                             children: [
                               const Align(
-                                child: Text('Expiration Date',
-                                    ),
+                                child: Text(
+                                  'Expiration Date',
+                                ),
                                 alignment: Alignment.centerLeft,
                               ),
                               const SizedBox(
@@ -62,8 +63,8 @@ class AddCard extends StatelessWidget {
                               ),
                               TextFormField(
                                 decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  contentPadding: EdgeInsets.all(10),
+                                  border: const OutlineInputBorder(),
+                                  contentPadding: const EdgeInsets.all(10),
                                   fillColor: Colors.grey[200],
                                   filled: true,
                                 ),
@@ -71,24 +72,25 @@ class AddCard extends StatelessWidget {
                             ],
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 20,
                         ),
                         Expanded(
                           child: Column(
                             children: [
-                              Align(
-                                child: Text('CCV',
-                                    ),
+                              const Align(
+                                child: Text(
+                                  'CCV',
+                                ),
                                 alignment: Alignment.centerLeft,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 4,
                               ),
                               TextFormField(
                                 decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  contentPadding: EdgeInsets.all(10),
+                                  border: const OutlineInputBorder(),
+                                  contentPadding: const EdgeInsets.all(10),
                                   fillColor: Colors.grey[200],
                                   filled: true,
                                 ),
@@ -102,8 +104,9 @@ class AddCard extends StatelessWidget {
                       height: 20,
                     ),
                     const Align(
-                      child: Text('Country',
-                          ),
+                      child: Text(
+                        'Country',
+                      ),
                       alignment: Alignment.centerLeft,
                     ),
                     const SizedBox(
@@ -111,8 +114,8 @@ class AddCard extends StatelessWidget {
                     ),
                     TextFormField(
                       decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.all(10),
+                        border: const OutlineInputBorder(),
+                        contentPadding: const EdgeInsets.all(10),
                         fillColor: Colors.grey[200],
                         filled: true,
                       ),
@@ -120,9 +123,10 @@ class AddCard extends StatelessWidget {
                   ],
                 )),
             SizedBox(
-              height:60,
+              height: 60,
               child: ElevatedButton(
-                onPressed: () => Navigator.pushNamed(context, CardAuth.routeName),
+                onPressed: () =>
+                    Navigator.pushNamed(context, CardAuth.routeName),
                 child: const Text('Verify Card'),
                 style: ButtonStyle(
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
