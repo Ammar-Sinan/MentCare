@@ -5,20 +5,25 @@ import 'package:mentcare/screens/add_card_screen.dart';
 class AddPaymentScreen extends StatelessWidget {
   const AddPaymentScreen({Key? key}) : super(key: key);
 
+  static const String routeName = 'addPaymentScreen';
+
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+
     ScreenUtil.init(
         BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height,
-            maxWidth: MediaQuery.of(context).size.width),
-        designSize: const Size(360, 580),
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(width, height),
         context: context,
         minTextAdapt: true,
         orientation: Orientation.portrait);
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Add payment method'),
+          title: const Text('Add payment method'),
           foregroundColor: Colors.black,
           backgroundColor: Colors.white,
           centerTitle: true,
@@ -31,15 +36,15 @@ class AddPaymentScreen extends StatelessWidget {
             children: [
               TextButton.icon(
                   onPressed: () => Navigator.of(context).pushNamed(AddCard.routeName),
-                  icon: Icon(Icons.credit_card),
-                  label: Text('Add payment method'),
+                  icon: const Icon(Icons.credit_card),
+                  label: const Text('Add payment method'),
                   style: ButtonStyle(
                       foregroundColor:
                           MaterialStateProperty.all(Colors.black))),
               TextButton.icon(
                 onPressed: () {},
-                icon: Icon(Icons.edit),
-                label: Text('Edit payment method'),
+                icon: const Icon(Icons.edit),
+                label: const Text('Edit payment method'),
                 style: ButtonStyle(
                     foregroundColor: MaterialStateProperty.all(Colors.black)),
               ),

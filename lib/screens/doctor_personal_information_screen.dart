@@ -1,0 +1,120 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mentcare/providers/user_provider.dart';
+import 'package:provider/provider.dart';
+
+import '../widgets/settings_listtile.dart';
+
+class DoctorPersonalInformation extends StatefulWidget {
+  const DoctorPersonalInformation({Key? key}) : super(key: key);
+
+  static const routeName = '/doctor-personal-information';
+
+  @override
+  State createState() => DoctorPersonalInformationState();
+}
+
+class DoctorPersonalInformationState extends State<DoctorPersonalInformation> {
+  // ignore: prefer_typing_uninitialized_variables
+  late final user;
+  bool isLoading = false;
+
+  // ignore: prefer_final_fields
+  List<Map<String, dynamic>> _settingsList = [
+    {
+      'title': 'Name',
+      'icon': const Icon(Icons.account_circle_outlined),
+      'subTitle': '',
+      'fireBaseName': 'fullName'
+    },
+    {
+      'title': 'Phone Number',
+      'icon': const Icon(Icons.phone),
+      'subTitle': '',
+      'fireBaseName': 'phoneNumber'
+    },
+    {
+      'title': 'Email',
+      'icon': const Icon(Icons.email_outlined),
+      'subTitle': '',
+      'fireBaseName': 'email'
+    },
+    {
+      'title': 'Change Password',
+      'icon': const Icon(Icons.password_outlined),
+      'subTitle': '',
+      'fireBaseName': ''
+    },
+  ];
+
+  @override
+  void initState() {
+   // ToDo
+    // getUserData();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+
+    // ToDo
+    // getUserData();
+
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(width, height),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
+
+    return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 5,
+        title: Text(
+          'Settings',
+          style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+        ),
+      ),
+      body: Column(
+        children: [
+          SizedBox(
+            height: 32.h,
+          ),
+          const CircleAvatar(),
+          SizedBox(
+            height: 10.h,
+          ),
+          Expanded(
+              child: ListView.builder(
+            itemBuilder: (cnt, index) => SettingsListTile(
+              icon: _settingsList[index]['icon'],
+              title: _settingsList[index]['title'],
+              subtitle: _settingsList[index]['subTitle'],
+              fireBaseName: _settingsList[index]['fireBaseName'],
+            ),
+            itemCount: 4,
+          )),
+        ],
+      ),
+    );
+  } // build
+
+  // ToDo
+  void getUserData() async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    await userProvider.fetchUserData();
+    dynamic user = userProvider.userData;
+    _settingsList[0]['subTitle'] = user['fullName'];
+    _settingsList[1]['subTitle'] = user['phoneNumber'];
+    _settingsList[2]['subTitle'] = user['email'];
+
+    setState(() {});
+  }
+}

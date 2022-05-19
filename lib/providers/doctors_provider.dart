@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'doctor_card_data.dart';
@@ -66,4 +67,10 @@ class DoctorsDataProvider with ChangeNotifier {
     notifyListeners();
 
   }
+  // ToDo
+  // Future<String> fetchUserName() async {
+  //   String uid = FirebaseAuth.instance.currentUser!.uid;
+  //   dynamic doctor = await FirebaseFirestore.instance.collection('doctors').doc(uid).get();
+  //   return doctor['name'];
+  // }
 }

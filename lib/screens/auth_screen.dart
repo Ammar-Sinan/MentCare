@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mentcare/screens/add_payment_screen.dart';
-import 'package:mentcare/screens/home_screen.dart';
+import 'package:mentcare/providers/user_provider.dart';
+import 'package:mentcare/screens/doctor_dashboard.dart';
+import 'package:mentcare/screens/loading.dart';
 import 'package:mentcare/screens/tabs_screen.dart';
 import 'package:mentcare/widgets/auth_form.dart';
+import 'package:provider/provider.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -21,7 +23,6 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
@@ -35,12 +36,11 @@ class _AuthScreenState extends State<AuthScreen> {
         orientation: Orientation.portrait);
 
     return Scaffold(
-      body:
-      StreamBuilder(
+      body: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (con, snapshot) {
           if (snapshot.hasData) {
-            return TabsScreen();
+            return Loading();
           } else {
             return GestureDetector(
               onTap: () => FocusScope.of(context).unfocus(),
@@ -85,7 +85,7 @@ class _AuthScreenState extends State<AuthScreen> {
             FirebaseFirestore.instance.collection("users");
         collectionReference
             .doc(authResult.user!.uid)
-            .set({'fullName': fullName, 'email': email});
+            .set({'fullName': fullName, 'email': email, 'phoneNumber': ''});
       }
     } on FirebaseAuthException catch (msg) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -102,4 +102,6 @@ class _AuthScreenState extends State<AuthScreen> {
       });
     }
   }
+
+
 }
