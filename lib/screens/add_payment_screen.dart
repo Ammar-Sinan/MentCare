@@ -27,7 +27,6 @@ class AddPaymentScreen extends StatelessWidget {
           foregroundColor: Colors.black,
           backgroundColor: Colors.white,
           centerTitle: true,
-
         ),
         body: Container(
           margin: EdgeInsets.symmetric(vertical: 25.h, horizontal: 10.w),

@@ -10,13 +10,12 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
-
     return Column(
       children: [
-        Align(child:
-        TextButton(onPressed: () {}, child: Text('skip')) ,
-        alignment: Alignment.centerRight,),
-
+        Align(
+          child: TextButton(onPressed: () {}, child: const Text('skip')),
+          alignment: Alignment.centerRight,
+        ),
       ],
     );
   }

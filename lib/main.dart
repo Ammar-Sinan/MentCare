@@ -10,7 +10,10 @@ import 'package:mentcare/screens/pre_auth_screen.dart';
 import 'package:provider/provider.dart';
 
 import './providers/doctors_provider.dart';
+import './providers/login_prov.dart';
+import './screens/booking_screen.dart';
 import './screens/doctors_detail_screen.dart';
+import './screens/personal_information_screen.dart';
 import './screens/previous_sessions_screen.dart';
 import './screens/tabs_screen.dart';
 import './screens/user_account_screen.dart';
@@ -22,14 +25,13 @@ void main() async {
   await Firebase.initializeApp();
   runApp(ChangeNotifierProvider(
     create: (_) => LoginProv(),
-    child: MyApp(),
+    child: const MyApp(),
   ));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -39,7 +41,7 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<DoctorsDataProvider>(
           create: (BuildContext context) => DoctorsDataProvider(),
-        ),
+        )
       ],
       child: MaterialApp(
         title: 'MentCare',
@@ -56,8 +58,6 @@ class MyApp extends StatelessWidget {
               color: Color.fromRGBO(0, 31, 54, 100),
               fontFamily: 'Poppins',
               fontSize: 24.2,
-              //fontFamily: 'Poppins-Medium',
-              // fontFamily: 'assets/fonts/Poppins-Medium.ttf',
             ),
           ),
           fontFamily: 'Poppins',
@@ -91,13 +91,15 @@ class MyApp extends StatelessWidget {
           TabsScreen.routeName: (ctx) => const TabsScreen(),
           UserAccountScreen.routeName: (ctx) => const UserAccountScreen(),
           PersonalInformation.routeName: (ctx) => const PersonalInformation(),
-          DoctorDetails.routeName: (ctx) => const DoctorDetails(),
+          DoctorDetails.routeName: (ctx) => DoctorDetails(),
           PreviousSessions.routeName: (ctx) => PreviousSessions(),
           AuthScreen.routeName: (cnt) => const AuthScreen(),
           PreAuthScreen.routeName: (cnt) => const PreAuthScreen(),
           AddCard.routeName: (c) => const AddCard(),
           CardAuth.routeName: (c) => const CardAuth(),
-          DoctorPersonalInformation.routeName: (c) => const DoctorPersonalInformation()
+          DoctorPersonalInformation.routeName: (c) =>
+              const DoctorPersonalInformation(),
+          BookingScreen.routeName: (ctx) => BookingScreen(),
         },
       ),
     );

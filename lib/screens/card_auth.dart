@@ -42,7 +42,7 @@ class CardAuth extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15)),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                children:  [
                   Icon(
                     Icons.check_circle,
                     color: Colors.green,
@@ -55,9 +55,10 @@ class CardAuth extends StatelessWidget {
                 ],
               ),
             ),
+
              SizedBox(
               height: 40.h,
-            ),
+             ),
             SizedBox(
               height: 50,
               child: ElevatedButton(

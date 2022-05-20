@@ -95,6 +95,7 @@ class UserAccountScreenState extends State<UserAccountScreen> {
               itemCount: 5,
             ),
           ),
+
           Align(
             child: ListTile(
               title: const Text("Log out"),
@@ -104,8 +105,8 @@ class UserAccountScreenState extends State<UserAccountScreen> {
               ),
               onTap: () => FirebaseAuth.instance.signOut(),
             ),
-            alignment: Alignment.topRight,
-          )
+            alignment: Alignment.topRight, )
+
         ],
       ),
     );

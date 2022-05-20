@@ -40,7 +40,7 @@ class _LoadingState extends State<Loading> {
     final uid =
         await Provider.of<UserProvider>(context, listen: false).fetchUserId();
     final df =
-        await FirebaseFirestore.instance.collection('perm').doc(uid).get();
+        await FirebaseFirestore.instance.collection('doctors').doc(uid).get();
     if (df.exists) {
       isExist = true;
     } else {

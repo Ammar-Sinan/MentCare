@@ -49,14 +49,17 @@ class HomeScreenState extends State<HomeScreen> {
         padding:
             EdgeInsets.only(top: 8.h, bottom: 16.h, left: 16.w, right: 16.w),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             FittedBox(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     'Need someone to talk to?',
-                    style: Theme.of(context).textTheme.bodyText2,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2!
+                        .copyWith(fontSize: 16),
                   ),
                   IconButton(
                     onPressed: () {},
@@ -68,7 +71,7 @@ class HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Text(
-              'We have more than 300 registered therapist to help',
+              'We have more than 300 registered\ntherapist to help',
               style: Theme.of(context).textTheme.bodyText1,
             ),
             Container(
@@ -79,7 +82,6 @@ class HomeScreenState extends State<HomeScreen> {
                   Expanded(
                     child: TextField(
                       decoration: InputDecoration(
-                        //enabledBorder: InputBorder.none,
                         contentPadding: const EdgeInsets.all(6),
                         border: OutlineInputBorder(
                           borderSide: const BorderSide(
@@ -95,7 +97,7 @@ class HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       controller: _nameController,
-                      onSubmitted: (_) async {
+                      onSubmitted: (_) {
                         drData.searchByDoctorName(_nameController.text);
                       },
                     ),
@@ -160,5 +162,3 @@ class HomeScreenState extends State<HomeScreen> {
     });
   }
 }
-
-
