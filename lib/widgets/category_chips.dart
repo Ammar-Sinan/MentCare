@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CategoryChips extends StatelessWidget {
-  CategoryChips(this._setFilter, this._setIsFilter, {Key? key}) : super(key: key);
+  CategoryChips(this._setFilter, this._setIsFilter, {Key? key})
+      : super(key: key);
   final Function _setFilter;
   final Function _setIsFilter;
 
@@ -13,11 +14,10 @@ class CategoryChips extends StatelessWidget {
     'Cognitive',
     'Couples',
     'Family counselor'
-  ]; // maybe use map in the list <MAP<STRING STRING>> with id to show the chosen chip
+  ];
 
   @override
   Widget build(BuildContext context) {
-
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     ScreenUtil.init(
@@ -28,7 +28,6 @@ class CategoryChips extends StatelessWidget {
         context: context,
         minTextAdapt: true,
         orientation: Orientation.portrait);
-
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,

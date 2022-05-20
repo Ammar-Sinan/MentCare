@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mentcare/models/booked_sessions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/doctors_provider.dart';
+
+enum sessionLocation { online, clinic }
 
 class BookingScreen extends StatefulWidget {
   //const BookingScreen({Key? key}) : super(key: key);
@@ -16,8 +21,9 @@ class _BookingScreenState extends State<BookingScreen> {
   TextEditingController name = TextEditingController();
   TextEditingController phoneNumber = TextEditingController();
   TextEditingController details = TextEditingController();
-  bool checkOnline = false;
-  bool checkClinic = false;
+
+  bool isOnlinePressed = false;
+  bool isClinicPressed = false;
 
   InputDecoration textFieldDecoration(BuildContext context, String label) {
     return InputDecoration(
@@ -56,44 +62,31 @@ class _BookingScreenState extends State<BookingScreen> {
     super.dispose();
   }
 
-  Row buildCheckBoxes(String label, bool checkBoxValue) {
-    return Row(
-      children: [
-        Text(label),
-        Checkbox(
-          value: checkBoxValue,
-          onChanged: (value) {
-            setState(() {
-              checkBoxValue = value!;
-            });
-          },
-        )
-      ],
-    );
-  }
-
   Future<void> bookSession(BuildContext context) async {
-    String location;
-    var sessionDate = ModalRoute.of(context)!.settings.arguments as List;
+    //var sessionDate = ModalRoute.of(context)!.settings.arguments as List;
 
     final userId = FirebaseAuth.instance.currentUser!.uid;
     if (name.text.isEmpty) {
       print('Please provide your name');
     } else {
-      bool sessionLocation = checkOnline ? checkOnline : checkClinic;
-      var sessionData = BookedSessions(
-          id: sessionDate[1],
-          userName: name.text,
-          userId: userId,
-          drName: 'drName',
-          location: sessionLocation,
-          time: sessionDate[0]);
+      BookedSessions bookedSessionInfo = BookedSessions(
+        id: 'sessionDate[1]',
+        userName: name.text,
+        userId: userId,
+        drName: 'drName',
+        isOnline: isOnlinePressed,
+        isClinic: isClinicPressed,
+        time: DateTime.now(),
+        details: details.text,
+      );
+      Provider.of<DoctorsDataProvider>(context, listen: false)
+          .bookSession(bookedSessionInfo);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    /// Getting the session data [id, dateAndTime , locstion] in a list
+    /// Getting the session data [id, dateAndTime , location] in a list
     var sessionDates = ModalRoute.of(context)!.settings.arguments as List;
 
     final width = MediaQuery.of(context).size.width;
@@ -134,14 +127,16 @@ class _BookingScreenState extends State<BookingScreen> {
               SizedBox(height: 24.h),
               TextField(
                 controller: name,
-                onChanged: (value) => name.text = value,
+                onSubmitted: (value) => name.text = value,
                 textInputAction: TextInputAction.next,
                 decoration: textFieldDecoration(context, 'name'),
+                autofocus: true,
               ),
               SizedBox(height: 24.h),
               TextField(
                 controller: phoneNumber,
-                onChanged: (value) => phoneNumber.text = value,
+                keyboardType: TextInputType.number,
+                onSubmitted: (value) => phoneNumber.text = value,
                 textInputAction: TextInputAction.next,
                 decoration:
                     textFieldDecoration(context, 'phone number - optional'),
@@ -149,7 +144,7 @@ class _BookingScreenState extends State<BookingScreen> {
               SizedBox(height: 24.h),
               TextField(
                 controller: details,
-                onChanged: (value) => phoneNumber.text = value,
+                onSubmitted: (value) => details.text = value,
                 textInputAction: TextInputAction.next,
                 decoration: textFieldDecoration(context,
                     'Anything you want your therapist\nto know before your next session ?'),
@@ -163,25 +158,42 @@ class _BookingScreenState extends State<BookingScreen> {
                 style: TextStyle(fontSize: 15, color: Colors.grey),
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  const Text('Online'),
-                  Checkbox(
-                    value: checkOnline,
-                    onChanged: (value) {
+                  /// Online Button
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        primary: isOnlinePressed
+                            ? const Color(0xFFECECEC)
+                            : Colors.white),
+                    onPressed: () {
                       setState(() {
-                        checkOnline = value!;
+                        isOnlinePressed = !isOnlinePressed;
                       });
                     },
+                    child: Text(
+                      'Online',
+                      style: TextStyle(color: Theme.of(context).primaryColor),
+                    ),
                   ),
-                  SizedBox(width: 40.w),
-                  const Text('Clinic'),
-                  Checkbox(
-                    value: checkClinic,
-                    onChanged: (value) {
+
+                  /// Clinic Button
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        primary: isClinicPressed
+                            ? const Color(0xFFECECEC)
+                            : Colors.white),
+                    onPressed: () {
                       setState(() {
-                        checkClinic = value!;
+                        isClinicPressed = !isClinicPressed;
                       });
                     },
+                    child: Text(
+                      'Clinic',
+                      style: TextStyle(color: Theme.of(context).primaryColor),
+                    ),
                   ),
                 ],
               ),
@@ -209,8 +221,6 @@ class _BookingScreenState extends State<BookingScreen> {
                 child: ElevatedButton(
                   child: const Text('Finish Booking'),
                   onPressed: () {
-                    /// a method that will store the session in the
-                    /// sessions collection in Firestore
                     bookSession(context);
                   },
                 ),
