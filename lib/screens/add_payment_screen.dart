@@ -5,13 +5,18 @@ import 'package:mentcare/screens/add_card_screen.dart';
 class AddPaymentScreen extends StatelessWidget {
   const AddPaymentScreen({Key? key}) : super(key: key);
 
+  static const String routeName = 'addPaymentScreen';
+
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+
     ScreenUtil.init(
         BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height,
-            maxWidth: MediaQuery.of(context).size.width),
-        designSize: const Size(360, 580),
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(width, height),
         context: context,
         minTextAdapt: true,
         orientation: Orientation.portrait);
@@ -29,8 +34,7 @@ class AddPaymentScreen extends StatelessWidget {
             //crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextButton.icon(
-                  onPressed: () =>
-                      Navigator.of(context).pushNamed(AddCard.routeName),
+                  onPressed: () => Navigator.of(context).pushNamed(AddCard.routeName),
                   icon: const Icon(Icons.credit_card),
                   label: const Text('Add payment method'),
                   style: ButtonStyle(

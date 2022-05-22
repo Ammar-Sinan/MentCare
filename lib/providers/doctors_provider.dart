@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:mentcare/models/booked_sessions.dart';
 import 'package:mentcare/models/session_model.dart';
 
@@ -112,6 +112,13 @@ class DoctorsDataProvider with ChangeNotifier {
     });
   }
 
+  Future<String> fetchDoctorName() async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    dynamic doctor =
+        await FirebaseFirestore.instance.collection('doctors').doc(uid).get();
+    return doctor['name'];
+  }
+
   Future<void> fetchUserSaved() async {
     final currUserId = FirebaseAuth.instance.currentUser!.uid;
     final userDoc = await FirebaseFirestore.instance
@@ -156,7 +163,6 @@ class DoctorsDataProvider with ChangeNotifier {
         .collection('doctors')
         .doc('4EF9gpHqfjbOMTDmF4aFuKcHZax1')
         .collection('sessions')
-        // .where('isBooked', isEqualTo: false)
         .get();
 
     // DocumentReference docRefrence = FirebaseFirestore.instance

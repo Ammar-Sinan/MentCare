@@ -17,17 +17,13 @@ class _SavedDoctorsScreenState extends State<SavedDoctorsScreen> {
 
   @override
   void initState() {
-    _isLoading = true;
-    Provider.of<DoctorsDataProvider>(context, listen: false).fetchUserSaved();
-    setState(() {
-      _isLoading = false;
-    });
-
+    fetch();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+
     final savedList =
         Provider.of<DoctorsDataProvider>(context, listen: false).savedList;
     return Scaffold(
@@ -35,7 +31,7 @@ class _SavedDoctorsScreenState extends State<SavedDoctorsScreen> {
         title: const Text('Saved specialists'),
       ),
       body: _isLoading
-          ? const CircularProgressIndicator()
+          ? const Center(child: CircularProgressIndicator() )
           : Padding(
               padding: const EdgeInsets.all(16),
               child: GridView.builder(
@@ -54,5 +50,16 @@ class _SavedDoctorsScreenState extends State<SavedDoctorsScreen> {
               ),
             ),
     );
+  }
+  void fetch ()async
+  {
+    setState(() {
+      _isLoading = true;
+    });
+
+    await Provider.of<DoctorsDataProvider>(context, listen: false).fetchUserSaved();
+    setState(() {
+      _isLoading = false;
+    });
   }
 }

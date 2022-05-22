@@ -7,16 +7,15 @@ import 'package:intl/intl.dart';
 import '../providers/doctors_provider.dart';
 
 class SessionsButtonsGrid extends StatefulWidget {
-  String? drId;
-
-  SessionsButtonsGrid({this.drId});
+  // String drId;
+  // SessionsButtonsGrid({required this.drId});
 
   @override
   State<SessionsButtonsGrid> createState() => _SessionsButtonsGridState();
 }
 
 class _SessionsButtonsGridState extends State<SessionsButtonsGrid> {
-  final DateFormat formatter = DateFormat('dd/MM/yyyy, hh:mm');
+  final DateFormat formatter = DateFormat('dd/MM, hh:mm');
 
   @override
   void initState() {
@@ -40,6 +39,7 @@ class _SessionsButtonsGridState extends State<SessionsButtonsGrid> {
 
     final sessionsDates =
         Provider.of<DoctorsDataProvider>(context, listen: false).sessions;
+
     return GridView.builder(
       padding: const EdgeInsets.all(8),
       scrollDirection: Axis.vertical,

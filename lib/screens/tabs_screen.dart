@@ -22,7 +22,7 @@ class _TabsScreenState extends State<TabsScreen> {
   void initState() {
     _pages = [
       {
-        'page': const HomeScreen(),
+        'page': HomeScreen(),
       },
       {
         'page': const SavedDoctorsScreen(),

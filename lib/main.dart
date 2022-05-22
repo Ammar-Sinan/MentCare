@@ -1,21 +1,24 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:mentcare/providers/user_provider.dart';
 import 'package:mentcare/screens/add_card_screen.dart';
 import 'package:mentcare/screens/auth_screen.dart';
 import 'package:mentcare/screens/card_auth.dart';
+import 'package:mentcare/screens/doctor_personal_information_screen.dart';
 import 'package:mentcare/screens/pre_auth_screen.dart';
 import 'package:provider/provider.dart';
 
 import './providers/doctors_provider.dart';
 import './providers/login_prov.dart';
-
-import './screens/tabs_screen.dart';
-import './screens/user_account_screen.dart';
+import './screens/booking_screen.dart';
 import './screens/doctors_detail_screen.dart';
 import './screens/personal_information_screen.dart';
 import './screens/previous_sessions_screen.dart';
-import './screens/booking_screen.dart';
+import './screens/tabs_screen.dart';
+import './screens/user_account_screen.dart';
+import 'providers/login_prov.dart';
+import 'screens/personal_information_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,9 +36,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (ctx) => DoctorsDataProvider(),
+        ChangeNotifierProvider<UserProvider>(
+          create: (BuildContext context) => UserProvider(),
         ),
+        ChangeNotifierProvider<DoctorsDataProvider>(
+          create: (BuildContext context) => DoctorsDataProvider(),
+        )
       ],
       child: MaterialApp(
         title: 'MentCare',
@@ -89,8 +95,10 @@ class MyApp extends StatelessWidget {
           PreviousSessions.routeName: (ctx) => PreviousSessions(),
           AuthScreen.routeName: (cnt) => const AuthScreen(),
           PreAuthScreen.routeName: (cnt) => const PreAuthScreen(),
-          AddCard.routeName: (c) => AddCard(),
+          AddCard.routeName: (c) => const AddCard(),
           CardAuth.routeName: (c) => const CardAuth(),
+          DoctorPersonalInformation.routeName: (c) =>
+              const DoctorPersonalInformation(),
           BookingScreen.routeName: (ctx) => BookingScreen(),
         },
       ),

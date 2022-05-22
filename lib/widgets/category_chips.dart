@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CategoryChips extends StatelessWidget {
-  CategoryChips(this._setFilter, this._setIsFilter, {Key? key})
+class CategoryChips extends StatefulWidget {
+  const CategoryChips(this._setFilter, this._setIsFilter, {Key? key})
       : super(key: key);
   final Function _setFilter;
   final Function _setIsFilter;
 
+  @override
+  State createState() {
+    return CategotyChopsState();
+  }
+}
+
+class CategotyChopsState extends State<CategoryChips> {
   final List<String> categories = [
     'Show all',
     'Behavioral',
@@ -20,6 +27,7 @@ class CategoryChips extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+
     ScreenUtil.init(
         BoxConstraints(
             maxWidth: MediaQuery.of(context).size.width,
@@ -52,10 +60,10 @@ class CategoryChips extends StatelessWidget {
               ),
               onPressed: () {
                 if (category == "Show all") {
-                  _setIsFilter(false);
+                  widget._setIsFilter(false);
                 } else {
-                  _setFilter(category.toLowerCase());
-                  _setIsFilter(true);
+                  widget._setFilter(category.toLowerCase());
+                  widget._setIsFilter(true);
                 }
               },
             ),

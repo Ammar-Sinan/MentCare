@@ -155,7 +155,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     'available sessions',
                     style: textStyle,
                   ),
-                  BuildSessionDates(doctorId),
+                  BuildSessionDates(),
                   SizedBox(height: 16.h),
                   Text(
                     'specialised in',
@@ -223,16 +223,14 @@ class _DoctorDetailsState extends State<DoctorDetails> {
 
 class BuildSessionDates extends StatefulWidget {
   //const BuildSessionDates({Key? key}) : super(key: key);
-  String id;
-  BuildSessionDates(this.id);
+  // String id;
+  // BuildSessionDates(this.id);
 
   @override
   State<BuildSessionDates> createState() => _BuildSessionDatesState();
 }
 
 class _BuildSessionDatesState extends State<BuildSessionDates> {
-  bool _customTileExpanded = false;
-
   @override
   Widget build(BuildContext context) {
     //final doctorId = ModalRoute.of(context)!.settings.arguments as String;
@@ -246,16 +244,14 @@ class _BuildSessionDatesState extends State<BuildSessionDates> {
         'Sessions',
         style: TextStyle(fontSize: 16),
       ),
-      trailing: Icon(_customTileExpanded
-          ? Icons.arrow_drop_down_circle
-          : Icons.arrow_drop_down),
-      onExpansionChanged: (expanded) {
-        setState(() {
-          _customTileExpanded = expanded;
-        });
+      trailing: const Icon(Icons.arrow_drop_down_circle),
+      onExpansionChanged: (_) {
+        // setState(() {
+        //   _customTileExpanded = expanded;
+        // });
       },
       children: [
-        SessionsButtonsGrid(drId: widget.id),
+        SessionsButtonsGrid(),
       ],
     );
   }
