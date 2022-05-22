@@ -1,31 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:mentcare/screens/booking_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
 import '../providers/doctors_provider.dart';
 
-import '../screens/booking_screen.dart';
-
 class SessionsButtonsGrid extends StatefulWidget {
-  String? drId;
-  SessionsButtonsGrid({this.drId});
+  // String drId;
+  // SessionsButtonsGrid({required this.drId});
 
   @override
   State<SessionsButtonsGrid> createState() => _SessionsButtonsGridState();
 }
 
 class _SessionsButtonsGridState extends State<SessionsButtonsGrid> {
-  final DateFormat formatter = DateFormat('dd/MM/yyyy, hh:mm');
+  final DateFormat formatter = DateFormat('dd/MM, hh:mm');
 
   @override
   void initState() {
     Provider.of<DoctorsDataProvider>(context, listen: false).fetchSessions();
     super.initState();
   }
-
-  /// Send the session data you get from here to the Booking.dart screen
-  /// And use it there in the form to save the session
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +37,9 @@ class _SessionsButtonsGridState extends State<SessionsButtonsGrid> {
         minTextAdapt: true,
         orientation: Orientation.portrait);
 
-    final sessionsDates = Provider.of<DoctorsDataProvider>(context).sessions;
+    final sessionsDates =
+        Provider.of<DoctorsDataProvider>(context, listen: false).sessions;
+
     return GridView.builder(
       padding: const EdgeInsets.all(8),
       scrollDirection: Axis.vertical,
@@ -60,11 +58,12 @@ class _SessionsButtonsGridState extends State<SessionsButtonsGrid> {
                   .pushNamed(BookingScreen.routeName, arguments: [
                 sessionsDates[index].dateAndTime,
                 sessionsDates[index].id,
-                sessionsDates[index].location,
               ]);
             },
             child: FittedBox(
               fit: BoxFit.contain,
+
+              /// Session Text
               child: Text(
                 formatter.format(sessionsDates[index].dateAndTime),
                 style: const TextStyle(

@@ -35,8 +35,11 @@ class _DoctorDetailsState extends State<DoctorDetails> {
         actions: [
           Builder(builder: (ctx) {
             return IconButton(
-              onPressed: () {
-                Provider.of<DoctorsDataProvider>(context, listen: false)
+              onPressed: () async {
+                // setState(() {
+                //   isSaved = !isSaved;
+                // });
+                await Provider.of<DoctorsDataProvider>(context, listen: false)
                     .toggleSaveStatus(doctorId);
               },
               icon: Icon(isSaved ? Icons.turned_in : Icons.turned_in_not),
@@ -152,7 +155,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     'available sessions',
                     style: textStyle,
                   ),
-                  const BuildSessionDates(),
+                  BuildSessionDates(),
                   SizedBox(height: 16.h),
                   Text(
                     'specialised in',
@@ -219,19 +222,18 @@ class _DoctorDetailsState extends State<DoctorDetails> {
 /// Build / Booking - Location Buttons
 
 class BuildSessionDates extends StatefulWidget {
-  const BuildSessionDates({Key? key}) : super(key: key);
+  //const BuildSessionDates({Key? key}) : super(key: key);
+  // String id;
+  // BuildSessionDates(this.id);
 
   @override
   State<BuildSessionDates> createState() => _BuildSessionDatesState();
 }
 
 class _BuildSessionDatesState extends State<BuildSessionDates> {
-  bool _customTileExpanded = false;
-
   @override
   Widget build(BuildContext context) {
-    final doctorId = ModalRoute.of(context)!.settings.arguments as String;
-    //final sessionsDates = Provider.of<DoctorsDataProvider>(context).sessions;
+    //final doctorId = ModalRoute.of(context)!.settings.arguments as String;
 
     return ExpansionTile(
       backgroundColor: const Color.fromARGB(255, 244, 244, 244),
@@ -242,16 +244,14 @@ class _BuildSessionDatesState extends State<BuildSessionDates> {
         'Sessions',
         style: TextStyle(fontSize: 16),
       ),
-      trailing: Icon(_customTileExpanded
-          ? Icons.arrow_drop_down_circle
-          : Icons.arrow_drop_down),
-      onExpansionChanged: (expanded) {
-        setState(() {
-          _customTileExpanded = expanded;
-        });
+      trailing: const Icon(Icons.arrow_drop_down_circle),
+      onExpansionChanged: (_) {
+        // setState(() {
+        //   _customTileExpanded = expanded;
+        // });
       },
       children: [
-        SessionsButtonsGrid(drId: doctorId),
+        SessionsButtonsGrid(),
       ],
     );
   }

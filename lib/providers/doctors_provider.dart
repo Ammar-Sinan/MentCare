@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mentcare/models/booked_sessions.dart';
 import 'package:mentcare/models/session_model.dart';
 
 import '../providers/doctor_model.dart';
@@ -103,23 +103,21 @@ class DoctorsDataProvider with ChangeNotifier {
     final userDoc =
         FirebaseFirestore.instance.collection('users').doc(currUserId);
 
-    final doctorDoc = FirebaseFirestore.instance.collection('doctors').doc();
-
     /// Creating a list here only because .arrayUnion() takes a List not a
     /// string and the doctorId by itself is a String
-    List test = [doctorId];
+    List savedDoctors = [doctorId];
+
     await userDoc.update({
-      'savedDoctors': FieldValue.arrayUnion(test),
+      'savedDoctors': FieldValue.arrayUnion(savedDoctors),
     });
   }
 
-
   Future<String> fetchDoctorName() async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    dynamic doctor = await FirebaseFirestore.instance.collection('doctors').doc(uid).get();
+    dynamic doctor =
+        await FirebaseFirestore.instance.collection('doctors').doc(uid).get();
     return doctor['name'];
   }
-
 
   Future<void> fetchUserSaved() async {
     final currUserId = FirebaseAuth.instance.currentUser!.uid;
@@ -163,7 +161,7 @@ class DoctorsDataProvider with ChangeNotifier {
   Future<void> fetchSessions() async {
     final sessions = await FirebaseFirestore.instance
         .collection('doctors')
-        .doc('XeTEDjSuQBEj6T0cT65s')
+        .doc('4EF9gpHqfjbOMTDmF4aFuKcHZax1')
         .collection('sessions')
         .get();
 
@@ -185,7 +183,6 @@ class DoctorsDataProvider with ChangeNotifier {
         SessionData(
           id: element['id'],
           dateAndTime: element['time'].toDate(),
-          location: element['location'],
         ),
       );
     }
@@ -194,8 +191,26 @@ class DoctorsDataProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> bookSession() async {}
+  Future<void> bookSession(BookedSessions sessionInfo) async {
+    var bookedSessionInfo = {
+      'id': sessionInfo.id,
+      'drName': sessionInfo.drName,
+      'userId': sessionInfo.userId,
+      'userName': sessionInfo.userName,
+      'isOnline': sessionInfo.isOnline,
+      'isClinic': sessionInfo.isClinic,
+      'time': sessionInfo.time,
+      'details': sessionInfo.details,
+    };
+    await FirebaseFirestore.instance
+        .collection('bookedSessions')
+        .add(bookedSessionInfo);
 
+    // await FirebaseFirestore.instance
+    //     .collection('doctors')
+    //     .doc('4EF9gpHqfjbOMTDmF4aFuKcHZax1')
+    //     .update({'isBooked': true});
+  }
 }
 
 

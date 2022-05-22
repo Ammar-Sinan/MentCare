@@ -1,11 +1,9 @@
 class SessionData {
-  String id;
-  DateTime dateAndTime;
-  String location;
+  final String id;
+  final DateTime dateAndTime;
 
   SessionData({
     required this.id,
     required this.dateAndTime,
-    required this.location,
   });
 }
