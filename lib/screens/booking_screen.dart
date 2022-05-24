@@ -81,29 +81,31 @@ class _BookingScreenState extends State<BookingScreen> {
         time: sessionDates[0],
         details: details.text,
       );
-      Provider.of<DoctorsDataProvider>(context, listen: false)
-          .bookSession(bookedSessionInfo)
-          .then(
-        (value) {
-          showDialog(
-              context: context,
-              builder: (ctx) {
-                return AlertDialog(
-                  content: Text(
-                    'A sessions has been booked\n at ${formatter.format(sessionDates[0])}',
+
+      try {
+        await Provider.of<DoctorsDataProvider>(context, listen: false)
+            .bookSession(bookedSessionInfo);
+        await showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (ctx) {
+              return AlertDialog(
+                content: Text(
+                  'A sessions has been booked\n at ${formatter.format(sessionDates[0])}',
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, TabsScreen.routeName);
+                    },
+                    child: const Text('ok'),
                   ),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, TabsScreen.routeName);
-                      },
-                      child: const Text('ok'),
-                    ),
-                  ],
-                );
-              });
-        },
-      );
+                ],
+              );
+            });
+      } catch (error) {
+        print('Error caught in widget.');
+      }
     }
   }
 
@@ -178,7 +180,7 @@ class _BookingScreenState extends State<BookingScreen> {
                 height: 16.h,
               ),
               const Text(
-                'where do you want\nto have the session :',
+                'where do you want to have\n the session :',
                 style: TextStyle(fontSize: 15, color: Colors.grey),
               ),
               Row(
@@ -193,7 +195,8 @@ class _BookingScreenState extends State<BookingScreen> {
                             : Colors.white),
                     onPressed: () {
                       setState(() {
-                        isOnlinePressed = isOnlinePressed;
+                        isOnlinePressed = !isOnlinePressed;
+                        isClinicPressed = false;
                       });
                     },
                     child: Text(
@@ -211,7 +214,8 @@ class _BookingScreenState extends State<BookingScreen> {
                             : Colors.white),
                     onPressed: () {
                       setState(() {
-                        isClinicPressed = isClinicPressed;
+                        isClinicPressed = !isClinicPressed;
+                        isOnlinePressed = false;
                       });
                     },
                     child: Text(

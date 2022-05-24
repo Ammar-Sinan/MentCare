@@ -13,6 +13,12 @@ class DoctorsDataProvider with ChangeNotifier {
 
   List<SessionData> _sessions = [];
 
+  List _savedDoctorsIds = [];
+
+  List get savedDoctorsIds {
+    return [..._savedDoctorsIds];
+  }
+
   List<DoctorData> get cardInfo {
     return [..._cardInfo];
   }
@@ -105,11 +111,25 @@ class DoctorsDataProvider with ChangeNotifier {
 
     /// Creating a list here only because .arrayUnion() takes a List not a
     /// string and the doctorId by itself is a String
-    List savedDoctors = [doctorId];
+    if (!_savedDoctorsIds.contains(doctorId)) {
+      try {
+        _savedDoctorsIds = [doctorId];
 
-    await userDoc.update({
-      'savedDoctors': FieldValue.arrayUnion(savedDoctors),
-    });
+        await userDoc.update({
+          'savedDoctors': FieldValue.arrayUnion(_savedDoctorsIds),
+        });
+      } catch (error) {
+        print('error');
+        rethrow;
+
+        /// handle that error in the widget
+      }
+    } else {
+      userDoc.update({
+        'savedDoctors': FieldValue.arrayRemove([doctorId])
+      });
+      _savedDoctorsIds.remove(doctorId);
+    }
   }
 
   Future<String> fetchDoctorName() async {
@@ -126,12 +146,14 @@ class DoctorsDataProvider with ChangeNotifier {
         .doc(currUserId)
         .get();
 
-    List savedDoctors = userDoc['savedDoctors'];
+    /// Storing the IDs of saved doctors in the list below
+    _savedDoctorsIds = userDoc['savedDoctors'];
+    notifyListeners();
 
     QuerySnapshot doctors;
     doctors = await FirebaseFirestore.instance
         .collection('doctors')
-        .where('id', whereIn: savedDoctors)
+        .where('id', whereIn: _savedDoctorsIds)
         .get();
 
     List getSavedDoctors = doctors.docs.map((element) {
@@ -192,19 +214,24 @@ class DoctorsDataProvider with ChangeNotifier {
   }
 
   Future<void> bookSession(BookedSessions sessionInfo) async {
-    var bookedSessionInfo = {
-      'id': sessionInfo.id,
-      'drName': sessionInfo.drName,
-      'userId': sessionInfo.userId,
-      'userName': sessionInfo.userName,
-      'isOnline': sessionInfo.isOnline,
-      'isClinic': sessionInfo.isClinic,
-      'time': sessionInfo.time,
-      'details': sessionInfo.details,
-    };
-    await FirebaseFirestore.instance
-        .collection('bookedSessions')
-        .add(bookedSessionInfo);
+    try {
+      var bookedSessionInfo = {
+        'id': sessionInfo.id,
+        'drName': sessionInfo.drName,
+        'userId': sessionInfo.userId,
+        'userName': sessionInfo.userName,
+        'isOnline': sessionInfo.isOnline,
+        'isClinic': sessionInfo.isClinic,
+        'time': sessionInfo.time,
+        'details': sessionInfo.details,
+      };
+      await FirebaseFirestore.instance
+          .collection('bookedSessions')
+          .add(bookedSessionInfo);
+    } catch (error) {
+      print(error);
+      rethrow;
+    }
 
     // await FirebaseFirestore.instance
     //     .collection('doctors')

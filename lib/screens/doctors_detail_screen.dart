@@ -19,6 +19,7 @@ class DoctorDetails extends StatefulWidget {
 class _DoctorDetailsState extends State<DoctorDetails> {
   Color iconColor = Colors.white;
   bool isSaved = false;
+  Icon? saveIcon;
 
   TextStyle textStyle =
       const TextStyle(fontSize: 19.2, fontWeight: FontWeight.w400);
@@ -28,6 +29,15 @@ class _DoctorDetailsState extends State<DoctorDetails> {
     final doctorId = ModalRoute.of(context)!.settings.arguments as String;
     final doctorData = Provider.of<DoctorsDataProvider>(context, listen: false)
         .findById(doctorId);
+    final savedDoctorsIds =
+        Provider.of<DoctorsDataProvider>(context, listen: false)
+            .savedDoctorsIds;
+
+    /// Looking into the Ids in savedDoctorIds List
+    /// if found will show saved icon
+    bool isStored = savedDoctorsIds.contains(doctorId);
+    Icon isSaved = Icon(isStored ? Icons.turned_in : Icons.turned_in_not);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 248, 248, 248),
@@ -36,13 +46,13 @@ class _DoctorDetailsState extends State<DoctorDetails> {
           Builder(builder: (ctx) {
             return IconButton(
               onPressed: () async {
-                // setState(() {
-                //   isSaved = !isSaved;
-                // });
+                setState(() {
+                  isStored = !isStored;
+                });
                 await Provider.of<DoctorsDataProvider>(context, listen: false)
                     .toggleSaveStatus(doctorId);
               },
-              icon: Icon(isSaved ? Icons.turned_in : Icons.turned_in_not),
+              icon: isSaved,
             );
           }),
         ],
@@ -155,7 +165,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     'available sessions',
                     style: textStyle,
                   ),
-                  BuildSessionDates(),
+                  BuildSessionDates(doctorId),
                   SizedBox(height: 16.h),
                   Text(
                     'specialised in',
@@ -223,8 +233,8 @@ class _DoctorDetailsState extends State<DoctorDetails> {
 
 class BuildSessionDates extends StatefulWidget {
   //const BuildSessionDates({Key? key}) : super(key: key);
-  // String id;
-  // BuildSessionDates(this.id);
+  String id;
+  BuildSessionDates(this.id);
 
   @override
   State<BuildSessionDates> createState() => _BuildSessionDatesState();
