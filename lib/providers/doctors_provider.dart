@@ -119,10 +119,8 @@ class DoctorsDataProvider with ChangeNotifier {
           'savedDoctors': FieldValue.arrayUnion(_savedDoctorsIds),
         });
       } catch (error) {
-        print('error');
         rethrow;
-
-        /// handle that error in the widget
+        // handle that error in the widget
       }
     } else {
       userDoc.update({
@@ -180,11 +178,12 @@ class DoctorsDataProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchSessions() async {
+  Future<void> fetchSessions(String id) async {
     final sessions = await FirebaseFirestore.instance
         .collection('doctors')
-        .doc('4EF9gpHqfjbOMTDmF4aFuKcHZax1')
+        .doc(id)
         .collection('sessions')
+        .where('isBooked', isEqualTo: false)
         .get();
 
     // DocumentReference docRefrence = FirebaseFirestore.instance
@@ -214,6 +213,13 @@ class DoctorsDataProvider with ChangeNotifier {
   }
 
   Future<void> bookSession(BookedSessions sessionInfo) async {
+    final sessionRef = FirebaseFirestore.instance
+        .collection('doctorss')
+        .doc(sessionInfo.drName)
+        .collection('sessions')
+        .doc(sessionInfo.id)
+        .update({'isBooked': true});
+
     try {
       var bookedSessionInfo = {
         'id': sessionInfo.id,
@@ -225,28 +231,23 @@ class DoctorsDataProvider with ChangeNotifier {
         'time': sessionInfo.time,
         'details': sessionInfo.details,
       };
+
+      /// Changing the isBooked field in sessions subcollection to true
+      /// to delete it from the avaliable sessions for the doctor
+      await FirebaseFirestore.instance
+          .collection('doctors')
+          .doc(sessionInfo.drName)
+          .collection('sessions')
+          .doc(sessionInfo.id)
+          .update({'isBooked': true});
+
       await FirebaseFirestore.instance
           .collection('bookedSessions')
           .add(bookedSessionInfo);
+
+      print('Made it to Drs Provider');
     } catch (error) {
-      print(error);
       rethrow;
     }
-
-    // await FirebaseFirestore.instance
-    //     .collection('doctors')
-    //     .doc('4EF9gpHqfjbOMTDmF4aFuKcHZax1')
-    //     .update({'isBooked': true});
   }
 }
-
-
-
-
-    // DocumentReference docRefrence =
-    //     FirebaseFirestore.instance.collection('doctors').doc(doctorId);
-
-    // DocumentSnapshot docSnap = await docRefrence.get();
-    // var docId = docSnap.reference.id;
-    // print(docRefrence);
-    // print(docId);

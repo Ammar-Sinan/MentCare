@@ -7,8 +7,8 @@ import 'package:intl/intl.dart';
 import '../providers/doctors_provider.dart';
 
 class SessionsButtonsGrid extends StatefulWidget {
-  // String drId;
-  // SessionsButtonsGrid({required this.drId});
+  String drId;
+  SessionsButtonsGrid({required this.drId});
 
   @override
   State<SessionsButtonsGrid> createState() => _SessionsButtonsGridState();
@@ -19,8 +19,14 @@ class _SessionsButtonsGridState extends State<SessionsButtonsGrid> {
 
   @override
   void initState() {
-    Provider.of<DoctorsDataProvider>(context, listen: false).fetchSessions();
+    print(widget.drId);
+    fetchSessions();
     super.initState();
+  }
+
+  Future<void> fetchSessions() async {
+    await Provider.of<DoctorsDataProvider>(context, listen: false)
+        .fetchSessions(widget.drId);
   }
 
   @override
@@ -54,11 +60,12 @@ class _SessionsButtonsGridState extends State<SessionsButtonsGrid> {
               shadowColor: const Color.fromRGBO(171, 130, 8, 0.20),
             ),
             onPressed: () {
-              Navigator.of(context)
-                  .pushNamed(BookingScreen.routeName, arguments: [
-                sessionsDates[index].dateAndTime,
-                sessionsDates[index].id,
-              ]);
+              Navigator.of(context).pushNamed(BookingScreen.routeName,
+                  arguments: [
+                    sessionsDates[index].dateAndTime,
+                    sessionsDates[index].id,
+                    widget.drId
+                  ]);
             },
             child: FittedBox(
               fit: BoxFit.contain,

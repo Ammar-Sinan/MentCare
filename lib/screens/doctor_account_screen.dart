@@ -1,9 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mentcare/providers/doctors_provider.dart';
-import 'package:mentcare/providers/user_provider.dart';
-import 'package:provider/provider.dart';
 
 import '../widgets/user_account_listtile.dart';
 

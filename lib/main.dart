@@ -86,7 +86,7 @@ class MyApp extends StatelessWidget {
             }
           },
         ),
-        initialRoute: '/tabs',
+        //  initialRoute: '/tabs',
         routes: {
           TabsScreen.routeName: (ctx) => const TabsScreen(),
           UserAccountScreen.routeName: (ctx) => const UserAccountScreen(),

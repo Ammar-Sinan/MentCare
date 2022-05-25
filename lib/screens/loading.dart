@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mentcare/screens/doctor_account_screen.dart';
-import 'package:mentcare/screens/doctor_dashboard.dart';
 import 'package:mentcare/screens/tabs_screen.dart';
 import 'package:provider/provider.dart';
 

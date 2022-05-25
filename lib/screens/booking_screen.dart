@@ -7,7 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/doctors_provider.dart';
-import '../screens/tabs_screen.dart';
 
 class BookingScreen extends StatefulWidget {
   //const BookingScreen({Key? key}) : super(key: key);
@@ -53,6 +52,7 @@ class _BookingScreenState extends State<BookingScreen> {
     name = TextEditingController();
     phoneNumber = TextEditingController();
     details = TextEditingController();
+
     super.initState();
   }
 
@@ -64,18 +64,46 @@ class _BookingScreenState extends State<BookingScreen> {
     super.dispose();
   }
 
+  Future<void> buildBookingDuialog(String title, String content) async {
+    await showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            title: Text(
+              title,
+              style: const TextStyle(color: Color.fromARGB(255, 117, 117, 117)),
+            ),
+            content: Text(content),
+            actions: [
+              ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                        Theme.of(context).primaryColor)),
+                child: const Text('Ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
+
   Future<void> bookSession(BuildContext context) async {
     var sessionDates = ModalRoute.of(context)!.settings.arguments as List;
 
     final userId = FirebaseAuth.instance.currentUser!.uid;
     if (name.text.isEmpty) {
-      print('Please provide your name');
+      buildBookingDuialog('please provide your name', '');
+    } else if (isOnlinePressed == false && isClinicPressed == false) {
+      buildBookingDuialog('choose a location', '');
     } else {
       BookedSessions bookedSessionInfo = BookedSessions(
-        id: sessionDates[1],
+        id: sessionDates[1], // Session ID
         userName: name.text,
         userId: userId,
-        drName: 'drName',
+        drName: sessionDates[2], // Doctor ID
         isOnline: isOnlinePressed,
         isClinic: isClinicPressed,
         time: sessionDates[0],
@@ -85,26 +113,10 @@ class _BookingScreenState extends State<BookingScreen> {
       try {
         await Provider.of<DoctorsDataProvider>(context, listen: false)
             .bookSession(bookedSessionInfo);
-        await showDialog(
-            barrierDismissible: false,
-            context: context,
-            builder: (ctx) {
-              return AlertDialog(
-                content: Text(
-                  'A sessions has been booked\n at ${formatter.format(sessionDates[0])}',
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, TabsScreen.routeName);
-                    },
-                    child: const Text('ok'),
-                  ),
-                ],
-              );
-            });
+        await buildBookingDuialog('A session has been successfully booked', '');
       } catch (error) {
-        print('Error caught in widget.');
+        await buildBookingDuialog('Could not complete your booking request!',
+            'please try again later');
       }
     }
   }

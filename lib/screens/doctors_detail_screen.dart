@@ -27,14 +27,12 @@ class _DoctorDetailsState extends State<DoctorDetails> {
   @override
   Widget build(BuildContext context) {
     final doctorId = ModalRoute.of(context)!.settings.arguments as String;
-    final doctorData = Provider.of<DoctorsDataProvider>(context, listen: false)
-        .findById(doctorId);
-    final savedDoctorsIds =
-        Provider.of<DoctorsDataProvider>(context, listen: false)
-            .savedDoctorsIds;
+    final doctorProvider =
+        Provider.of<DoctorsDataProvider>(context, listen: false);
+    final doctorData = doctorProvider.findById(doctorId);
+    final savedDoctorsIds = doctorProvider.savedDoctorsIds;
 
-    /// Looking into the Ids in savedDoctorIds List
-    /// if found will show saved icon
+    /// Check if Dr ID exist in savedDoctorsIds List to show the suitable Icon
     bool isStored = savedDoctorsIds.contains(doctorId);
     Icon isSaved = Icon(isStored ? Icons.turned_in : Icons.turned_in_not);
 
@@ -47,7 +45,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
             return IconButton(
               onPressed: () async {
                 setState(() {
-                  isStored = !isStored;
+                  isStored;
                 });
                 await Provider.of<DoctorsDataProvider>(context, listen: false)
                     .toggleSaveStatus(doctorId);
@@ -233,8 +231,8 @@ class _DoctorDetailsState extends State<DoctorDetails> {
 
 class BuildSessionDates extends StatefulWidget {
   //const BuildSessionDates({Key? key}) : super(key: key);
-  String id;
-  BuildSessionDates(this.id);
+  final String id;
+  const BuildSessionDates(this.id);
 
   @override
   State<BuildSessionDates> createState() => _BuildSessionDatesState();
@@ -243,8 +241,6 @@ class BuildSessionDates extends StatefulWidget {
 class _BuildSessionDatesState extends State<BuildSessionDates> {
   @override
   Widget build(BuildContext context) {
-    //final doctorId = ModalRoute.of(context)!.settings.arguments as String;
-
     return ExpansionTile(
       backgroundColor: const Color.fromARGB(255, 244, 244, 244),
       textColor: const Color.fromRGBO(22, 92, 144, 1),
@@ -261,7 +257,9 @@ class _BuildSessionDatesState extends State<BuildSessionDates> {
         // });
       },
       children: [
-        SessionsButtonsGrid(),
+        SessionsButtonsGrid(
+          drId: widget.id,
+        ),
       ],
     );
   }

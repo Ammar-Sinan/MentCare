@@ -14,10 +14,10 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
     return Scaffold(
       body: Center(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Text('doctor dashboard'),
+          const Text('doctor dashboard'),
           TextButton(
               onPressed: () => FirebaseAuth.instance.signOut(),
-              child: Text('log out'))
+              child: const Text('log out'))
         ]),
       ),
     );
