@@ -81,7 +81,7 @@ class DoctorAccountScreenState extends State<DoctorAccountScreen> {
                 style: Theme.of(context).textTheme.bodyText2),
           ),
           Expanded(
-            child: ListView.builder(
+            child:  ListView.builder(
               itemBuilder: (con, index) => SettingsListTile(
                   title: _settingsList[index]['title'],
                   icon: _settingsList[index]['icon'],
@@ -110,9 +110,9 @@ class DoctorAccountScreenState extends State<DoctorAccountScreen> {
     setState(() {
       isLoading = false;
     });
-    // ToDo
-    // name =
-    //     await Provider.of<DoctorsDataProvider>(context, listen: false).fetchUserName();
+
+    name =
+        await Provider.of<DoctorsDataProvider>(context, listen: false).fetchDoctorName();
     setState(() {
       isLoading = true;
     });

@@ -20,20 +20,21 @@ class UserProvider extends ChangeNotifier {
     return user['fullName'];
   }
 
-  Future<void> updateField(String userID,String fireBaseName,String input) async {
-    await FirebaseFirestore.instance.collection('users').doc(userID).update({
-      fireBaseName:input
-    });
+  Future<void> updateField(
+      String userID, String fireBaseName, String input, String userRole) async {
+    await FirebaseFirestore.instance
+        .collection(userRole)
+        .doc(userID)
+        .update({fireBaseName: input});
   }
 
-  Future<void> changePassword(String oldPassword,String newPassword)
-  async {
-
+  Future<void> changePassword(String oldPassword, String newPassword) async {
     String email = FirebaseAuth.instance.currentUser!.email.toString();
-    AuthCredential credential = EmailAuthProvider.credential(email: email, password: oldPassword);
-    await FirebaseAuth.instance.currentUser!.reauthenticateWithCredential(credential);
+    AuthCredential credential =
+        EmailAuthProvider.credential(email: email, password: oldPassword);
+    await FirebaseAuth.instance.currentUser!
+        .reauthenticateWithCredential(credential);
     await FirebaseAuth.instance.currentUser!.updatePassword(newPassword);
-
   }
 
   dynamic get userData => user;

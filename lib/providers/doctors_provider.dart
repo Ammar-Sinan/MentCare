@@ -196,6 +196,10 @@ class DoctorsDataProvider with ChangeNotifier {
 
   Future<void> bookSession() async {}
 
+  Future<dynamic> fetchDoctorData() async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    return await FirebaseFirestore.instance.collection('doctors').doc(uid).get();
+  }
 }
 
 

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -34,4 +35,5 @@ class DoctorData with ChangeNotifier {
     DocumentSnapshot docSnap = await docRefrence.get();
     var docId = docSnap.reference.id;
   }
+
 }
