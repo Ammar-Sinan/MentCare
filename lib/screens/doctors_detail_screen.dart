@@ -81,7 +81,10 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                                   width: 1.5.h),
                             ),
                             child: IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                // TODO
+                                // go to ...
+                              },
                               icon: const Icon(Icons.message_rounded),
                               color: Theme.of(context).primaryColor,
                               iconSize: 28,
