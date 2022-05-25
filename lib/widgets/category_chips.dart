@@ -13,8 +13,7 @@ class CategoryChips extends StatefulWidget {
   }
 }
 
-class CategotyChopsState extends State<CategoryChips>
-{
+class CategotyChopsState extends State<CategoryChips> {
   final List<String> categories = [
     'Show all',
     'Behavioral',
@@ -22,11 +21,10 @@ class CategotyChopsState extends State<CategoryChips>
     'Cognitive',
     'Couples',
     'Family counselor'
-  ]; // maybe use map in the list <MAP<STRING STRING>> with id to show the chosen chip
+  ];
 
   @override
   Widget build(BuildContext context) {
-
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
@@ -38,7 +36,6 @@ class CategotyChopsState extends State<CategoryChips>
         context: context,
         minTextAdapt: true,
         orientation: Orientation.portrait);
-
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -62,14 +59,12 @@ class CategotyChopsState extends State<CategoryChips>
                 ),
               ),
               onPressed: () {
-
                 if (category == "Show all") {
                   widget._setIsFilter(false);
                 } else {
                   widget._setFilter(category.toLowerCase());
                   widget._setIsFilter(true);
                 }
-
               },
             ),
           );

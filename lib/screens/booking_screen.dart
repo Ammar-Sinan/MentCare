@@ -2,6 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mentcare/models/booked_sessions.dart';
+import 'package:intl/intl.dart';
+
+import 'package:provider/provider.dart';
+
+import '../providers/doctors_provider.dart';
+import '../screens/tabs_screen.dart';
 
 class BookingScreen extends StatefulWidget {
   //const BookingScreen({Key? key}) : super(key: key);
@@ -16,8 +22,10 @@ class _BookingScreenState extends State<BookingScreen> {
   TextEditingController name = TextEditingController();
   TextEditingController phoneNumber = TextEditingController();
   TextEditingController details = TextEditingController();
-  bool checkOnline = false;
-  bool checkClinic = false;
+
+  bool isOnlinePressed = false;
+  bool isClinicPressed = false;
+  final DateFormat formatter = DateFormat('MM-dd, hh:mm');
 
   InputDecoration textFieldDecoration(BuildContext context, String label) {
     return InputDecoration(
@@ -56,45 +64,53 @@ class _BookingScreenState extends State<BookingScreen> {
     super.dispose();
   }
 
-  Row buildCheckBoxes(String label, bool checkBoxValue) {
-    return Row(
-      children: [
-        Text(label),
-        Checkbox(
-          value: checkBoxValue,
-          onChanged: (value) {
-            setState(() {
-              checkBoxValue = value!;
-            });
-          },
-        )
-      ],
-    );
-  }
-
   Future<void> bookSession(BuildContext context) async {
-    String location;
-    var sessionDate = ModalRoute.of(context)!.settings.arguments as List;
+    var sessionDates = ModalRoute.of(context)!.settings.arguments as List;
 
     final userId = FirebaseAuth.instance.currentUser!.uid;
     if (name.text.isEmpty) {
       print('Please provide your name');
     } else {
-      bool sessionLocation = checkOnline ? checkOnline : checkClinic;
-      var sessionData = BookedSessions(
-          id: sessionDate[1],
-          userName: name.text,
-          userId: userId,
-          drName: 'drName',
-          location: sessionLocation,
-          time: sessionDate[0]);
+      BookedSessions bookedSessionInfo = BookedSessions(
+        id: sessionDates[1],
+        userName: name.text,
+        userId: userId,
+        drName: 'drName',
+        isOnline: isOnlinePressed,
+        isClinic: isClinicPressed,
+        time: sessionDates[0],
+        details: details.text,
+      );
+      Provider.of<DoctorsDataProvider>(context, listen: false)
+          .bookSession(bookedSessionInfo)
+          .then(
+        (value) {
+          showDialog(
+              context: context,
+              builder: (ctx) {
+                return AlertDialog(
+                  content: Text(
+                    'A sessions has been booked\n at ${formatter.format(sessionDates[0])}',
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, TabsScreen.routeName);
+                      },
+                      child: const Text('ok'),
+                    ),
+                  ],
+                );
+              });
+        },
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    /// Getting the session data [id, dateAndTime , locstion] in a list
-    var sessionDates = ModalRoute.of(context)!.settings.arguments as List;
+    /// Getting the session data [id, dateAndTime , location] in a list
+    var sessionDatess = ModalRoute.of(context)!.settings.arguments as List;
 
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
@@ -115,107 +131,125 @@ class _BookingScreenState extends State<BookingScreen> {
       ),
       body: SafeArea(
         child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: ListView(
-                  //crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Complete booking process',
-                      style: TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    Text(
-                      'session at\n ${sessionDates[0].toString()}',
-                      style: const TextStyle(
-                          color: Colors.grey, fontWeight: FontWeight.w300),
-                    ),
-                    SizedBox(height: 24.h),
-                    TextField(
-                      controller: name,
-                      onChanged: (value) => name.text = value,
-                      textInputAction: TextInputAction.next,
-                      decoration: textFieldDecoration(context, 'name'),
-                    ),
-                    SizedBox(height: 24.h),
-                    TextField(
-                      controller: phoneNumber,
-                      onChanged: (value) => phoneNumber.text = value,
-                      textInputAction: TextInputAction.next,
-                      decoration: textFieldDecoration(
-                          context, 'phone number - optional'),
-                    ),
-                    SizedBox(height: 24.h),
-                    TextField(
-                      controller: details,
-                      onChanged: (value) => phoneNumber.text = value,
-                      textInputAction: TextInputAction.next,
-                      decoration: textFieldDecoration(context,
-                          'Anything you want your therapist\nto know before your next session ?'),
-                      maxLines: 5,
-                    ),
-                    SizedBox(
-                      height: 16.h,
-                    ),
-                    const Text(
-                      'where do you want\nto have the session :',
-                      style: TextStyle(fontSize: 15, color: Colors.grey),
-                    ),
-                    Row(
-                      children: [
-                        const Text('Online'),
-                        Checkbox(
-                          value: checkOnline,
-                          onChanged: (value) {
-                            setState(() {
-                              checkOnline = value!;
-                            });
-                          },
-                        ),
-                        SizedBox(width: 40.w),
-                        const Text('Clinic'),
-                        Checkbox(
-                          value: checkClinic,
-                          onChanged: (value) {
-                            setState(() {
-                              checkClinic = value!;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                    Align(
-                        alignment: Alignment.bottomLeft,
-                        child: TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Add payment method',
-                            style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                decorationColor: Theme.of(context).primaryColor,
-                                fontSize: 16.sp,
-                                color: Colors.lightBlueAccent),
-                          ),
-                        ),
-                      ),
+          padding: const EdgeInsets.all(16),
+          child: ListView(
+            children: [
+              const Text(
+                'Complete booking process',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
+              SizedBox(
+                height: 12.h,
+              ),
 
-                    SizedBox(
-                      height: 50.h,
+              ///${sessionDatess[0].toString()}
+              Text(
+                'session at\n ${formatter.format(sessionDatess[0])}',
+                style: const TextStyle(
+                    color: Colors.grey, fontWeight: FontWeight.w300),
+              ),
+              SizedBox(height: 24.h),
+              TextField(
+                controller: name,
+                onSubmitted: (value) => name.text = value,
+                textInputAction: TextInputAction.next,
+                decoration: textFieldDecoration(context, 'name'),
+                autofocus: true,
+              ),
+              SizedBox(height: 24.h),
+              TextField(
+                controller: phoneNumber,
+                keyboardType: TextInputType.number,
+                onSubmitted: (value) => phoneNumber.text = value,
+                textInputAction: TextInputAction.next,
+                decoration:
+                    textFieldDecoration(context, 'phone number - optional'),
+              ),
+              SizedBox(height: 24.h),
+              TextField(
+                controller: details,
+                onSubmitted: (value) => details.text = value,
+                textInputAction: TextInputAction.next,
+                decoration: textFieldDecoration(context,
+                    'Anything you want your therapist\nto know before your next session ?'),
+                maxLines: 5,
+              ),
+              SizedBox(
+                height: 16.h,
+              ),
+              const Text(
+                'where do you want\nto have the session :',
+                style: TextStyle(fontSize: 15, color: Colors.grey),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  /// Online Button
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        primary: isOnlinePressed
+                            ? const Color(0xFFECECEC)
+                            : Colors.white),
+                    onPressed: () {
+                      setState(() {
+                        isOnlinePressed = isOnlinePressed;
+                      });
+                    },
+                    child: Text(
+                      'Online',
+                      style: TextStyle(color: Theme.of(context).primaryColor),
                     ),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: ElevatedButton(
-                        child: const Text('Finish Booking'),
-                        onPressed: () {
-                          /// a method that will store the session in the
-                          /// sessions collection in Firestore
-                          bookSession(context);
-                        },
-                      ),
+                  ),
+
+                  /// Clinic Button
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        primary: isClinicPressed
+                            ? const Color(0xFFECECEC)
+                            : Colors.white),
+                    onPressed: () {
+                      setState(() {
+                        isClinicPressed = isClinicPressed;
+                      });
+                    },
+                    child: Text(
+                      'Clinic',
+                      style: TextStyle(color: Theme.of(context).primaryColor),
                     ),
-                  ],
-            )),
+                  ),
+                ],
+              ),
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    'Add payment method',
+                    style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        decorationColor: Theme.of(context).primaryColor,
+                        fontSize: 16,
+                        color: Colors.lightBlueAccent),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 50.h,
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: ElevatedButton(
+                  child: const Text('Finish Booking'),
+                  onPressed: () {
+                    bookSession(context);
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mentcare/providers/user_provider.dart';
-import 'package:provider/provider.dart';
 
 import './user_account_screen.dart';
 import './home_screen.dart';
@@ -24,7 +22,7 @@ class _TabsScreenState extends State<TabsScreen> {
   void initState() {
     _pages = [
       {
-        'page': const HomeScreen(),
+        'page': HomeScreen(),
       },
       {
         'page': const SavedDoctorsScreen(),

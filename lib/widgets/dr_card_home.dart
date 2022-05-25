@@ -9,7 +9,7 @@ class DoctorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final doctorInfo = Provider.of<DoctorData>(context);
+    final doctorInfo = Provider.of<DoctorData>(context, listen: false);
     return GestureDetector(
       onTap: () {
         Navigator.of(context)
