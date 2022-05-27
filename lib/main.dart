@@ -17,6 +17,9 @@ import './screens/personal_information_screen.dart';
 import './screens/previous_sessions_screen.dart';
 import './screens/tabs_screen.dart';
 import './screens/user_account_screen.dart';
+import './screens/scheduled_session_screen.dart';
+import './screens/doctor_dashboard.dart';
+import './screens/doctor_tabs_screen.dart';
 import 'providers/login_prov.dart';
 import 'screens/personal_information_screen.dart';
 
@@ -86,7 +89,7 @@ class MyApp extends StatelessWidget {
             }
           },
         ),
-        //  initialRoute: '/tabs',
+        // initialRoute: '/doctor-tabs',
         routes: {
           TabsScreen.routeName: (ctx) => const TabsScreen(),
           UserAccountScreen.routeName: (ctx) => const UserAccountScreen(),
@@ -100,6 +103,9 @@ class MyApp extends StatelessWidget {
           DoctorPersonalInformation.routeName: (c) =>
               const DoctorPersonalInformation(),
           BookingScreen.routeName: (ctx) => BookingScreen(),
+          ScheduledSessionsScreen.routeName: (ctx) => ScheduledSessionsScreen(),
+          DoctorDashboard.routeName: (ctx) => DoctorDashboard(),
+          DrTabsScreen.routeName: (ctx) => const DrTabsScreen(),
         },
       ),
     );

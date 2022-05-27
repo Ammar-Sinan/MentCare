@@ -19,7 +19,6 @@ class _SessionsButtonsGridState extends State<SessionsButtonsGrid> {
 
   @override
   void initState() {
-    print(widget.drId);
     fetchSessions();
     super.initState();
   }

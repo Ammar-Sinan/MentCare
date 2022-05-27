@@ -26,6 +26,7 @@ class _BookingScreenState extends State<BookingScreen> {
   bool isClinicPressed = false;
   final DateFormat formatter = DateFormat('MM-dd, hh:mm');
 
+  // Text Fields decoration
   InputDecoration textFieldDecoration(BuildContext context, String label) {
     return InputDecoration(
       border: InputBorder.none,
@@ -64,6 +65,7 @@ class _BookingScreenState extends State<BookingScreen> {
     super.dispose();
   }
 
+  // Alert dialog for booking a session
   Future<void> buildBookingDuialog(String title, String content) async {
     await showDialog(
         barrierDismissible: false,
@@ -90,6 +92,7 @@ class _BookingScreenState extends State<BookingScreen> {
         });
   }
 
+  // bookSession method
   Future<void> bookSession(BuildContext context) async {
     var sessionDates = ModalRoute.of(context)!.settings.arguments as List;
 
@@ -108,6 +111,7 @@ class _BookingScreenState extends State<BookingScreen> {
         isClinic: isClinicPressed,
         time: sessionDates[0],
         details: details.text,
+        phoneNum: phoneNumber.text,
       );
 
       try {

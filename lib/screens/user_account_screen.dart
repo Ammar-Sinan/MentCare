@@ -5,6 +5,7 @@ import 'package:mentcare/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/user_account_listtile.dart';
+import '../screens/scheduled_session_screen.dart';
 
 class UserAccountScreen extends StatefulWidget {
   const UserAccountScreen({Key? key}) : super(key: key);
@@ -31,7 +32,7 @@ class UserAccountScreenState extends State<UserAccountScreen> {
     {
       'title': 'Scheduled sessions',
       'icon': Icon(Icons.schedule_outlined),
-      'route': 'ROUTE3',
+      'route': ScheduledSessionsScreen.routeName,
       'id': '03'
     },
     {
@@ -95,7 +96,6 @@ class UserAccountScreenState extends State<UserAccountScreen> {
               itemCount: 5,
             ),
           ),
-
           Align(
             child: ListTile(
               title: const Text("Log out"),
@@ -105,8 +105,8 @@ class UserAccountScreenState extends State<UserAccountScreen> {
               ),
               onTap: () => FirebaseAuth.instance.signOut(),
             ),
-            alignment: Alignment.topRight, )
-
+            alignment: Alignment.topRight,
+          )
         ],
       ),
     );

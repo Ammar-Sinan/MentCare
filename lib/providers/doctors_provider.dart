@@ -15,6 +15,13 @@ class DoctorsDataProvider with ChangeNotifier {
 
   List _savedDoctorsIds = [];
 
+  // List to save & show the appointments in the Dr. Dashboard
+  List<BookedSessions> _doctorDashBoardSessions = [];
+
+  List<BookedSessions> get doctorDashBoardSessions {
+    return [..._doctorDashBoardSessions];
+  }
+
   List get savedDoctorsIds {
     return [..._savedDoctorsIds];
   }
@@ -186,15 +193,6 @@ class DoctorsDataProvider with ChangeNotifier {
         .where('isBooked', isEqualTo: false)
         .get();
 
-    // DocumentReference docRefrence = FirebaseFirestore.instance
-    //     .collection('doctors')
-    //     .doc('XeTEDjSuQBEj6T0cT65s');
-
-    // DocumentSnapshot docSnap = await docRefrence.get();
-    // var docId = docSnap.reference.id;
-    // print(docRefrence);
-    // print(docId);
-
     List avaliableSession = sessions.docs.map((e) => e.data()).toList();
 
     List<SessionData> unBookedSessions = [];
@@ -213,13 +211,6 @@ class DoctorsDataProvider with ChangeNotifier {
   }
 
   Future<void> bookSession(BookedSessions sessionInfo) async {
-    final sessionRef = FirebaseFirestore.instance
-        .collection('doctorss')
-        .doc(sessionInfo.drName)
-        .collection('sessions')
-        .doc(sessionInfo.id)
-        .update({'isBooked': true});
-
     try {
       var bookedSessionInfo = {
         'id': sessionInfo.id,
@@ -230,6 +221,7 @@ class DoctorsDataProvider with ChangeNotifier {
         'isClinic': sessionInfo.isClinic,
         'time': sessionInfo.time,
         'details': sessionInfo.details,
+        'phoneNum': sessionInfo.phoneNum,
       };
 
       /// Changing the isBooked field in sessions subcollection to true
@@ -244,10 +236,41 @@ class DoctorsDataProvider with ChangeNotifier {
       await FirebaseFirestore.instance
           .collection('bookedSessions')
           .add(bookedSessionInfo);
-
-      print('Made it to Drs Provider');
     } catch (error) {
       rethrow;
     }
+  }
+
+  // Fetching the booked sessions for the doctor Dashboard
+  Future<void> fetchBookedSessions() async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+
+    final sessionsRef = await FirebaseFirestore.instance
+        .collection('bookedSessions')
+        .where('drName', isEqualTo: '4EF9gpHqfjbOMTDmF4aFuKcHZax1')
+        .get();
+
+    List sessions = sessionsRef.docs.map((e) => e.data()).toList();
+
+    List<BookedSessions> bookedSessions = [];
+
+    for (var element in sessions) {
+      bookedSessions.add(
+        BookedSessions(
+          id: element['id'],
+          userName: element['userName'],
+          userId: element['userId'],
+          drName: element['drName'],
+          isOnline: element['isOnline'],
+          isClinic: element['isClinic'],
+          time: element['time'].toDate(),
+          details: element['details'],
+          phoneNum: element['phoneNumber'],
+        ),
+      );
+    }
+
+    _doctorDashBoardSessions = bookedSessions;
+    notifyListeners();
   }
 }

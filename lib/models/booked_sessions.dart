@@ -1,4 +1,6 @@
-class BookedSessions {
+import 'package:flutter/cupertino.dart';
+
+class BookedSessions with ChangeNotifier {
   final String id;
   final String userName;
   final String userId;
@@ -7,6 +9,7 @@ class BookedSessions {
   final bool isOnline;
   final bool isClinic;
   final String details;
+  final String phoneNum;
 
   BookedSessions({
     required this.id,
@@ -17,5 +20,6 @@ class BookedSessions {
     required this.isClinic,
     required this.time,
     required this.details,
+    required this.phoneNum,
   });
 }
