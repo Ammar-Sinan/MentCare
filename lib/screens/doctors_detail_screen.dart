@@ -242,20 +242,15 @@ class _BuildSessionDatesState extends State<BuildSessionDates> {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
-      backgroundColor: const Color.fromARGB(255, 244, 244, 244),
-      textColor: const Color.fromRGBO(22, 92, 144, 1),
-      collapsedBackgroundColor: const Color.fromARGB(24, 38, 150, 235),
-      iconColor: const Color.fromRGBO(22, 92, 144, 1),
+      backgroundColor: const Color(0xFFF4F4F4),
+      textColor: const Color(0xFF165C90),
+      collapsedBackgroundColor: const Color(0x172696EB),
+      iconColor: const Color(0xFF165C90),
       title: const Text(
         'Sessions',
         style: TextStyle(fontSize: 16),
       ),
       trailing: const Icon(Icons.arrow_drop_down_circle),
-      onExpansionChanged: (_) {
-        // setState(() {
-        //   _customTileExpanded = expanded;
-        // });
-      },
       children: [
         SessionsButtonsGrid(
           drId: widget.id,

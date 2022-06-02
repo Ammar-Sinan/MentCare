@@ -9,7 +9,7 @@ class BookedSessions with ChangeNotifier {
   final bool isOnline;
   final bool isClinic;
   final String details;
-  final String phoneNum;
+  final String? phoneNum;
 
   BookedSessions({
     required this.id,
@@ -20,6 +20,6 @@ class BookedSessions with ChangeNotifier {
     required this.isClinic,
     required this.time,
     required this.details,
-    required this.phoneNum,
+    this.phoneNum,
   });
 }

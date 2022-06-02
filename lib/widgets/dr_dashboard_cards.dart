@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../models/booked_sessions.dart';
 
@@ -16,6 +17,19 @@ class BuildDashboardCard extends StatelessWidget {
     final bookedSession = Provider.of<BookedSessions>(context);
     Color textColor =
         index % 2 == 0 ? Colors.white : const Color.fromARGB(255, 1, 52, 110);
+
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(width, height),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
+
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
@@ -66,13 +80,13 @@ class BuildDashboardCard extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    '- Phone number : ${bookedSession.phoneNum}',
+                                    '* Phone number : ${bookedSession.phoneNum}',
                                     style: const TextStyle(fontSize: 15),
                                   ),
                                   Text(
-                                      '- Time ${formatter.format(bookedSession.time)}'),
+                                      '* Time ${formatter.format(bookedSession.time)}'),
                                   Text(
-                                    '- Detils provided by the user\n ${bookedSession.details}',
+                                    '* Detils provided by the user\n ${bookedSession.details}',
                                     style: const TextStyle(fontSize: 16),
                                   )
                                 ],

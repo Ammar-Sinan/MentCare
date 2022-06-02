@@ -63,9 +63,11 @@ class _SavedDoctorsScreenState extends State<SavedDoctorsScreen> {
     });
 
     await Provider.of<DoctorsDataProvider>(context, listen: false)
-        .fetchUserSaved();
-    setState(() {
-      _isLoading = false;
+        .fetchUserSaved()
+        .then((value) {
+      setState(() {
+        _isLoading = false;
+      });
     });
   }
 }

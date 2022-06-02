@@ -113,7 +113,8 @@ class _BookingScreenState extends State<BookingScreen> {
         details: details.text,
         phoneNum: phoneNumber.text,
       );
-
+      print('SESSION ID : ${sessionDates[1]}');
+      print('else in booking widget');
       try {
         await Provider.of<DoctorsDataProvider>(context, listen: false)
             .bookSession(bookedSessionInfo);
@@ -127,7 +128,7 @@ class _BookingScreenState extends State<BookingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    /// Getting the session data [id, dateAndTime , location] in a list
+    // Getting the session data [id, dateAndTime , location] in a list
     var sessionDatess = ModalRoute.of(context)!.settings.arguments as List;
 
     final width = MediaQuery.of(context).size.width;
@@ -159,14 +160,13 @@ class _BookingScreenState extends State<BookingScreen> {
               SizedBox(
                 height: 12.h,
               ),
-
-              ///${sessionDatess[0].toString()}
               Text(
                 'session at\n ${formatter.format(sessionDatess[0])}',
                 style: const TextStyle(
                     color: Colors.grey, fontWeight: FontWeight.w300),
               ),
               SizedBox(height: 24.h),
+              // User Name Text Field
               TextField(
                 controller: name,
                 onSubmitted: (value) => name.text = value,
@@ -182,6 +182,7 @@ class _BookingScreenState extends State<BookingScreen> {
                 textInputAction: TextInputAction.next,
                 decoration:
                     textFieldDecoration(context, 'phone number - optional'),
+                maxLength: 10,
               ),
               SizedBox(height: 24.h),
               TextField(
@@ -256,15 +257,20 @@ class _BookingScreenState extends State<BookingScreen> {
                 ),
               ),
               SizedBox(
-                height: 50.h,
+                height: 0.h,
               ),
-              Align(
+
+              Container(
                 alignment: Alignment.bottomRight,
+                // height: 0.h,
+                width: 80,
                 child: ElevatedButton(
                   child: const Text('Finish Booking'),
-                  onPressed: () {
-                    bookSession(context);
-                  },
+                  onPressed: () => bookSession(context),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                        Theme.of(context).primaryColor),
+                  ),
                 ),
               ),
             ],
