@@ -1,7 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mentcare/screens/chatting_screen.dart';
 
-class MessagesScreen extends StatelessWidget {
+class MessagesScreen extends StatefulWidget {
   const MessagesScreen({Key? key}) : super(key: key);
+
+  @override
+  State createState() => MessagesScreenState();
+}
+
+class MessagesScreenState extends State<MessagesScreen> {
+  final userId = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   Widget build(BuildContext context) {
@@ -22,22 +32,44 @@ class MessagesScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: 2,
-        itemBuilder: (context, index) => const ListTile(
-          leading: CircleAvatar(
-            maxRadius: 24,
-          ),
-          contentPadding: EdgeInsets.all(8),
-          title: Text(
-            'Sender name',
-            style: TextStyle(fontSize: 16),
-          ),
-          trailing: Text(
-            '2:54 pm',
-            style: TextStyle(fontSize: 14, color: Colors.grey),
-          ),
-        ),
+      body: StreamBuilder(
+        builder: (cnt, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError || !snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator(),);
+          } else {
+            return ListView.builder(
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    child: Container(
+                      margin: EdgeInsets.all(10),
+                      child:
+                          ListTile(
+                            leading: CircleAvatar(),
+                            title: Text(
+                              snapshot.data!.docs[index]['doctorName'],
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          )
+
+                    ),
+                    onTap: () {
+                      List IDs = [
+                        snapshot.data!.docs[index]['doctorName'],
+                        snapshot.data!.docs[index]['chatId']
+                      ];
+                      Navigator.of(context)
+                          .pushNamed(ChattingScreen.routeName, arguments: IDs);
+                    },
+                  );
+                });
+          }
+        },
+        stream: FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .collection('contactList')
+            .snapshots(),
       ),
     );
   }

@@ -5,6 +5,7 @@ import 'package:mentcare/providers/user_provider.dart';
 import 'package:mentcare/screens/add_card_screen.dart';
 import 'package:mentcare/screens/auth_screen.dart';
 import 'package:mentcare/screens/card_auth.dart';
+import 'package:mentcare/screens/chatting_screen.dart';
 import 'package:mentcare/screens/doctor_personal_information_screen.dart';
 import 'package:mentcare/screens/pre_auth_screen.dart';
 import 'package:provider/provider.dart';
@@ -100,6 +101,7 @@ class MyApp extends StatelessWidget {
           DoctorPersonalInformation.routeName: (c) =>
               const DoctorPersonalInformation(),
           BookingScreen.routeName: (ctx) => BookingScreen(),
+          ChattingScreen.routeName: (cnt) => const ChattingScreen(),
         },
       ),
     );

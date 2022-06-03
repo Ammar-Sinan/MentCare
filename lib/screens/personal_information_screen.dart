@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mentcare/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../widgets/edit_profile_image.dart';
 import '../widgets/settings_listtile.dart';
 
 class PersonalInformation extends StatefulWidget {
@@ -18,6 +21,7 @@ class PersonalInformationState extends State<PersonalInformation> {
   // ignore: prefer_typing_uninitialized_variables
   late final user;
   bool isLoading = false;
+  final String userId = FirebaseAuth.instance.currentUser!.uid;
 
   // ignore: prefer_final_fields
   List<Map<String, dynamic>> _settingsList = [
@@ -85,7 +89,34 @@ class PersonalInformationState extends State<PersonalInformation> {
           SizedBox(
             height: 32.h,
           ),
-          const CircleAvatar(),
+          GestureDetector(
+            child: FutureBuilder(
+                builder: (cnt, AsyncSnapshot snapshot) {
+                  if (snapshot.hasError || !snapshot.hasData) {
+                    return const CircularProgressIndicator();
+                  } else {
+                    if (snapshot.data!['profileImageUrl'] == '') {
+                      return const Text('add profile picture...');
+                    } else {
+                      return CircleAvatar(
+                        backgroundImage:
+                            NetworkImage(snapshot.data!['profileImageUrl']),
+                      );
+                    }
+                  }
+                },
+                future: FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(userId)
+                    .get()),
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (cnt) => const SimpleDialog(children: [
+                        EditProfileImage('users'),
+                      ]));
+            },
+          ),
           SizedBox(
             height: 10.h,
           ),

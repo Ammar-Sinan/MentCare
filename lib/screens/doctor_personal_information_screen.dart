@@ -1,8 +1,12 @@
+import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mentcare/providers/doctors_provider.dart';
+import 'package:mentcare/providers/user_provider.dart';
+import 'package:mentcare/widgets/edit_profile_image.dart';
 import 'package:provider/provider.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/settings_listtile.dart';
 
 class DoctorPersonalInformation extends StatefulWidget {
@@ -87,6 +91,7 @@ class DoctorPersonalInformationState extends State<DoctorPersonalInformation> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+    final doctorId = FirebaseAuth.instance.currentUser!.uid;
 
     getUserData();
 
@@ -115,7 +120,34 @@ class DoctorPersonalInformationState extends State<DoctorPersonalInformation> {
           SizedBox(
             height: 32.h,
           ),
-          const CircleAvatar(),
+          GestureDetector(
+            child: FutureBuilder(
+                builder: (cnt, AsyncSnapshot snapshot) {
+                  if (snapshot.hasError || !snapshot.hasData) {
+                    return const CircularProgressIndicator();
+                  } else {
+                    if (snapshot.data!['profileImageUrl'] == '') {
+                      return const Text('add profile picture...');
+                    } else {
+                      return CircleAvatar(
+                      backgroundImage:
+                      NetworkImage(snapshot.data!['profileImageUrl']),
+                    );
+                    }
+                  }
+                },
+                future: FirebaseFirestore.instance
+                    .collection('doctors')
+                    .doc(doctorId)
+                    .get()),
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (cnt) => const SimpleDialog(children: [
+                    EditProfileImage('doctors'),
+                  ]));
+            },
+          ),
           SizedBox(
             height: 10.h,
           ),

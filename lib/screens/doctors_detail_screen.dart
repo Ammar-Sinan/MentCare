@@ -1,13 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mentcare/providers/user_provider.dart';
+import 'package:mentcare/screens/chatting_screen.dart';
 import 'package:mentcare/widgets/sessions_buttons_grid.dart';
 import 'package:provider/provider.dart';
 
-import '../widgets/reviews_card_dr_detail.dart';
-import '../widgets/booking_loacation_buttons.dart';
-
 import '../providers/doctors_provider.dart';
+import '../widgets/booking_loacation_buttons.dart';
+import '../widgets/reviews_card_dr_detail.dart';
 
 class DoctorDetails extends StatefulWidget {
   static const routeName = '/doctor-detail';
@@ -19,15 +21,23 @@ class DoctorDetails extends StatefulWidget {
 class _DoctorDetailsState extends State<DoctorDetails> {
   Color iconColor = Colors.white;
   bool isSaved = false;
-
+  String doctorName = '';
+  String userName = '';
   TextStyle textStyle =
       const TextStyle(fontSize: 19.2, fontWeight: FontWeight.w400);
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
     final doctorId = ModalRoute.of(context)!.settings.arguments as String;
     final doctorData = Provider.of<DoctorsDataProvider>(context, listen: false)
         .findById(doctorId);
+    fetchDoctorName(doctorId);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 248, 248, 248),
@@ -81,9 +91,49 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                                   width: 1.5.h),
                             ),
                             child: IconButton(
-                              onPressed: () {
-                                // TODO
-                                // go to ...
+                              onPressed: () async {
+                                String userId =
+                                    FirebaseAuth.instance.currentUser!.uid;
+
+                                final chatId = userId.substring(0, 10) +
+                                    doctorId.toString().substring(10, 20);
+
+                                final cList = FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(userId)
+                                    .collection('contactList')
+                                    .doc(doctorId);
+                                final contact = await cList.get();
+
+                                if (!contact.exists) {
+                                  await cList.set(
+                                    {
+                                      'doctorId': doctorId,
+                                      'chatId': chatId,
+                                      'doctorName': doctorName
+                                    },
+                                  );
+                                }
+                                final uList = FirebaseFirestore.instance
+                                    .collection('doctors')
+                                    .doc(doctorId)
+                                    .collection('contactList')
+                                    .doc(userId);
+                                final userContact = await uList.get();
+
+                                if (!userContact.exists) {
+                                  await uList.set(
+                                    {
+                                      'userId': userId,
+                                      'chatId': chatId,
+                                      'userName': userName
+                                    },
+                                  );
+                                }
+                                List IDs = [doctorName, chatId];
+                                Navigator.pushNamed(
+                                    context, ChattingScreen.routeName,
+                                    arguments: IDs);
                               },
                               icon: const Icon(Icons.message_rounded),
                               color: Theme.of(context).primaryColor,
@@ -219,6 +269,16 @@ class _DoctorDetailsState extends State<DoctorDetails> {
         ),
       ),
     );
+  }
+
+  void fetchDoctorName(doctorId) async {
+    doctorName = await Provider.of<DoctorsDataProvider>(context, listen: false)
+        .fetchDoctorNameFromUserInterface(doctorId);
+  }
+
+  void fetchUserName() async {
+    userName =
+        await Provider.of<UserProvider>(context, listen: false).fetchUserName();
   }
 }
 

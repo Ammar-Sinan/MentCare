@@ -118,6 +118,11 @@ class DoctorsDataProvider with ChangeNotifier {
         await FirebaseFirestore.instance.collection('doctors').doc(uid).get();
     return doctor['name'];
   }
+  Future<String> fetchDoctorNameFromUserInterface(String docotrId) async {
+    dynamic doctor =
+    await FirebaseFirestore.instance.collection('doctors').doc(docotrId).get();
+    return doctor['name'];
+  }
 
   Future<void> fetchUserSaved() async {
     final currUserId = FirebaseAuth.instance.currentUser!.uid;
