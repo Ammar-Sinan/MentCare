@@ -28,8 +28,8 @@ class PreAuthScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
-          child: const Text('logo'),
-          margin: EdgeInsets.only(top: 200.h),
+          child: Image(image: AssetImage("assets/logo.png")),
+          margin: EdgeInsets.only(top: 130.h),
         ),
         Container(
             margin: EdgeInsets.only(bottom: 60.h, right: 15.w, left: 15.w),

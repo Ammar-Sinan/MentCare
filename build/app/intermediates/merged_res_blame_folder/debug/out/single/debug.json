@@ -1,5 +1,9 @@
 [
     {
+        "merged": "C:\\Users\\gts\\Documents\\Android\\Flutter\\project_mentcare\\build\\app\\intermediates\\res\\merged\\debug\\drawable_logo.png.flat",
+        "source": "C:\\Users\\gts\\Documents\\Android\\Flutter\\project_mentcare\\android\\app\\src\\main\\res\\drawable\\logo.png"
+    },
+    {
         "merged": "C:\\Users\\gts\\Documents\\Android\\Flutter\\project_mentcare\\build\\app\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher.png.flat",
         "source": "C:\\Users\\gts\\Documents\\Android\\Flutter\\project_mentcare\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png"
     },
@@ -18,6 +22,10 @@
     {
         "merged": "C:\\Users\\gts\\Documents\\Android\\Flutter\\project_mentcare\\build\\app\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher.png.flat",
         "source": "C:\\Users\\gts\\Documents\\Android\\Flutter\\project_mentcare\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\gts\\Documents\\Android\\Flutter\\project_mentcare\\build\\app\\intermediates\\res\\merged\\debug\\drawable-v21_logo_with_name.png.flat",
+        "source": "C:\\Users\\gts\\Documents\\Android\\Flutter\\project_mentcare\\android\\app\\src\\main\\res\\drawable-v21\\logo_with_name.png"
     },
     {
         "merged": "C:\\Users\\gts\\Documents\\Android\\Flutter\\project_mentcare\\build\\app\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher.png.flat",
