@@ -98,18 +98,29 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                         ],
                       ),
                       SizedBox(height: 16.h),
+                      // Doctor name
                       Text(
                         doctorData.name,
                         style: const TextStyle(
-                            fontSize: 26, fontWeight: FontWeight.w300),
+                            fontSize: 28, fontWeight: FontWeight.w400),
                       ),
                       SizedBox(height: 16.h),
                       Text(
                         doctorData.category,
                         style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600),
+                            fontSize: 20, fontWeight: FontWeight.w400),
                       ),
-                      SizedBox(height: 40.h),
+                      SizedBox(
+                        height: 12.h,
+                      ),
+                      Text(
+                        '${doctorData.price}\$/hour',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(height: 32.h),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -131,7 +142,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
               ],
             ),
             Positioned(
-              top: 350.h,
+              top: 370.h,
               left: 50.w,
               right: 50.w,
               child: SizedBox(
@@ -163,7 +174,11 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     'available sessions',
                     style: textStyle,
                   ),
-                  BuildSessionDates(doctorId),
+                  BuildSessionDates(
+                    id: doctorId,
+                    price: doctorData.price,
+                    doctorName: doctorData.name,
+                  ),
                   SizedBox(height: 16.h),
                   Text(
                     'specialised in',
@@ -232,7 +247,10 @@ class _DoctorDetailsState extends State<DoctorDetails> {
 class BuildSessionDates extends StatefulWidget {
   //const BuildSessionDates({Key? key}) : super(key: key);
   final String id;
-  const BuildSessionDates(this.id);
+  final String price;
+  final String doctorName;
+  const BuildSessionDates(
+      {required this.id, required this.price, required this.doctorName});
 
   @override
   State<BuildSessionDates> createState() => _BuildSessionDatesState();
@@ -254,6 +272,8 @@ class _BuildSessionDatesState extends State<BuildSessionDates> {
       children: [
         SessionsButtonsGrid(
           drId: widget.id,
+          price: widget.price,
+          name: widget.doctorName,
         ),
       ],
     );

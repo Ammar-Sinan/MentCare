@@ -27,33 +27,35 @@ class _SavedDoctorsScreenState extends State<SavedDoctorsScreen> {
         Provider.of<DoctorsDataProvider>(context, listen: false).savedList;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Saved specialists'),
-        actions: const [
-          IconButton(
-            onPressed: null,
-            icon: Icon(Icons.delete_outline_outlined),
-          ),
-        ],
+        title: const Text(
+          'Saved specialists',
+          style: TextStyle(fontSize: 19),
+        ),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.all(16),
-              child: GridView.builder(
-                itemCount: savedList.length,
-                itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
-                  value: savedList[index],
-                  child: const DoctorCard(),
+          : savedList.isEmpty
+              ? const Center(
+                  child: Text('test'),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: GridView.builder(
+                    itemCount: savedList.length,
+                    itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
+                      value: savedList[index],
+                      child: const DoctorCard(),
+                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 16,
+                      crossAxisSpacing: 16,
+                      childAspectRatio: 3 / 2,
+                      mainAxisExtent: 240,
+                    ),
+                  ),
                 ),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 16,
-                  childAspectRatio: 3 / 2,
-                  mainAxisExtent: 240,
-                ),
-              ),
-            ),
     );
   }
 

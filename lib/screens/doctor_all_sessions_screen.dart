@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mentcare/screens/add_appointment_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -26,9 +25,8 @@ class _DoctorAllSessionsState extends State<DoctorAllSessions> {
 
   Future<void> fetchUnbookedSessions() async {
     final doctorId = FirebaseAuth.instance.currentUser!.uid;
-    // send the doctor id here
     await Provider.of<DoctorsDataProvider>(context, listen: false)
-        .fetchSessions('4EF9gpHqfjbOMTDmF4aFuKcHZax1')
+        .fetchSessions(doctorId)
         .then((value) {
       setState(() {
         isLoading = false;
@@ -71,7 +69,10 @@ class _DoctorAllSessionsState extends State<DoctorAllSessions> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('unbooked sessions'),
+        title: const Text(
+          'unbooked sessions',
+          style: TextStyle(fontSize: 19),
+        ),
       ),
       body: isLoading
           ? const Center(

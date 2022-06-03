@@ -235,6 +235,8 @@ class DoctorsDataProvider with ChangeNotifier {
       'time': sessionInfo.time,
       'details': sessionInfo.details,
       'phoneNum': sessionInfo.phoneNum,
+      'price': sessionInfo.price,
+      'doctorName': sessionInfo.doctorNAme,
     };
 
     // Changing the isBooked field in sessions subcollection to true
@@ -255,14 +257,29 @@ class DoctorsDataProvider with ChangeNotifier {
     }
   }
 
+  Future<String> fetchPrice(String doctorId) async {
+    final doctorName = await FirebaseFirestore.instance
+        .collection('doctors')
+        .doc(doctorId)
+        .get();
+    return doctorName['price'];
+  }
+
+  // dynamic testing(String a) async {
+  //   return await fetchDoctorNam(a);
+  // }
+
   // Fetching the booked sessions for the doctor Dashboard
-  Future<void> fetchBookedSessions() async {
+  // Fetching the booked Sessions for the user
+  // field = userId & drName(doctor id)
+
+  Future<void> fetchBookedSessions(String field) async {
     final uid = FirebaseAuth.instance.currentUser!.uid;
 
     try {
       final sessionsRef = await FirebaseFirestore.instance
           .collection('bookedSessions')
-          .where('drName', isEqualTo: '4EF9gpHqfjbOMTDmF4aFuKcHZax1')
+          .where(field, isEqualTo: uid)
           .get();
 
       List sessions = sessionsRef.docs.map((e) => e.data()).toList();
@@ -272,16 +289,17 @@ class DoctorsDataProvider with ChangeNotifier {
       for (var element in sessions) {
         bookedSessions.add(
           BookedSessions(
-            id: element['id'],
-            userName: element['userName'],
-            userId: element['userId'],
-            drName: element['drName'],
-            isOnline: element['isOnline'],
-            isClinic: element['isClinic'],
-            time: element['time'].toDate(),
-            details: element['details'],
-            phoneNum: element['phoneNumber'],
-          ),
+              id: element['id'],
+              userName: element['userName'],
+              userId: element['userId'],
+              drName: element['drName'],
+              isOnline: element['isOnline'],
+              isClinic: element['isClinic'],
+              time: element['time'].toDate(),
+              details: element['details'],
+              phoneNum: element['phoneNumber'],
+              price: element['price'],
+              doctorNAme: element['doctorName']),
         );
       }
 
@@ -309,10 +327,9 @@ class DoctorsDataProvider with ChangeNotifier {
 
     try {
       _sessionsIds = [appointmentData.id];
-      // Use the dynamic dr ID here
       FirebaseFirestore.instance
           .collection('doctors')
-          .doc('4EF9gpHqfjbOMTDmF4aFuKcHZax1')
+          .doc(uId)
           .collection('sessions')
           .doc(sessionId)
           .set(appointment);
@@ -329,6 +346,8 @@ class DoctorsDataProvider with ChangeNotifier {
   }
 
   List<BookedSessions> appointmentsFilter(String filter) {
+    DateTime today = DateTime.now();
+    var oneWeekFromNow = today.add(const Duration(days: 1));
     if (filter == 'online') {
       return _doctorDashBoardSessions
           .where((element) => element.isOnline == true)
@@ -337,9 +356,9 @@ class DoctorsDataProvider with ChangeNotifier {
       return _doctorDashBoardSessions
           .where((element) => element.isOnline == false)
           .toList();
-    } else if (filter == 'Previous') {
+    } else if (filter == 'Future sessions') {
       return _doctorDashBoardSessions
-          .where((element) => element.time.isBefore(DateTime.now()))
+          .where((element) => element.time.isAfter(oneWeekFromNow))
           .toList();
     }
     return _doctorDashBoardSessions
@@ -353,7 +372,7 @@ class DoctorsDataProvider with ChangeNotifier {
     // add the Uid here
     await FirebaseFirestore.instance
         .collection('doctors')
-        .doc('4EF9gpHqfjbOMTDmF4aFuKcHZax1')
+        .doc(uId)
         .collection('sessions')
         .doc(sessionId)
         .delete();

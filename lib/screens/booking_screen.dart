@@ -112,6 +112,8 @@ class _BookingScreenState extends State<BookingScreen> {
         time: sessionDates[0],
         details: details.text,
         phoneNum: phoneNumber.text,
+        price: sessionDates[3],
+        doctorNAme: sessionDates[4],
       );
       print('SESSION ID : ${sessionDates[1]}');
       print('else in booking widget');
@@ -128,7 +130,7 @@ class _BookingScreenState extends State<BookingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Getting the session data [id, dateAndTime , location] in a list
+    // Getting the session data [id, dateAndTime , location, Price] in a list
     var sessionDatess = ModalRoute.of(context)!.settings.arguments as List;
 
     final width = MediaQuery.of(context).size.width;

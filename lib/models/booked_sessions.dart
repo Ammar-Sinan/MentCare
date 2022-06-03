@@ -10,6 +10,8 @@ class BookedSessions with ChangeNotifier {
   final bool isClinic;
   final String details;
   final String? phoneNum;
+  final String price;
+  final String doctorNAme;
 
   BookedSessions({
     required this.id,
@@ -21,5 +23,7 @@ class BookedSessions with ChangeNotifier {
     required this.time,
     required this.details,
     this.phoneNum,
+    required this.price,
+    required this.doctorNAme,
   });
 }

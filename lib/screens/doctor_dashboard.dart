@@ -33,7 +33,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
   Future<void> fetchSessions() async {
     setState(() {
       Provider.of<DoctorsDataProvider>(context, listen: false)
-          .fetchBookedSessions()
+          .fetchBookedSessions('drName')
           .then((value) {
         setState(() {
           isLoading = false;
@@ -122,7 +122,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                     children: [
                       buildFilterButtons('clinic'),
                       buildFilterButtons('online'),
-                      buildFilterButtons('previous'),
+                      buildFilterButtons('Future sessions'),
                     ],
                   ),
                   SizedBox(height: 50.h),

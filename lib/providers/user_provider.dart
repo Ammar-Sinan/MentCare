@@ -47,30 +47,11 @@ class UserProvider extends ChangeNotifier {
 
   dynamic get userData => user;
 
-  // Future<void> fetchScheduledSessions() async {
-  //   final userId = FirebaseAuth.instance.currentUser!.uid;
-  //   final scheduledSessions = await FirebaseFirestore.instance
-  //       .collection('bookedSessions')
-  //       .where('userId', isEqualTo: await fetchUserId())
-  //       .get();
-
-  //   List bookedSessions = scheduledSessions.docs.map((e) => e.data()).toList();
-  //   List<BookedSessions> userSessions = [];
-  //   for (var element in bookedSessions) {
-  //     userSessions.add(
-  //       BookedSessions(
-  //         id: element['id '],
-  //         userName: element['userName'],
-  //         userId: element['userId'],
-  //         drName: element['drName'],
-  //         isOnline: element['isOnline'],
-  //         isClinic: element['isClinic'],
-  //         time: element['time'],
-  //         details: element['details'],
-  //       ),
-  //     );
-  //   }
-  //   _bookedSessions = userSessions;
-  //   notifyListeners();
-  // }
+  Future<String> fetchDoctorName(String doctorId) async {
+    final doctorName = await FirebaseFirestore.instance
+        .collection('doctors')
+        .doc(doctorId)
+        .get();
+    return doctorName['name'];
+  }
 }

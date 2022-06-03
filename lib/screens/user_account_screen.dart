@@ -1,11 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mentcare/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../widgets/user_account_listtile.dart';
+import '../providers/user_provider.dart';
 import '../screens/scheduled_session_screen.dart';
+
+import '../widgets/user_account_listtile.dart';
 
 class UserAccountScreen extends StatefulWidget {
   const UserAccountScreen({Key? key}) : super(key: key);
@@ -50,7 +51,7 @@ class UserAccountScreenState extends State<UserAccountScreen> {
   ];
 
   String name = '';
-  bool isLoading = false;
+  bool isLoading = true;
 
   @override
   Widget build(BuildContext context) {
@@ -89,11 +90,12 @@ class UserAccountScreenState extends State<UserAccountScreen> {
           Expanded(
             child: ListView.builder(
               itemBuilder: (con, index) => SettingsListTile(
-                  title: _settingsList[index]['title'],
-                  icon: _settingsList[index]['icon'],
-                  route: _settingsList[index]['route'],
-                  id: _settingsList[index]['id']),
-              itemCount: 5,
+                title: _settingsList[index]['title'],
+                icon: _settingsList[index]['icon'],
+                route: _settingsList[index]['route'],
+                id: _settingsList[index]['id'],
+              ),
+              itemCount: _settingsList.length,
             ),
           ),
           Align(
@@ -113,13 +115,12 @@ class UserAccountScreenState extends State<UserAccountScreen> {
   }
 
   void getUserName() async {
+    // setState(() {
+    //   isLoading = false;
+    // });
+    name = await Provider.of<UserProvider>(context).fetchUserName();
     setState(() {
       isLoading = false;
-    });
-    name =
-        await Provider.of<UserProvider>(context, listen: false).fetchUserName();
-    setState(() {
-      isLoading = true;
     });
   }
 }
