@@ -7,7 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/doctors_provider.dart';
-import '../screens/tabs_screen.dart';
 
 class BookingScreen extends StatefulWidget {
   //const BookingScreen({Key? key}) : super(key: key);
@@ -27,6 +26,7 @@ class _BookingScreenState extends State<BookingScreen> {
   bool isClinicPressed = false;
   final DateFormat formatter = DateFormat('MM-dd, hh:mm');
 
+  // Text Fields decoration
   InputDecoration textFieldDecoration(BuildContext context, String label) {
     return InputDecoration(
       border: InputBorder.none,
@@ -53,6 +53,7 @@ class _BookingScreenState extends State<BookingScreen> {
     name = TextEditingController();
     phoneNumber = TextEditingController();
     details = TextEditingController();
+
     super.initState();
   }
 
@@ -64,52 +65,72 @@ class _BookingScreenState extends State<BookingScreen> {
     super.dispose();
   }
 
+  // Alert dialog for booking a session
+  Future<void> buildBookingDuialog(String title, String content) async {
+    await showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            title: Text(
+              title,
+              style: const TextStyle(color: Color.fromARGB(255, 117, 117, 117)),
+            ),
+            content: Text(content),
+            actions: [
+              ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                        Theme.of(context).primaryColor)),
+                child: const Text('Ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  // bookSession method
   Future<void> bookSession(BuildContext context) async {
     var sessionDates = ModalRoute.of(context)!.settings.arguments as List;
 
     final userId = FirebaseAuth.instance.currentUser!.uid;
     if (name.text.isEmpty) {
-      print('Please provide your name');
+      buildBookingDuialog('please provide your name', '');
+    } else if (isOnlinePressed == false && isClinicPressed == false) {
+      buildBookingDuialog('choose a location', '');
     } else {
       BookedSessions bookedSessionInfo = BookedSessions(
-        id: sessionDates[1],
+        id: sessionDates[1], // Session ID
         userName: name.text,
         userId: userId,
-        drName: 'drName',
+        drName: sessionDates[2], // Doctor ID
         isOnline: isOnlinePressed,
         isClinic: isClinicPressed,
         time: sessionDates[0],
         details: details.text,
+        phoneNum: phoneNumber.text,
+        price: sessionDates[3],
+        doctorNAme: sessionDates[4],
       );
-      Provider.of<DoctorsDataProvider>(context, listen: false)
-          .bookSession(bookedSessionInfo)
-          .then(
-        (value) {
-          showDialog(
-              context: context,
-              builder: (ctx) {
-                return AlertDialog(
-                  content: Text(
-                    'A sessions has been booked\n at ${formatter.format(sessionDates[0])}',
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, TabsScreen.routeName);
-                      },
-                      child: const Text('ok'),
-                    ),
-                  ],
-                );
-              });
-        },
-      );
+      print('SESSION ID : ${sessionDates[1]}');
+      print('else in booking widget');
+      try {
+        await Provider.of<DoctorsDataProvider>(context, listen: false)
+            .bookSession(bookedSessionInfo);
+        await buildBookingDuialog('A session has been successfully booked', '');
+      } catch (error) {
+        await buildBookingDuialog('Could not complete your booking request!',
+            'please try again later');
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    /// Getting the session data [id, dateAndTime , location] in a list
+    // Getting the session data [id, dateAndTime , location, Price] in a list
     var sessionDatess = ModalRoute.of(context)!.settings.arguments as List;
 
     final width = MediaQuery.of(context).size.width;
@@ -141,14 +162,13 @@ class _BookingScreenState extends State<BookingScreen> {
               SizedBox(
                 height: 12.h,
               ),
-
-              ///${sessionDatess[0].toString()}
               Text(
                 'session at\n ${formatter.format(sessionDatess[0])}',
                 style: const TextStyle(
                     color: Colors.grey, fontWeight: FontWeight.w300),
               ),
               SizedBox(height: 24.h),
+              // User Name Text Field
               TextField(
                 controller: name,
                 onSubmitted: (value) => name.text = value,
@@ -164,6 +184,7 @@ class _BookingScreenState extends State<BookingScreen> {
                 textInputAction: TextInputAction.next,
                 decoration:
                     textFieldDecoration(context, 'phone number - optional'),
+                maxLength: 10,
               ),
               SizedBox(height: 24.h),
               TextField(
@@ -178,7 +199,7 @@ class _BookingScreenState extends State<BookingScreen> {
                 height: 16.h,
               ),
               const Text(
-                'where do you want\nto have the session :',
+                'where do you want to have\n the session :',
                 style: TextStyle(fontSize: 15, color: Colors.grey),
               ),
               Row(
@@ -193,7 +214,8 @@ class _BookingScreenState extends State<BookingScreen> {
                             : Colors.white),
                     onPressed: () {
                       setState(() {
-                        isOnlinePressed = isOnlinePressed;
+                        isOnlinePressed = !isOnlinePressed;
+                        isClinicPressed = false;
                       });
                     },
                     child: Text(
@@ -211,7 +233,8 @@ class _BookingScreenState extends State<BookingScreen> {
                             : Colors.white),
                     onPressed: () {
                       setState(() {
-                        isClinicPressed = isClinicPressed;
+                        isClinicPressed = !isClinicPressed;
+                        isOnlinePressed = false;
                       });
                     },
                     child: Text(
@@ -236,15 +259,20 @@ class _BookingScreenState extends State<BookingScreen> {
                 ),
               ),
               SizedBox(
-                height: 50.h,
+                height: 0.h,
               ),
-              Align(
+
+              Container(
                 alignment: Alignment.bottomRight,
+                // height: 0.h,
+                width: 80,
                 child: ElevatedButton(
                   child: const Text('Finish Booking'),
-                  onPressed: () {
-                    bookSession(context);
-                  },
+                  onPressed: () => bookSession(context),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                        Theme.of(context).primaryColor),
+                  ),
                 ),
               ),
             ],
