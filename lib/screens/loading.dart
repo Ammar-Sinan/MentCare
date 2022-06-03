@@ -1,5 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
+=======
+import 'package:mentcare/screens/doctor_account_screen.dart';
+import 'package:mentcare/screens/doctor_dashboard.dart';
+import 'package:mentcare/screens/doctors_messages_screen.dart';
+>>>>>>> 454da7054adaa6ddd1338a934261752b05173c92
 import 'package:mentcare/screens/tabs_screen.dart';
 import 'package:provider/provider.dart';
 

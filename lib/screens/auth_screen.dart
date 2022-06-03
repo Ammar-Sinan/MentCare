@@ -79,9 +79,12 @@ class _AuthScreenState extends State<AuthScreen> {
             email: email, password: password);
         CollectionReference collectionReference =
             FirebaseFirestore.instance.collection("users");
-        collectionReference
-            .doc(authResult.user!.uid)
-            .set({'fullName': fullName, 'email': email, 'phoneNumber': ''});
+        collectionReference.doc(authResult.user!.uid).set({
+          'fullName': fullName,
+          'email': email,
+          'phoneNumber': '',
+          'profileImageUrl': ''
+        });
       }
     } on FirebaseAuthException catch (msg) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

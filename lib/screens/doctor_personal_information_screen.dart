@@ -1,8 +1,12 @@
+import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mentcare/providers/doctors_provider.dart';
 import 'package:mentcare/providers/user_provider.dart';
+import 'package:mentcare/widgets/edit_profile_image.dart';
 import 'package:provider/provider.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/settings_listtile.dart';
 
 class DoctorPersonalInformation extends StatefulWidget {
@@ -25,7 +29,7 @@ class DoctorPersonalInformationState extends State<DoctorPersonalInformation> {
       'title': 'Name',
       'icon': const Icon(Icons.account_circle_outlined),
       'subTitle': '',
-      'fireBaseName': 'fullName'
+      'fireBaseName': 'name'
     },
     {
       'title': 'Phone Number',
@@ -45,12 +49,41 @@ class DoctorPersonalInformationState extends State<DoctorPersonalInformation> {
       'subTitle': '',
       'fireBaseName': ''
     },
+    {
+      'title': 'Gender',
+      'icon': const Icon(Icons.male_outlined),
+      'subTitle': '',
+      'fireBaseName': 'gender'
+    },
+    {
+      'title': 'Date Of Birth',
+      'icon': const Icon(Icons.date_range_outlined),
+      'subTitle': '',
+      'fireBaseName': 'dateOfBirth'
+    },
+    {
+      'title': 'Clinic Location',
+      'icon': const Icon(Icons.location_on),
+      'subTitle': '',
+      'fireBaseName': 'clinicLocation'
+    },
+    {
+      'title': 'Education',
+      'icon': const Icon(Icons.password_outlined),
+      'subTitle': '',
+      'fireBaseName': 'university'
+    },
+    {
+      'title': 'speciality',
+      'icon': const Icon(Icons.password_outlined),
+      'subTitle': '',
+      'fireBaseName': 'specialisedIn'
+    },
   ];
 
   @override
   void initState() {
-   // ToDo
-    // getUserData();
+    getUserData();
     super.initState();
   }
 
@@ -58,9 +91,9 @@ class DoctorPersonalInformationState extends State<DoctorPersonalInformation> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+    final doctorId = FirebaseAuth.instance.currentUser!.uid;
 
-    // ToDo
-    // getUserData();
+    getUserData();
 
     ScreenUtil.init(
         BoxConstraints(
@@ -87,7 +120,34 @@ class DoctorPersonalInformationState extends State<DoctorPersonalInformation> {
           SizedBox(
             height: 32.h,
           ),
-          const CircleAvatar(),
+          GestureDetector(
+            child: FutureBuilder(
+                builder: (cnt, AsyncSnapshot snapshot) {
+                  if (snapshot.hasError || !snapshot.hasData) {
+                    return const CircularProgressIndicator();
+                  } else {
+                    if (snapshot.data!['profileImageUrl'] == '') {
+                      return const Text('add profile picture...');
+                    } else {
+                      return CircleAvatar(
+                      backgroundImage:
+                      NetworkImage(snapshot.data!['profileImageUrl']),
+                    );
+                    }
+                  }
+                },
+                future: FirebaseFirestore.instance
+                    .collection('doctors')
+                    .doc(doctorId)
+                    .get()),
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (cnt) => const SimpleDialog(children: [
+                    EditProfileImage('doctors'),
+                  ]));
+            },
+          ),
           SizedBox(
             height: 10.h,
           ),
@@ -99,21 +159,26 @@ class DoctorPersonalInformationState extends State<DoctorPersonalInformation> {
               subtitle: _settingsList[index]['subTitle'],
               fireBaseName: _settingsList[index]['fireBaseName'],
             ),
-            itemCount: 4,
+            itemCount: 9,
           )),
         ],
       ),
     );
   } // build
 
-  // ToDo
   void getUserData() async {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    await userProvider.fetchUserData();
-    dynamic user = userProvider.userData;
-    _settingsList[0]['subTitle'] = user['fullName'];
-    _settingsList[1]['subTitle'] = user['phoneNumber'];
-    _settingsList[2]['subTitle'] = user['email'];
+    final doctorProvider =
+        Provider.of<DoctorsDataProvider>(context, listen: false);
+    await doctorProvider.fetchDoctorData();
+    dynamic doctor = await doctorProvider.fetchDoctorData();
+    _settingsList[0]['subTitle'] = doctor['name'];
+    _settingsList[1]['subTitle'] = doctor['phoneNumber'];
+    _settingsList[2]['subTitle'] = doctor['email'];
+    _settingsList[4]['subTitle'] = doctor['gender'];
+    _settingsList[5]['subTitle'] = doctor['dateOfBirth'];
+    _settingsList[6]['subTitle'] = doctor['clinicLocation'];
+    _settingsList[7]['subTitle'] = doctor['university'];
+    _settingsList[8]['subTitle'] = doctor['specialisedIn'].toString();
 
     setState(() {});
   }

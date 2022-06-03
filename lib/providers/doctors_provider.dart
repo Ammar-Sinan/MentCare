@@ -153,6 +153,11 @@ class DoctorsDataProvider with ChangeNotifier {
         await FirebaseFirestore.instance.collection('doctors').doc(uid).get();
     return doctor['name'];
   }
+  Future<String> fetchDoctorNameFromUserInterface(String docotrId) async {
+    dynamic doctor =
+    await FirebaseFirestore.instance.collection('doctors').doc(docotrId).get();
+    return doctor['name'];
+  }
 
   // fetch the saved Drs
   Future<void> fetchUserSaved() async {
@@ -223,7 +228,18 @@ class DoctorsDataProvider with ChangeNotifier {
     notifyListeners();
   }
 
+<<<<<<< HEAD
   // book session method for users
+=======
+
+  Future<dynamic> fetchDoctorData() async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    return await FirebaseFirestore.instance.collection('doctors')
+        .doc(uid)
+        .get();
+  }
+
+>>>>>>> 454da7054adaa6ddd1338a934261752b05173c92
   Future<void> bookSession(BookedSessions sessionInfo) async {
     var bookedSessionInfo = {
       'id': sessionInfo.id,

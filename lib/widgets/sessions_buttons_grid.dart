@@ -23,6 +23,7 @@ class _SessionsButtonsGridState extends State<SessionsButtonsGrid> {
 
   @override
   void initState() {
+<<<<<<< HEAD
     fetchSessions();
     super.initState();
   }
@@ -30,6 +31,17 @@ class _SessionsButtonsGridState extends State<SessionsButtonsGrid> {
   Future<void> fetchSessions() async {
     await Provider.of<DoctorsDataProvider>(context, listen: false)
         .fetchSessions(widget.drId);
+=======
+   fetch();
+    super.initState();
+  }
+
+  /// Send the session data you get from here to the Booking.dart screen
+  /// And use it there in the form to save the session
+  void fetch () async
+  {
+    await Provider.of<DoctorsDataProvider>(context, listen: false).fetchSessions();
+>>>>>>> 454da7054adaa6ddd1338a934261752b05173c92
   }
 
   @override

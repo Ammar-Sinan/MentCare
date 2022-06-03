@@ -39,9 +39,9 @@ class DoctorCard extends StatelessWidget {
                 child: Column(
                   children: [
                     SizedBox(height: 40.h),
-                    Text(
+                    FittedBox(child: Text(
                       doctorInfo.name,
-                      style: Theme.of(context).textTheme.bodyText2,
+                      style: Theme.of(context).textTheme.bodyText2,),
                     ),
                     Text(doctorInfo.category,
                         style: Theme.of(context).textTheme.bodyText1),
