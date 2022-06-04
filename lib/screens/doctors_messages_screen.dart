@@ -50,9 +50,11 @@ class DoctorMessagesScreenState extends State<DoctorMessagesScreen> {
                                 snapshot.data!.docs[index]['userId']),
                             title: getUserNameWidget(
                                 snapshot.data!.docs[index]['userId']))),
-                    onTap: () {
+                    onTap: () async{
+                      final userName = await getUserName(snapshot.data!.docs[index]['userId']);
                       List IDs = [
-                        snapshot.data!.docs[index]['userName'],
+                        userName,
+                        //snapshot.data!.docs[index]['userName'],
                         snapshot.data!.docs[index]['chatId']
                       ];
                       Navigator.of(context)
@@ -102,7 +104,6 @@ class DoctorMessagesScreenState extends State<DoctorMessagesScreen> {
   Future<String> getUserName(userId) async {
     final user =
         await FirebaseFirestore.instance.collection('users').doc(userId).get();
-
     return user['fullName'];
   }
 

@@ -31,6 +31,8 @@ class _SavedDoctorsScreenState extends State<SavedDoctorsScreen> {
           'Saved specialists',
           style: TextStyle(fontSize: 19),
         ),
+        automaticallyImplyLeading: false,
+        centerTitle: true,
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())

@@ -109,7 +109,6 @@ class DoctorAccountScreenState extends State<DoctorAccountScreen> {
       isLoading = false;
     });
 
-    // ToDo
     name = await Provider.of<DoctorsDataProvider>(context, listen: false)
         .fetchDoctorName();
 

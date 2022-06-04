@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mentcare/screens/tabs_screen.dart';
 import 'package:mentcare/widgets/messages_display.dart';
 
 class ChattingScreen extends StatefulWidget {
@@ -40,9 +39,8 @@ class _ChattingScreenState extends State<ChattingScreen> {
       appBar: AppBar(
         title: Text(otherUserName),
         leading: IconButton(
-            onPressed: () => Navigator.of(context)
-                .pushReplacementNamed(TabsScreen.routeName),
-            icon: Icon(Icons.home)),
+            onPressed: () => Navigator.of(context).pop(),
+            icon: Icon(Icons.arrow_back)),
         actions: [],
         automaticallyImplyLeading: false,
       ),

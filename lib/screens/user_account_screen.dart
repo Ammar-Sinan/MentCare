@@ -109,9 +109,7 @@ class UserAccountScreenState extends State<UserAccountScreen> {
   }
 
   void getUserName() async {
-    // setState(() {
-    //   isLoading = false;
-    // });
+
     name = await Provider.of<UserProvider>(context).fetchUserName();
     setState(() {
       isLoading = false;

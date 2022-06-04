@@ -1,13 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../models/booked_sessions.dart';
+import '../screens/chatting_screen.dart';
 
 class BuildDashboardCard extends StatelessWidget {
   // Receiving index for the ternary expression for Card Color
   int index;
+
   BuildDashboardCard({required this.index});
 
   final DateFormat formatter = DateFormat('MM-dd, hh:mm a');
@@ -58,8 +62,10 @@ class BuildDashboardCard extends StatelessWidget {
                   itemBuilder: (context) => [
                     PopupMenuItem(
                       child: const Text('contact patient'),
-                      onTap:
-                          () {}, // get the patient id easily and navigate to PM
+                      onTap: () {
+                        goToChatScreen(bookedSession.userId,
+                            bookedSession.userName, context);
+                      }, // get the patient id easily and navigate to PM
                     ),
                     PopupMenuItem(
                       child: const Text('details'),
@@ -126,5 +132,47 @@ class BuildDashboardCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void goToChatScreen(String userId, String userName, BuildContext con) async {
+    String doctorId = FirebaseAuth.instance.currentUser!.uid;
+
+    final chatId =
+        userId.substring(0, 10) + doctorId.toString().substring(10, 20);
+
+    final cList = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('contactList')
+        .doc(doctorId);
+    final contact = await cList.get();
+
+    if (!contact.exists) {
+      await cList.set(
+        {
+          'doctorId': doctorId,
+          'chatId': chatId,
+          //'doctorName': doctorName
+        },
+      );
+    }
+    final uList = FirebaseFirestore.instance
+        .collection('doctors')
+        .doc(doctorId)
+        .collection('contactList')
+        .doc(userId);
+    final userContact = await uList.get();
+
+    if (!userContact.exists) {
+      await uList.set(
+        {
+          'userId': userId,
+          'chatId': chatId,
+          // 'userName': userName
+        },
+      );
+    }
+    List IDs = [userName, chatId];
+    Navigator.pushNamed(con, ChattingScreen.routeName, arguments: IDs);
   }
 }

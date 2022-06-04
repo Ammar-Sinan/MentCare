@@ -31,6 +31,8 @@ class MessagesScreenState extends State<MessagesScreen> {
             icon: const Icon(Icons.notifications_active_outlined),
           ),
         ],
+        automaticallyImplyLeading: false,
+        centerTitle: true,
       ),
       body: StreamBuilder(
         builder: (cnt, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -50,9 +52,10 @@ class MessagesScreenState extends State<MessagesScreen> {
                                 snapshot.data!.docs[index]['doctorId']),
                             title: getUserNameWidget(
                                 snapshot.data!.docs[index]['doctorId']))),
-                    onTap: () {
+                    onTap: () async{
+                      final doctorName = await getUserName(snapshot.data!.docs[index]['doctorId']);
                       List IDs = [
-                        snapshot.data!.docs[index]['doctorName'],
+                        doctorName,
                         snapshot.data!.docs[index]['chatId']
                       ];
                       Navigator.of(context)
@@ -106,7 +109,6 @@ class MessagesScreenState extends State<MessagesScreen> {
         .collection('doctors')
         .doc(doctorId)
         .get();
-
     return doctor['name'];
   }
 
