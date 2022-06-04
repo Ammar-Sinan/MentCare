@@ -21,22 +21,29 @@ class DoctorDetails extends StatefulWidget {
 class _DoctorDetailsState extends State<DoctorDetails> {
   Color iconColor = Colors.white;
   bool isSaved = false;
+  Icon? saveIcon;
   String doctorName = '';
   String userName = '';
+
   TextStyle textStyle =
       const TextStyle(fontSize: 19.2, fontWeight: FontWeight.w400);
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
 
   @override
   Widget build(BuildContext context) {
     final doctorId = ModalRoute.of(context)!.settings.arguments as String;
-    final doctorData = Provider.of<DoctorsDataProvider>(context, listen: false)
-        .findById(doctorId);
+
+    final doctorProvider =
+        Provider.of<DoctorsDataProvider>(context, listen: false);
+    final doctorData = doctorProvider.findById(doctorId);
+    final savedDoctorsIds = doctorProvider.savedDoctorsIds;
+
+    /// Check if Dr ID exist in savedDoctorsIds List to show the suitable Icon
+    bool isStored = savedDoctorsIds.contains(doctorId);
+    Icon isSaved = Icon(isStored ? Icons.turned_in : Icons.turned_in_not);
+
     fetchDoctorName(doctorId);
+    fetchUserName();
 
     return Scaffold(
       appBar: AppBar(
@@ -46,13 +53,13 @@ class _DoctorDetailsState extends State<DoctorDetails> {
           Builder(builder: (ctx) {
             return IconButton(
               onPressed: () async {
-                // setState(() {
-                //   isSaved = !isSaved;
-                // });
+                setState(() {
+                  isStored;
+                });
                 await Provider.of<DoctorsDataProvider>(context, listen: false)
                     .toggleSaveStatus(doctorId);
               },
-              icon: Icon(isSaved ? Icons.turned_in : Icons.turned_in_not),
+              icon: isSaved,
             );
           }),
         ],
@@ -75,12 +82,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                           SizedBox(
                             width: 48.w,
                           ),
-                          CircleAvatar(
-                            // profile picture
-                            radius: 48.r,
-                            backgroundColor:
-                                const Color.fromRGBO(22, 92, 144, 1.0),
-                          ),
+                          getProfilePicture(doctorId),
                           Container(
                             decoration: BoxDecoration(
                               borderRadius: const BorderRadius.all(
@@ -104,6 +106,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                                     .collection('contactList')
                                     .doc(doctorId);
                                 final contact = await cList.get();
+
 
                                 if (!contact.exists) {
                                   await cList.set(
@@ -131,7 +134,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                                   );
                                 }
                                 List IDs = [doctorName, chatId];
-                                Navigator.pushNamed(
+                                Navigator.pushReplacementNamed(
                                     context, ChattingScreen.routeName,
                                     arguments: IDs);
                               },
@@ -143,18 +146,29 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                         ],
                       ),
                       SizedBox(height: 16.h),
+                      // Doctor name
                       Text(
                         doctorData.name,
                         style: const TextStyle(
-                            fontSize: 26, fontWeight: FontWeight.w300),
+                            fontSize: 28, fontWeight: FontWeight.w400),
                       ),
                       SizedBox(height: 16.h),
                       Text(
                         doctorData.category,
                         style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600),
+                            fontSize: 20, fontWeight: FontWeight.w400),
                       ),
-                      SizedBox(height: 40.h),
+                      SizedBox(
+                        height: 12.h,
+                      ),
+                      Text(
+                        '${doctorData.price}\$/hour',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(height: 32.h),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -176,7 +190,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
               ],
             ),
             Positioned(
-              top: 350.h,
+              top: 370.h,
               left: 50.w,
               right: 50.w,
               child: SizedBox(
@@ -208,7 +222,11 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     'available sessions',
                     style: textStyle,
                   ),
-                  BuildSessionDates(),
+                  BuildSessionDates(
+                    id: doctorId,
+                    price: doctorData.price,
+                    doctorName: doctorData.name,
+                  ),
                   SizedBox(height: 16.h),
                   Text(
                     'specialised in',
@@ -280,14 +298,47 @@ class _DoctorDetailsState extends State<DoctorDetails> {
     userName =
         await Provider.of<UserProvider>(context, listen: false).fetchUserName();
   }
+
+  Widget getProfilePicture(String doctorId) {
+    return FutureBuilder(
+      builder: (cnt, AsyncSnapshot snapshot) {
+        if (snapshot.hasError || !snapshot.hasData)
+          return CircularProgressIndicator();
+        else if (snapshot.data == '')
+          return CircleAvatar(
+            radius: 32,
+            backgroundColor: Colors.grey,
+          );
+        else
+          return CircleAvatar(
+            radius: 50.r,
+            backgroundColor: Colors.grey,
+            backgroundImage: NetworkImage(snapshot.data),
+          );
+      },
+      future: getProfilePictureUrl(doctorId),
+    );
+  }
+
+  Future<String> getProfilePictureUrl(userId) async {
+    final user = await FirebaseFirestore.instance
+        .collection('doctors')
+        .doc(userId)
+        .get();
+
+    return user['profileImageUrl'];
+  }
 }
 
 /// Build / Booking - Location Buttons
 
 class BuildSessionDates extends StatefulWidget {
   //const BuildSessionDates({Key? key}) : super(key: key);
-  // String id;
-  // BuildSessionDates(this.id);
+  final String id;
+  final String price;
+  final String doctorName;
+  const BuildSessionDates(
+      {required this.id, required this.price, required this.doctorName});
 
   @override
   State<BuildSessionDates> createState() => _BuildSessionDatesState();
@@ -296,25 +347,22 @@ class BuildSessionDates extends StatefulWidget {
 class _BuildSessionDatesState extends State<BuildSessionDates> {
   @override
   Widget build(BuildContext context) {
-    //final doctorId = ModalRoute.of(context)!.settings.arguments as String;
-
     return ExpansionTile(
-      backgroundColor: const Color.fromARGB(255, 244, 244, 244),
-      textColor: const Color.fromRGBO(22, 92, 144, 1),
-      collapsedBackgroundColor: const Color.fromARGB(24, 38, 150, 235),
-      iconColor: const Color.fromRGBO(22, 92, 144, 1),
+      backgroundColor: const Color(0xFFF4F4F4),
+      textColor: const Color(0xFF165C90),
+      collapsedBackgroundColor: const Color(0x172696EB),
+      iconColor: const Color(0xFF165C90),
       title: const Text(
         'Sessions',
         style: TextStyle(fontSize: 16),
       ),
       trailing: const Icon(Icons.arrow_drop_down_circle),
-      onExpansionChanged: (_) {
-        // setState(() {
-        //   _customTileExpanded = expanded;
-        // });
-      },
       children: [
-        SessionsButtonsGrid(),
+        SessionsButtonsGrid(
+          drId: widget.id,
+          price: widget.price,
+          name: widget.doctorName,
+        ),
       ],
     );
   }

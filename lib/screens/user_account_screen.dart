@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mentcare/providers/user_provider.dart';
 import 'package:provider/provider.dart';
+
+import '../providers/user_provider.dart';
+import '../screens/scheduled_session_screen.dart';
 
 import '../widgets/user_account_listtile.dart';
 
@@ -31,7 +33,7 @@ class UserAccountScreenState extends State<UserAccountScreen> {
     {
       'title': 'Scheduled sessions',
       'icon': Icon(Icons.schedule_outlined),
-      'route': 'ROUTE3',
+      'route': ScheduledSessionsScreen.routeName,
       'id': '03'
     },
     {
@@ -40,16 +42,10 @@ class UserAccountScreenState extends State<UserAccountScreen> {
       'route': 'ROUTE4',
       'id': '04'
     },
-    {
-      'title': 'Notifications',
-      'icon': Icon(Icons.notifications_active),
-      'route': 'ROUTE5',
-      'id': '05'
-    },
   ];
 
   String name = '';
-  bool isLoading = false;
+  bool isLoading = true;
 
   @override
   Widget build(BuildContext context) {
@@ -88,14 +84,14 @@ class UserAccountScreenState extends State<UserAccountScreen> {
           Expanded(
             child: ListView.builder(
               itemBuilder: (con, index) => SettingsListTile(
-                  title: _settingsList[index]['title'],
-                  icon: _settingsList[index]['icon'],
-                  route: _settingsList[index]['route'],
-                  id: _settingsList[index]['id']),
-              itemCount: 5,
+                title: _settingsList[index]['title'],
+                icon: _settingsList[index]['icon'],
+                route: _settingsList[index]['route'],
+                id: _settingsList[index]['id'],
+              ),
+              itemCount: _settingsList.length,
             ),
           ),
-
           Align(
             child: ListTile(
               title: const Text("Log out"),
@@ -105,21 +101,20 @@ class UserAccountScreenState extends State<UserAccountScreen> {
               ),
               onTap: () => FirebaseAuth.instance.signOut(),
             ),
-            alignment: Alignment.topRight, )
-
+            alignment: Alignment.topRight,
+          )
         ],
       ),
     );
   }
 
   void getUserName() async {
+    // setState(() {
+    //   isLoading = false;
+    // });
+    name = await Provider.of<UserProvider>(context).fetchUserName();
     setState(() {
       isLoading = false;
-    });
-    name =
-        await Provider.of<UserProvider>(context, listen: false).fetchUserName();
-    setState(() {
-      isLoading = true;
     });
   }
 }

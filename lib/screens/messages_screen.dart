@@ -35,24 +35,21 @@ class MessagesScreenState extends State<MessagesScreen> {
       body: StreamBuilder(
         builder: (cnt, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError || !snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator(),);
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           } else {
             return ListView.builder(
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     child: Container(
-                      margin: EdgeInsets.all(10),
-                      child:
-                          ListTile(
-                            leading: CircleAvatar(),
-                            title: Text(
-                              snapshot.data!.docs[index]['doctorName'],
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          )
-
-                    ),
+                        margin: EdgeInsets.all(10),
+                        child: ListTile(
+                            leading: getProfilePicture(
+                                snapshot.data!.docs[index]['doctorId']),
+                            title: getUserNameWidget(
+                                snapshot.data!.docs[index]['doctorId']))),
                     onTap: () {
                       List IDs = [
                         snapshot.data!.docs[index]['doctorName'],
@@ -71,6 +68,57 @@ class MessagesScreenState extends State<MessagesScreen> {
             .collection('contactList')
             .snapshots(),
       ),
+    );
+  }
+
+  Widget getProfilePicture(String doctorId) {
+    return FutureBuilder(
+      builder: (cnt, AsyncSnapshot snapshot) {
+        if (snapshot.hasError || !snapshot.hasData)
+          return CircularProgressIndicator();
+        else if (snapshot.data == '')
+          return CircleAvatar(
+            radius: 32,
+            backgroundColor: Colors.grey,
+          );
+        else
+          return CircleAvatar(
+            radius: 32,
+            backgroundColor: Colors.grey,
+            backgroundImage: NetworkImage(snapshot.data),
+          );
+      },
+      future: getProfilePictureUrl(doctorId),
+    );
+  }
+
+  Future<String> getProfilePictureUrl(doctorId) async {
+    final doctor = await FirebaseFirestore.instance
+        .collection('doctors')
+        .doc(doctorId)
+        .get();
+
+    return doctor['profileImageUrl'];
+  }
+
+  Future<String> getUserName(doctorId) async {
+    final doctor = await FirebaseFirestore.instance
+        .collection('doctors')
+        .doc(doctorId)
+        .get();
+
+    return doctor['name'];
+  }
+
+  Widget getUserNameWidget(String doctorId) {
+    return FutureBuilder(
+      builder: (cnt, AsyncSnapshot snapshot) {
+        if (snapshot.hasError || !snapshot.hasData)
+          return LinearProgressIndicator();
+        else
+          return Text(snapshot.data);
+      },
+      future: getUserName(doctorId),
     );
   }
 }

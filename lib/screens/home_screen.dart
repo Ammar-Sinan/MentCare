@@ -8,6 +8,7 @@ import '../widgets/dr_card_home.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+  static const String routeName = 'homeScreen';
 
   @override
   State createState() {

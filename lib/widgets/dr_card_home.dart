@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,10 +42,16 @@ class DoctorCard extends StatelessWidget {
                     SizedBox(height: 40.h),
                     FittedBox(child: Text(
                       doctorInfo.name,
-                      style: Theme.of(context).textTheme.bodyText2,),
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .bodyText2,),
                     ),
                     Text(doctorInfo.category,
-                        style: Theme.of(context).textTheme.bodyText1),
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyText1),
                     SizedBox(height: 8.h),
                     Text(
                       '${doctorInfo.price} JOD',
@@ -66,7 +73,9 @@ class DoctorCard extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            primary: Theme.of(context).primaryColor),
+                            primary: Theme
+                                .of(context)
+                                .primaryColor),
                       ),
                     ),
                   ],
@@ -75,12 +84,21 @@ class DoctorCard extends StatelessWidget {
             ],
           ),
           Positioned(
-            left: 55.w,
-            top: 0,
-            child: CircleAvatar(
-              radius: 32.r,
-              backgroundColor: Colors.blue,
-            ),
+              left: 55.w,
+              top: 0,
+              child:
+              FutureBuilder(builder: (cnt, AsyncSnapshot snapshot) {
+                if (!snapshot.hasData || snapshot.hasError)
+                  {
+                    return CircularProgressIndicator();
+                  }
+                else
+                return CircleAvatar(
+                  radius: 32.r,
+                  backgroundImage: NetworkImage(snapshot.data!['profileImageUrl']),
+                  backgroundColor: Colors.blue,
+                );
+              }, future: FirebaseFirestore.instance.collection("doctors").doc(doctorInfo.id).get(),)
           ),
         ],
       ),

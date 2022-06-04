@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/sessions_buttons_grid.dart';
-
 /// Building the Book and Location Buttons in Dr. Details Screen
 class Buttons extends StatelessWidget {
   const Buttons({
@@ -48,8 +46,8 @@ class Buttons extends StatelessWidget {
                             return SizedBox(
                               height: 450,
                               child: ListView(
-                                children: [
-                                  SessionsButtonsGrid(),
+                                children: const [
+                                  // SessionsButtonsGrid(),
                                 ],
                               ),
                             );

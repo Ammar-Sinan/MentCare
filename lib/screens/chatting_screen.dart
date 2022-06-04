@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mentcare/screens/tabs_screen.dart';
 import 'package:mentcare/widgets/messages_display.dart';
 
 class ChattingScreen extends StatefulWidget {
@@ -12,7 +13,7 @@ class ChattingScreen extends StatefulWidget {
 }
 
 class _ChattingScreenState extends State<ChattingScreen> {
-  bool isLoading = true;
+  //bool isLoading = true;
   late final otherUserName;
   late final chatId;
   bool isDoctor = false;
@@ -20,20 +21,13 @@ class _ChattingScreenState extends State<ChattingScreen> {
 
   @override
   void didChangeDependencies() {
-    setState(() {
-      isLoading = true;
-    });
     fetchIsDoctor();
 
     List IDs = ModalRoute.of(context)!.settings.arguments as List;
 
     otherUserName = IDs[0];
     chatId = IDs[1];
-    setState(() {
-      if (otherUserName != null) {
-        isLoading = false;
-      }
-    });
+
     super.didChangeDependencies();
   }
 
@@ -45,12 +39,18 @@ class _ChattingScreenState extends State<ChattingScreen> {
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         title: Text(otherUserName),
+        leading: IconButton(
+            onPressed: () => Navigator.of(context)
+                .pushReplacementNamed(TabsScreen.routeName),
+            icon: Icon(Icons.home)),
+        actions: [],
+        automaticallyImplyLeading: false,
       ),
       body: Column(
         children: [
           Expanded(
             child: Container(
-                padding: EdgeInsets.all(10), child: MessagesDisplay(chatId,isDoctor)),
+                padding: EdgeInsets.all(10), child: MessagesDisplay(chatId)),
           ),
           Container(
             decoration: BoxDecoration(
@@ -104,5 +104,12 @@ class _ChattingScreenState extends State<ChattingScreen> {
     } else {
       isDoctor = false;
     }
+  }
+
+  @override
+  void dispose() {
+    _message.clear();
+    _message.dispose();
+    super.dispose();
   }
 }

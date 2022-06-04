@@ -56,7 +56,7 @@ class _EditProfileImageState extends State<EditProfileImage> {
 
   void pickImage(ImageSource imageSource, String collectionName) async {
     ImagePicker imagePicker = ImagePicker();
-    XFile? xFile = await imagePicker.pickImage(source: imageSource);
+    XFile? xFile = await imagePicker.pickImage(source: imageSource,imageQuality: 100,maxWidth: 200,maxHeight: 200);
     if (xFile == null) return;
 
     final profileImage = File(xFile.path);

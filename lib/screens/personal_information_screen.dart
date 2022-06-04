@@ -98,9 +98,13 @@ class PersonalInformationState extends State<PersonalInformation> {
                     if (snapshot.data!['profileImageUrl'] == '') {
                       return const Text('add profile picture...');
                     } else {
-                      return CircleAvatar(
-                        backgroundImage:
-                            NetworkImage(snapshot.data!['profileImageUrl']),
+                      return SizedBox(
+                        width: 100.w,
+                        height: 100.h,
+                        child: CircleAvatar(
+                          backgroundImage:
+                              NetworkImage(snapshot.data!['profileImageUrl']),
+                        ),
                       );
                     }
                   }

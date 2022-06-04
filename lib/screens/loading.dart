@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:mentcare/screens/doctor_account_screen.dart';
-import 'package:mentcare/screens/doctor_dashboard.dart';
-import 'package:mentcare/screens/doctors_messages_screen.dart';
 import 'package:mentcare/screens/tabs_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/user_provider.dart';
+import '../screens/doctor_tabs_screen.dart';
 
 class Loading extends StatefulWidget {
   const Loading({Key? key}) : super(key: key);
@@ -30,7 +28,7 @@ class _LoadingState extends State<Loading> {
     return isLoading
         ? const Center(child: CircularProgressIndicator())
         : isExist
-            ? const DoctorAccountScreen()
+            ? const DrTabsScreen()
             : const TabsScreen();
   }
 

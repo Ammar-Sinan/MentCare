@@ -1,6 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DoctorData with ChangeNotifier {
   final String id;
@@ -24,6 +24,7 @@ class DoctorData with ChangeNotifier {
     this.isSaved = false,
   });
 
+
   Future<void> saveDoctor(String doctorId) async {
     final oldStatus = isSaved;
     isSaved = !isSaved;
@@ -36,5 +37,6 @@ class DoctorData with ChangeNotifier {
     var docId = docSnap.reference.id;
     print(docId);
   }
+
 
 }

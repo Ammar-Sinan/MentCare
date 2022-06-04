@@ -7,6 +7,7 @@ import 'package:mentcare/screens/auth_screen.dart';
 import 'package:mentcare/screens/card_auth.dart';
 import 'package:mentcare/screens/chatting_screen.dart';
 import 'package:mentcare/screens/doctor_personal_information_screen.dart';
+import 'package:mentcare/screens/home_screen.dart';
 import 'package:mentcare/screens/pre_auth_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +19,12 @@ import './screens/personal_information_screen.dart';
 import './screens/previous_sessions_screen.dart';
 import './screens/tabs_screen.dart';
 import './screens/user_account_screen.dart';
+import './screens/scheduled_session_screen.dart';
+import './screens/doctor_dashboard.dart';
+import './screens/doctor_tabs_screen.dart';
+import './screens/add_appointment_screen.dart';
+import './screens/doctor_all_sessions_screen.dart';
+import './screens/doctor_previous_sessions.dart';
 import 'providers/login_prov.dart';
 import 'screens/personal_information_screen.dart';
 
@@ -101,7 +108,14 @@ class MyApp extends StatelessWidget {
           DoctorPersonalInformation.routeName: (c) =>
               const DoctorPersonalInformation(),
           BookingScreen.routeName: (ctx) => BookingScreen(),
+          ScheduledSessionsScreen.routeName: (ctx) => ScheduledSessionsScreen(),
+          DoctorDashboard.routeName: (ctx) => DoctorDashboard(),
+          DrTabsScreen.routeName: (ctx) => const DrTabsScreen(),
+          AddAppointment.routeName: (ctx) => const AddAppointment(),
+          DoctorAllSessions.routeName: (ctx) => const DoctorAllSessions(),
+          DoctorPreviousSessions.routeName: (ctx) => DoctorPreviousSessions(),
           ChattingScreen.routeName: (cnt) => const ChattingScreen(),
+          HomeScreen.routeName: (cnt) => const HomeScreen()
         },
       ),
     );

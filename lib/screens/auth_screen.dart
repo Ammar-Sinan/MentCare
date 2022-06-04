@@ -36,7 +36,7 @@ class _AuthScreenState extends State<AuthScreen> {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (con, snapshot) {
           if (snapshot.hasData) {
-            return Loading();
+            return const Loading();
           } else {
             return GestureDetector(
               onTap: () => FocusScope.of(context).unfocus(),

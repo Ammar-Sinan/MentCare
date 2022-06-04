@@ -1,11 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mentcare/providers/doctors_provider.dart';
-import 'package:mentcare/providers/user_provider.dart';
+import 'package:mentcare/screens/doctor_previous_sessions.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../widgets/user_account_listtile.dart';
+
+import '../providers/doctors_provider.dart';
+
+import '../screens/doctor_all_sessions_screen.dart';
 
 class DoctorAccountScreen extends StatefulWidget {
   const DoctorAccountScreen({Key? key}) : super(key: key);
@@ -24,27 +27,21 @@ class DoctorAccountScreenState extends State<DoctorAccountScreen> {
       'id': '01'
     },
     {
-      'title': 'Scheduled sessions',
+      'title': 'Unbooked sessions',
       'icon': Icon(Icons.schedule_outlined),
-      'route': 'ROUTE3',
+      'route': DoctorAllSessions.routeName,
       'id': '02'
     },
     {
       'title': 'Previous sessions',
       'icon': Icon(Icons.swap_horizontal_circle_outlined),
-      'route': 'ROUTE4',
+      'route': DoctorPreviousSessions.routeName,
       'id': '03'
-    },
-    {
-      'title': 'Notifications',
-      'icon': Icon(Icons.notifications_active),
-      'route': 'ROUTE5',
-      'id': '04'
     },
   ];
 
   String name = '';
-  bool isLoading = false;
+  bool isLoading = true;
 
   @override
   Widget build(BuildContext context) {
@@ -83,11 +80,12 @@ class DoctorAccountScreenState extends State<DoctorAccountScreen> {
           Expanded(
             child:  ListView.builder(
               itemBuilder: (con, index) => SettingsListTile(
-                  title: _settingsList[index]['title'],
-                  icon: _settingsList[index]['icon'],
-                  route: _settingsList[index]['route'],
-                  id: _settingsList[index]['id']),
-              itemCount: 4,
+                title: _settingsList[index]['title'],
+                icon: _settingsList[index]['icon'],
+                route: _settingsList[index]['route'],
+                id: _settingsList[index]['id'],
+              ),
+              itemCount: _settingsList.length,
             ),
           ),
           Align(
@@ -111,8 +109,10 @@ class DoctorAccountScreenState extends State<DoctorAccountScreen> {
       isLoading = false;
     });
 
-    name =
-        await Provider.of<DoctorsDataProvider>(context, listen: false).fetchDoctorName();
+    // ToDo
+    name = await Provider.of<DoctorsDataProvider>(context, listen: false)
+        .fetchDoctorName();
+
     setState(() {
       isLoading = true;
     });

@@ -1,12 +1,11 @@
-import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mentcare/providers/doctors_provider.dart';
-import 'package:mentcare/providers/user_provider.dart';
 import 'package:mentcare/widgets/edit_profile_image.dart';
 import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../widgets/settings_listtile.dart';
 
 class DoctorPersonalInformation extends StatefulWidget {
@@ -129,10 +128,14 @@ class DoctorPersonalInformationState extends State<DoctorPersonalInformation> {
                     if (snapshot.data!['profileImageUrl'] == '') {
                       return const Text('add profile picture...');
                     } else {
-                      return CircleAvatar(
-                      backgroundImage:
-                      NetworkImage(snapshot.data!['profileImageUrl']),
-                    );
+                      return SizedBox(
+                        height: 100.h,
+                        width: 100.w,
+                        child: CircleAvatar(
+                          backgroundImage:
+                              NetworkImage(snapshot.data!['profileImageUrl']),
+                        ),
+                      );
                     }
                   }
                 },
@@ -144,8 +147,8 @@ class DoctorPersonalInformationState extends State<DoctorPersonalInformation> {
               showDialog(
                   context: context,
                   builder: (cnt) => const SimpleDialog(children: [
-                    EditProfileImage('doctors'),
-                  ]));
+                        EditProfileImage('doctors'),
+                      ]));
             },
           ),
           SizedBox(

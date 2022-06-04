@@ -5,9 +5,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../models/booked_sessions.dart';
+
 class UserProvider extends ChangeNotifier {
+  final List<BookedSessions> _bookedSessions = [];
+
   dynamic user;
   String profileImage='';
+
+  List<BookedSessions> get bookedSessions {
+    return [..._bookedSessions];
+  }
 
   Future<void> fetchUserData() async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
@@ -25,6 +33,7 @@ class UserProvider extends ChangeNotifier {
   }
 
   Future<void> updateField(
+
       String userID, String fireBaseName, String input, String userRole) async {
     await FirebaseFirestore.instance
         .collection(userRole)
@@ -76,4 +85,12 @@ class UserProvider extends ChangeNotifier {
   // }
 
   dynamic get userData => user;
+
+  Future<String> fetchDoctorName(String doctorId) async {
+    final doctorName = await FirebaseFirestore.instance
+        .collection('doctors')
+        .doc(doctorId)
+        .get();
+    return doctorName['name'];
+  }
 }

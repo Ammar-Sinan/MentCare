@@ -1,9 +1,7 @@
 class SessionData {
-  final String id;
+  String id;
   final DateTime dateAndTime;
+  bool? isBooked;
 
-  SessionData({
-    required this.id,
-    required this.dateAndTime,
-  });
+  SessionData({required this.id, required this.dateAndTime, this.isBooked});
 }
