@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mentcare/providers/user_provider.dart';
 import 'package:mentcare/screens/add_card_screen.dart';
+import 'package:mentcare/screens/add_payment_screen.dart';
 import 'package:mentcare/screens/auth_screen.dart';
 import 'package:mentcare/screens/card_auth.dart';
 import 'package:mentcare/screens/chatting_screen.dart';
@@ -115,7 +116,8 @@ class MyApp extends StatelessWidget {
           DoctorAllSessions.routeName: (ctx) => const DoctorAllSessions(),
           DoctorPreviousSessions.routeName: (ctx) => DoctorPreviousSessions(),
           ChattingScreen.routeName: (cnt) => const ChattingScreen(),
-          HomeScreen.routeName: (cnt) => const HomeScreen()
+          HomeScreen.routeName: (cnt) => const HomeScreen(),
+          AddPaymentScreen.routeName: (cnt) => AddPaymentScreen()
         },
       ),
     );

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mentcare/models/booked_sessions.dart';
 import 'package:intl/intl.dart';
+import 'package:mentcare/screens/add_card_screen.dart';
+import 'package:mentcare/screens/add_payment_screen.dart';
 
 import 'package:provider/provider.dart';
 
@@ -247,7 +249,7 @@ class _BookingScreenState extends State<BookingScreen> {
               Align(
                 alignment: Alignment.bottomLeft,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () => Navigator.of(context).pushNamed(AddCard.routeName),
                   child: Text(
                     'Add payment method',
                     style: TextStyle(

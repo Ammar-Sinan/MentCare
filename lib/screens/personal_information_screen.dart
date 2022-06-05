@@ -116,9 +116,11 @@ class PersonalInformationState extends State<PersonalInformation> {
             onTap: () {
               showDialog(
                   context: context,
-                  builder: (cnt) => const SimpleDialog(children: [
-                        EditProfileImage('users'),
-                      ]));
+                  builder: (cnt) => const SimpleDialog(
+                        children: [
+                          EditProfileImage('users'),
+                        ],
+                      ));
             },
           ),
           SizedBox(

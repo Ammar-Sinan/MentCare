@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:mentcare/providers/doctors_provider.dart';
 import 'package:mentcare/providers/user_provider.dart';
@@ -45,6 +46,18 @@ class SettingsListTileState extends State<SettingsListTile> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(width, height),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
+
     var doctor;
     List specialityList = [];
     String specText = '';
@@ -92,129 +105,131 @@ class SettingsListTileState extends State<SettingsListTile> {
                     specialityList = doctor['specialisedIn'];
 
                     showDialog(
-                        context: context,
-                        builder: (cnt) => Dialog(
-                            child: StatefulBuilder(
-                                builder: (context, setState) => Column(
+                      context: context,
+                      builder: (cnt) => Dialog(
+                        child: Container(
+                          child: StatefulBuilder(
+                            builder: (context, setState) => Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 150,
+                                      child: TextField(
+                                        decoration: const InputDecoration(
+                                            hintText: 'add a speciality...'),
+                                        controller: _controller,
+                                      ),
+                                    ),
+                                    IconButton(
+                                        onPressed: () {
+                                          final add = [];
+                                          add.add(_controller.text);
+                                          FirebaseFirestore.instance
+                                              .collection('doctors')
+                                              .doc(doctor['id'])
+                                              .update({
+                                            'specialisedIn':
+                                                FieldValue.arrayUnion(add)
+                                          });
+                                          setState(() {
+                                            specialityList
+                                                .add(_controller.text);
+                                          });
+                                          _controller.clear();
+                                        },
+                                        icon: const Icon(Icons.add))
+                                  ],
+                                ),
+                                Expanded(
+                                    child: ListView.builder(
+                                  itemBuilder: (cnt, index) {
+                                    return Row(
                                       children: [
-                                        Row(
-                                          children: [
-                                            SizedBox(
-                                              width: 150,
-                                              child: TextField(
-                                                decoration: const InputDecoration(
-                                                    hintText:
-                                                        'add a speciality...'),
-                                                controller: _controller,
-                                              ),
-                                            ),
-                                            IconButton(
-                                                onPressed: () {
-                                                  final add = [];
-                                                  add.add(_controller.text);
-                                                  FirebaseFirestore.instance
-                                                      .collection('doctors')
-                                                      .doc(doctor['id'])
-                                                      .update({
-                                                    'specialisedIn':
-                                                        FieldValue.arrayUnion(
-                                                            add)
-                                                  });
-                                                  setState(() {
-                                                    specialityList
-                                                        .add(_controller.text);
-                                                  });
-                                                  _controller.clear();
-                                                },
-                                                icon: const Icon(Icons.add))
-                                          ],
+                                        SizedBox(
+                                          width: 100.w,
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                                hintText:
+                                                    specialityList[index]),
+                                            onChanged: (value) =>
+                                                specText = value,
+                                          ),
                                         ),
-                                        Expanded(
-                                            child: ListView.builder(
-                                          itemBuilder: (cnt, index) {
-                                            return Row(
-                                              children: [
-                                                SizedBox(
-                                                  width: 100,
-                                                  child: TextField(
-                                                    decoration: InputDecoration(
-                                                        hintText:
-                                                            specialityList[
-                                                                index]),
-                                                    onChanged: (value) =>
-                                                        specText = value,
-                                                  ),
-                                                ),
-                                                IconButton(
-                                                    onPressed: () {
-                                                      final deleted = [];
-                                                      deleted.add(
-                                                          specialityList[
-                                                              index]);
-                                                      final add = [];
-                                                      add.add(specText);
+                                        IconButton(
+                                            onPressed: () {
+                                              final deleted = [];
+                                              deleted
+                                                  .add(specialityList[index]);
+                                              final add = [];
+                                              add.add(specText);
 
-                                                      FirebaseFirestore.instance
-                                                          .collection('doctors')
-                                                          .doc(doctor['id'])
-                                                          .update({
-                                                        'specialisedIn':
-                                                            FieldValue
-                                                                .arrayRemove(
-                                                                    deleted)
-                                                      });
+                                              FirebaseFirestore.instance
+                                                  .collection('doctors')
+                                                  .doc(doctor['id'])
+                                                  .update({
+                                                'specialisedIn':
+                                                    FieldValue.arrayRemove(
+                                                        deleted)
+                                              });
 
-                                                      FirebaseFirestore.instance
-                                                          .collection('doctors')
-                                                          .doc(doctor['id'])
-                                                          .update({
-                                                        'specialisedIn':
-                                                            FieldValue
-                                                                .arrayUnion(add)
-                                                      });
-                                                    },
-                                                    icon:
-                                                        const Icon(Icons.save)),
-                                                IconButton(
-                                                    onPressed: () {
-                                                      final deleted = [];
-                                                      deleted.add(
-                                                          specialityList[
-                                                              index]);
-                                                      FirebaseFirestore.instance
-                                                          .collection('doctors')
-                                                          .doc(doctor['id'])
-                                                          .update({
-                                                        'specialisedIn':
-                                                            FieldValue
-                                                                .arrayRemove(
-                                                                    deleted)
-                                                      });
-                                                      setState(() {
-                                                        specialityList
-                                                            .removeAt(index);
-                                                      });
-                                                    },
-                                                    icon: Icon(Icons.delete))
-                                              ],
-                                            );
-                                          },
-                                          itemCount: specialityList.length,
-                                        ))
+                                              FirebaseFirestore.instance
+                                                  .collection('doctors')
+                                                  .doc(doctor['id'])
+                                                  .update({
+                                                'specialisedIn':
+                                                    FieldValue.arrayUnion(add)
+                                              });
+                                            },
+                                            icon: const Icon(Icons.save)),
+                                        IconButton(
+                                            onPressed: () {
+                                              final deleted = [];
+                                              deleted
+                                                  .add(specialityList[index]);
+                                              FirebaseFirestore.instance
+                                                  .collection('doctors')
+                                                  .doc(doctor['id'])
+                                                  .update({
+                                                'specialisedIn':
+                                                    FieldValue.arrayRemove(
+                                                        deleted)
+                                              });
+                                              setState(() {
+                                                specialityList.removeAt(index);
+                                              });
+                                            },
+                                            icon: Icon(Icons.delete))
                                       ],
-                                    ))));
+                                    );
+                                  },
+                                  itemCount: specialityList.length,
+                                ))
+                              ],
+                            ),
+                          ),
+                          padding: EdgeInsets.all(20.h),
+                        ),
+                        
+                      ),
+                    );
                   } else {
                     showDialog(
                         context: context,
                         builder: (cnt) => Dialog(
-                                child: Column(
-                              children: [
-                                Text(widget.title),
-                                Form(
+                                child: Container(
+                              child: Column(
+                                children: [
+                                  Text(widget.title),
+                                  SizedBox(
+                                    height: 20.h,
+                                  ),
+                                  Form(
                                     key: _formKey,
                                     child: TextFormField(
                                       decoration: InputDecoration(
-                                          hintText: widget.subtitle),
+                                          hintText: widget.subtitle,
+                                          contentPadding: EdgeInsets.all(10.h)),
                                       onSaved: (value) => input = value!,
                                       validator: widget.title == 'Name'
                                           ? (value) {
@@ -239,13 +254,19 @@ class SettingsListTileState extends State<SettingsListTile> {
                                               }
                                               return null;
                                             },
-                                    )),
-                                ElevatedButton(
-                                    onPressed: () async {
-                                      _submit();
-                                    },
-                                    child: const Text('save'))
-                              ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 25.h,
+                                  ),
+                                  ElevatedButton(
+                                      onPressed: () async {
+                                        _submit();
+                                      },
+                                      child: const Text('save'))
+                                ],
+                              ),
+                              padding: EdgeInsets.all(20.h),
                             )));
                   }
                 },
@@ -258,52 +279,108 @@ class SettingsListTileState extends State<SettingsListTile> {
                       context: context,
                       builder: (cnt) => SingleChildScrollView(
                             child: Dialog(
-                                child: Column(
-                              children: [
-                                Text(widget.title),
-                                Form(
-                                    key: _passwordFormKey,
-                                    child: Column(
-                                      children: [
-                                        const Text(
-                                            'enter your current password'),
-                                        TextFormField(
-                                          decoration: InputDecoration(
-                                              hintText: widget.subtitle),
-                                          validator: (value) {
-                                            if (value == null ||
-                                                value.isEmpty) {
-                                              return "please enter your password";
-                                            }
-                                            if (value.length < 8) {
-                                              return "too short!";
-                                            }
-                                            return null;
-                                          },
-                                          onSaved: (value) => input = value!,
-                                        ),
-                                        const Text('enter the new password'),
-                                        TextFormField(
-                                          decoration: InputDecoration(
-                                              hintText: widget.subtitle),
-                                          validator: (value) {
-                                            if (value == null ||
-                                                value.isEmpty) {
-                                              return "please enter your password";
-                                            }
-                                            if (value.length < 8) {
-                                              return "too short!";
-                                            }
-                                            return null;
-                                          },
-                                          onSaved: (value) => password = value!,
-                                        )
-                                      ],
-                                    )),
-                                ElevatedButton(
-                                    onPressed: () => _changePassword(),
-                                    child: const Text('save'))
-                              ],
+                                child: Container(
+                              child: Column(
+                                children: [
+                                  Text(widget.title),
+                                  SizedBox(
+                                    height: 20.h,
+                                  ),
+                                  Form(
+                                      key: _passwordFormKey,
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            'enter your current password',
+                                            style: TextStyle(fontSize: 16.sp),
+                                          ),
+                                          SizedBox(
+                                            height: 10.h,
+                                          ),
+                                          TextFormField(
+                                            decoration: InputDecoration(
+                                              hintText: widget.subtitle,
+                                              contentPadding:
+                                                  EdgeInsets.all(10.w),
+                                              border: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(10),
+                                                ),
+                                              ),
+                                              focusColor: Theme.of(context)
+                                                  .primaryColor,
+                                              prefixIcon: Icon(
+                                                Icons.password_outlined,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                              ),
+                                            ),
+                                            obscureText: true,
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return "please enter your password";
+                                              }
+                                              if (value.length < 8) {
+                                                return "too short!";
+                                              }
+                                              return null;
+                                            },
+                                            onSaved: (value) => input = value!,
+                                          ),
+                                          SizedBox(
+                                            height: 15.h,
+                                          ),
+                                          Text(
+                                            'enter the new password',
+                                            style: TextStyle(fontSize: 16.sp),
+                                          ),
+                                          SizedBox(
+                                            height: 10.h,
+                                          ),
+                                          TextFormField(
+                                            decoration: InputDecoration(
+                                              hintText: widget.subtitle,
+                                              contentPadding:
+                                                  EdgeInsets.all(10.w),
+                                              border: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(10),
+                                                ),
+                                              ),
+                                              focusColor: Theme.of(context)
+                                                  .primaryColor,
+                                              prefixIcon: Icon(
+                                                Icons.password_outlined,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                              ),
+                                            ),
+                                            obscureText: true,
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return "please enter your password";
+                                              }
+                                              if (value.length < 8) {
+                                                return "too short!";
+                                              }
+                                              return null;
+                                            },
+                                            onSaved: (value) =>
+                                                password = value!,
+                                          )
+                                        ],
+                                      )),
+                                  SizedBox(
+                                    height: 25.h,
+                                  ),
+                                  ElevatedButton(
+                                      onPressed: () => _changePassword(),
+                                      child: const Text('save'))
+                                ],
+                              ),
+                              padding: EdgeInsets.all(15),
                             )),
                           ))
                 }

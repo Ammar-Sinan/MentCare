@@ -62,11 +62,8 @@ class HomeScreenState extends State<HomeScreen> {
                         .bodyText2!
                         .copyWith(fontSize: 16),
                   ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.notifications_active_outlined,
-                    ),
+                  SizedBox(
+                    width: 20.w,
                   )
                 ],
               ),

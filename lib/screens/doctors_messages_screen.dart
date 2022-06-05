@@ -25,12 +25,7 @@ class DoctorMessagesScreenState extends State<DoctorMessagesScreen> {
             ),
           ),
         ),
-        actions: [
-          IconButton(
-            onPressed: () => FirebaseAuth.instance.signOut(),
-            icon: const Icon(Icons.notifications_active_outlined),
-          ),
-        ],
+        automaticallyImplyLeading: false,
       ),
       body: StreamBuilder(
         builder: (cnt, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -50,8 +45,9 @@ class DoctorMessagesScreenState extends State<DoctorMessagesScreen> {
                                 snapshot.data!.docs[index]['userId']),
                             title: getUserNameWidget(
                                 snapshot.data!.docs[index]['userId']))),
-                    onTap: () async{
-                      final userName = await getUserName(snapshot.data!.docs[index]['userId']);
+                    onTap: () async {
+                      final userName = await getUserName(
+                          snapshot.data!.docs[index]['userId']);
                       List IDs = [
                         userName,
                         //snapshot.data!.docs[index]['userName'],

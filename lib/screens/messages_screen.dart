@@ -25,12 +25,6 @@ class MessagesScreenState extends State<MessagesScreen> {
             ),
           ),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.notifications_active_outlined),
-          ),
-        ],
         automaticallyImplyLeading: false,
         centerTitle: true,
       ),
@@ -52,8 +46,9 @@ class MessagesScreenState extends State<MessagesScreen> {
                                 snapshot.data!.docs[index]['doctorId']),
                             title: getUserNameWidget(
                                 snapshot.data!.docs[index]['doctorId']))),
-                    onTap: () async{
-                      final doctorName = await getUserName(snapshot.data!.docs[index]['doctorId']);
+                    onTap: () async {
+                      final doctorName = await getUserName(
+                          snapshot.data!.docs[index]['doctorId']);
                       List IDs = [
                         doctorName,
                         snapshot.data!.docs[index]['chatId']

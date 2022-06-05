@@ -24,12 +24,6 @@ class _SessionsButtonsGridState extends State<SessionsButtonsGrid> {
   bool isLoading = false;
 
   @override
-  void didChangeDependencies() {
-
-    super.didChangeDependencies();
-  }
-
-  @override
   void initState() {
     fetchSessions();
     super.initState();

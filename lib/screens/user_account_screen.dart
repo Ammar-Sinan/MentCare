@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mentcare/screens/previous_sessions_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/user_provider.dart';
@@ -39,7 +40,7 @@ class UserAccountScreenState extends State<UserAccountScreen> {
     {
       'title': 'Previous sessions',
       'icon': Icon(Icons.swap_horizontal_circle_outlined),
-      'route': 'ROUTE4',
+      'route': PreviousSessions.routeName,
       'id': '04'
     },
   ];

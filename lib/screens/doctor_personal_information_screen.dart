@@ -68,13 +68,13 @@ class DoctorPersonalInformationState extends State<DoctorPersonalInformation> {
     },
     {
       'title': 'Education',
-      'icon': const Icon(Icons.password_outlined),
+      'icon': const Icon(Icons.padding),
       'subTitle': '',
       'fireBaseName': 'university'
     },
     {
       'title': 'speciality',
-      'icon': const Icon(Icons.password_outlined),
+      'icon': const Icon(Icons.cast_for_education),
       'subTitle': '',
       'fireBaseName': 'specialisedIn'
     },

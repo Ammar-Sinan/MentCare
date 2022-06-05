@@ -121,10 +121,10 @@ class messageText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: BoxConstraints(minHeight: 30.h, minWidth: 100, maxHeight: 70.h),
+      constraints: BoxConstraints(minHeight: 30.h, minWidth: 100.w, maxHeight: 70.h),
       child: Container(
-          margin: const EdgeInsets.all(5),
-          padding: EdgeInsets.all(3),
+          margin: EdgeInsets.all(5.h),
+          padding: EdgeInsets.all(7.w),
           decoration: BoxDecoration(
               color: Theme.of(context).primaryColorLight,
               borderRadius: BorderRadius.circular(20)),
